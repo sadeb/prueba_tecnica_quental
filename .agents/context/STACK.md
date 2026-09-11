@@ -62,6 +62,9 @@ Frontend y backend serán proyectos independientes. El frontend obtendrá la URL
 
 - No subir Java por encima de 11 ni Spring Boot a 3.x/4.x.
 - No introducir APIs `jakarta.*` propias de Spring Boot 3; Boot 2.7 usa la generación `javax.*` correspondiente.
+- En Spring Framework 5.3, `@Scheduled.fixedDelayString` debe resolverse a un número;
+  no admite literales de duración como `2s`. Para mantener una unidad legible, declarar
+  el valor numérico junto con `timeUnit`, como hace el publicador outbox en segundos.
 - No usar Hibernate 6, Spring Data Neo4j 7/8, Neo4j Driver 6 ni JUnit 6.
 - Mantener compatibilidad del cliente Kafka moderno con el broker 2.0.1 y no usar funciones de broker posteriores.
 - Toda desviación exige ADR, justificación y autorización del usuario.

@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8989}
   shutdown: graceful
 
 spring:
@@ -70,7 +70,7 @@ app:
     on-startup: ${SYNC_ON_STARTUP:false}
   outbox:
     enabled: ${OUTBOX_ENABLED:true}
-    fixed-delay: ${OUTBOX_FIXED_DELAY:2s}
+    fixed-delay: ${OUTBOX_FIXED_DELAY:2}
     batch-size: ${OUTBOX_BATCH_SIZE:100}
   topics:
     raw: ${KAFKA_RAW_TOPIC:rickmorty.raw.v1}

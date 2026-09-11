@@ -85,6 +85,6 @@ docs(proyecto): documentar arquitectura, contexto de agentes y ejecución local
 | Frontend `npm run build` con Node 24.19.0 | Correcto |
 | `npm audit` | 0 vulnerabilidades reportadas |
 | `docker compose config --quiet` | Correcto |
-| `docker compose up --build` | No ejecutado |
+| `docker compose up -d --build backend` y arranque posterior del frontend | Correcto sobre volúmenes locales existentes; seis servicios saludables. Pendiente repetir desde una base limpia |
 
 No se debe convertir ningún resultado pendiente en una afirmación de cumplimiento total.

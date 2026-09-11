@@ -15,5 +15,5 @@ RUN apt-get update \
 WORKDIR /app
 COPY --from=build --chown=spring:spring /workspace/target/rick-morty-api-*.jar app.jar
 USER spring
-EXPOSE 8080
+EXPOSE 8989
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

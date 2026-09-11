@@ -43,7 +43,7 @@ Puerta de salida: build y pruebas base reproducibles sin dependencia del backend
 
 ## Fase 3 - Infraestructura local
 
-Estado: `IMPLEMENTADO; CONFIGURACIÓN COMPOSE VALIDADA, ARRANQUE INTEGRAL PENDIENTE`.
+Estado: `IMPLEMENTADO; SEIS SERVICIOS SALUDABLES SOBRE VOLÚMENES EXISTENTES, ARRANQUE LIMPIO PENDIENTE`.
 
 - Fijar imágenes compatibles para PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y ZooKeeper.
 - Crear Dockerfiles de aplicación y Compose completo con health checks, redes, volúmenes y configuración por entorno.

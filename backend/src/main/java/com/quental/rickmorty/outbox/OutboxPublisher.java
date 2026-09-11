@@ -29,7 +29,7 @@ public class OutboxPublisher {
         this.properties = properties;
     }
 
-    @Scheduled(fixedDelayString = "${app.outbox.fixed-delay:2s}")
+    @Scheduled(fixedDelayString = "${app.outbox.fixed-delay:2}", timeUnit = TimeUnit.SECONDS)
     @Transactional
     public void publishBatch() {
         List<OutboxEventEntity> events = repository.findPublishable(PageRequest.of(0, properties.getBatchSize()));

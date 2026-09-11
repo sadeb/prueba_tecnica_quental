@@ -104,5 +104,8 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 ## Despliegue implementado
 
 Docker Compose define frontend, backend, PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y
-ZooKeeper, con health checks, configuración por entorno y versiones fijadas. Falta
-ejecutar y registrar un arranque integral desde una base limpia.
+ZooKeeper, con health checks, configuración por entorno y versiones fijadas. La pila se
+validó con los seis servicios saludables sobre volúmenes locales existentes; queda
+ejecutar y registrar el mismo escenario desde una base limpia. El healthcheck del
+frontend usa `127.0.0.1` para no depender de la resolución IPv6 de `localhost` en la
+imagen Alpine de Nginx.

@@ -15,9 +15,9 @@ docker compose up --build
 Servicios:
 
 - SPA: <http://localhost:4200>
-- API: <http://localhost:8080/api/v1>
-- Swagger UI: <http://localhost:8080/swagger-ui.html>
-- Health: <http://localhost:8080/actuator/health>
+- API: <http://localhost:8989/api/v1>
+- Swagger UI: <http://localhost:8989/swagger-ui.html>
+- Health: <http://localhost:8989/actuator/health>
 - Neo4j Browser: <http://localhost:7474>
 
 El usuario definido por `ADMIN_USERNAME` y `ADMIN_PASSWORD` se crea o actualiza de forma idempotente al arrancar. Inicia sesión como administrador y lanza la primera sincronización desde la sección **Sincronizar**. También puede activarse `SYNC_ON_STARTUP=true`.

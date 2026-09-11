@@ -25,6 +25,8 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - SPA actualizada a Angular 22 con Bootstrap, rutas lazy, guards, interceptor, Signal
   Forms y pantallas de autenticación, catálogo, detalle, favoritos y sincronización.
 - Compose, Dockerfiles, Nginx y configuración de entorno creados.
+- Puerto HTTP del backend unificado en `8989` para ejecución local, Compose, healthcheck
+  y proxies del frontend.
 
 ## Decisiones vigentes
 
@@ -47,6 +49,10 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - `npm run build`: compilación de producción Angular 22 correcta.
 - `npm audit` y `npm audit --omit=dev`: 0 vulnerabilidades reportadas.
 - `docker compose config --quiet`: configuración válida.
+- `docker compose up -d --build backend` y posterior arranque del frontend: los seis
+  servicios quedaron saludables; backend con readiness `UP` y frontend con respuesta
+  HTTP `200`. Se corrigieron el intervalo del publicador outbox para Spring 5.3 usando
+  un valor numérico con `TimeUnit.SECONDS` y el destino IPv4 del healthcheck de Nginx.
 - `git diff --check`: correcto, sin errores de whitespace.
 - Parseo de `.gemini/settings.json`: correcto.
 - Resolución de enlaces Markdown locales: correcta.
@@ -63,8 +69,8 @@ con `docker compose up --build`.
 
 - El Node local 22.12.0 no soporta Angular 22; las validaciones se ejecutaron con Node
   24.19.0 y ese mínimo está fijado en el proyecto.
-- No se ejecutó todavía el levantamiento integral de los seis servicios de Compose;
-  únicamente se validó la configuración.
+- Los seis servicios de Compose se validaron sobre los volúmenes locales existentes;
+  aún falta repetir el escenario integral desde una base limpia.
 - Seguridad, favoritos, DLT, Neo4j, guards e interceptor están implementados, pero aún
   no cuentan con pruebas automatizadas específicas suficientes para cerrar sus puertas.
 - OpenAPI genera rutas, parámetros y esquemas, pero todavía no declara de forma
