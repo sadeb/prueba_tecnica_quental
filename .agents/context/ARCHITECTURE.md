@@ -1,8 +1,9 @@
-# Arquitectura objetivo
+# Arquitectura implementada
 
-Estado: `EN IMPLEMENTACIÓN`
+Estado: `IMPLEMENTADA; VALIDACIÓN INTEGRAL PARCIAL`
 
-Este documento describe la arquitectura autorizada por el usuario. Su implementación se realiza de forma incremental y verificable durante `FULL_IMPLEMENTATION`.
+Este documento describe la arquitectura autorizada e implementada. La verificación
+integral pendiente está priorizada en `NEXT_FEATURES.md`.
 
 ## Principios
 
@@ -14,7 +15,7 @@ Este documento describe la arquitectura autorizada por el usuario. Su implementa
 - Cada fallo parcial debe ser observable y recuperable sin volver a descargar cuando sea posible.
 - El frontend solo conoce el contrato HTTP de la API propia.
 
-## Componentes previstos
+## Componentes implementados
 
 ```text
 Angular SPA
@@ -49,7 +50,7 @@ Se adoptará una organización por capacidad con separación interna de responsa
 
 Los controladores dependerán de casos de uso, no de repositorios ni clientes externos. Los DTO de Rick and Morty, los modelos HTTP propios, las entidades JPA y los nodos Neo4j serán tipos diferentes.
 
-## Flujo de sincronización previsto
+## Flujo de sincronización implementado
 
 1. Un administrador inicia una ejecución mediante la API; opcionalmente, una propiedad puede activarla al arrancar.
 2. El coordinador registra una `sync_run`, pagina Rick and Morty API y aplica timeouts y validación.
@@ -100,6 +101,8 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 - Modelado explícito de `loading`, `empty`, `success` y `error`.
 - Persistencia del token entre recargas y cierre controlado de sesión ante `401`/`403`.
 
-## Despliegue objetivo
+## Despliegue implementado
 
-Docker Compose levantará frontend, backend, PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y ZooKeeper, con health checks, configuración por entorno y versiones fijadas.
+Docker Compose define frontend, backend, PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y
+ZooKeeper, con health checks, configuración por entorno y versiones fijadas. Falta
+ejecutar y registrar un arranque integral desde una base limpia.

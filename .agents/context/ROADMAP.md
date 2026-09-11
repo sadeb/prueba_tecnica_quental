@@ -4,7 +4,7 @@
 
 - Fase activa: `8 - VERIFICATION`.
 - Fases autorizadas: 1 a 8 por petición explícita del usuario del 2026-09-11.
-- Angular fue creado inicialmente en 20.3.x; se actualizará a Angular 22 antes de desarrollar funcionalidades.
+- Angular fue creado inicialmente en 20.3.x y ya fue actualizado a Angular 22.1.x.
 
 ## Fase 0 - Contexto multiagente
 
@@ -106,3 +106,6 @@ Estado: `EN CURSO`.
 - Verificar levantamiento limpio mediante Docker Compose y revisar secretos/historial.
 
 Puerta de salida: todos los criterios del PDF reproducibles con instrucciones de entrega.
+
+El trabajo pendiente concreto, su orden y sus criterios de cierre se mantiene en
+`NEXT_FEATURES.md` para evitar convertir este roadmap en un listado operativo duplicado.

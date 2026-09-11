@@ -1,6 +1,6 @@
 # ADR 0004: Autenticación propia mediante tokens opacos
 
-- Estado: Aceptado, no implementado
+- Estado: Implementado; pruebas específicas de seguridad pendientes
 - Fecha: 2026-09-11
 - Alcance de implementación: Fase 6
 
@@ -16,7 +16,9 @@ El usuario decidió implementar el bonus de autenticación propia sin emisor ni 
 - Validar en cada petición el hash, expiración, revocación, estado del usuario y roles.
 - Usar el esquema HTTP `Bearer` y revocar el token actual al cerrar sesión.
 - Proteger sincronización y endpoints administrativos con el rol `ADMIN`.
-- Crear o actualizar de forma idempotente el administrador inicial usando credenciales suministradas por variables de entorno, sin valores reales versionados.
+- Crear de forma idempotente el administrador inicial usando credenciales suministradas por
+  variables de entorno, sin valores reales versionados. Si ya existe, no se sobrescriben
+  sus credenciales ni su rol.
 
 La duración del token será configurable y se fijará con un valor por defecto documentado al implementar seguridad.
 

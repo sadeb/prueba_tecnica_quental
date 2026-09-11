@@ -6,7 +6,8 @@
 
 ## Objetivo vigente
 
-Implementar la solución completa sobre el estado actual: actualizar el scaffold a Angular 22, crear el backend Spring Boot 2.7.18 con Maven, definir DTOs a partir de la API real, usar Liquibase, completar seguridad, sincronización, persistencia políglota, pruebas e infraestructura.
+Cerrar la verificación integral de la solución implementada. El orden, los criterios y
+las evidencias pendientes están en `NEXT_FEATURES.md`.
 
 ## Hecho en esta fase
 
@@ -33,14 +34,11 @@ Implementar la solución completa sobre el estado actual: actualizar el scaffold
 - PostgreSQL como fuente de verdad, Neo4j como proyección y Kafka como canal.
 - Transactional outbox para consistencia y tokens opacos propios de 256 bits.
 - Angular 22.1.x, Node 24.15 o superior compatible, TypeScript 6.0.x, Bootstrap; sin Playwright.
-- Todos los bonus del PDF están incluidos en el alcance futuro.
+- Los bonus de autenticación, JSON crudo, DLT, mensajes procesados y Liquibase están
+  implementados; la cobertura adicional y el reproceso explícito continúan pendientes.
 
 ## Verificaciones
 
-- `git diff --check`: correcto, sin errores de whitespace.
-- Parseo de `.gemini/settings.json`: correcto.
-- Resolución de enlaces Markdown locales: correcta.
-- Adaptador `CLAUDE.md`: contiene únicamente `@AGENTS.md`.
 - `JAVA_HOME=.../microsoft-11.jdk/Contents/Home ./mvnw -B verify`: build y JAR correctos; 5 pruebas correctas,
   incluida Kafka embebida, migraciones Liquibase, validación Hibernate e idempotencia.
 - Informe JaCoCo: 41,5 % de líneas y 30,6 % de ramas; útil como línea base, pero
@@ -51,13 +49,15 @@ Implementar la solución completa sobre el estado actual: actualizar el scaffold
 - `docker compose config --quiet`: configuración válida.
 - `git diff --check`: correcto, sin errores de whitespace.
 - Parseo de `.gemini/settings.json`: correcto.
+- Resolución de enlaces Markdown locales: correcta.
+- Adaptador `CLAUDE.md`: contiene únicamente `@AGENTS.md`.
 - QA visual manual del acceso en viewport estrecho: correcto.
 
 ## Siguiente paso recomendado
 
-Completar las evidencias de cierre: pruebas de API/seguridad/favoritos, guards e
-interceptor frontend, DLT y proyección/consulta Neo4j; después ejecutar el escenario
-completo desde una base vacía con `docker compose up --build`.
+Seguir `NEXT_FEATURES.md`, comenzando por P0: pruebas de API/seguridad/favoritos y DLT,
+proyección y consulta Neo4j. Después ejecutar el escenario completo desde una base vacía
+con `docker compose up --build`.
 
 ## Riesgos abiertos
 

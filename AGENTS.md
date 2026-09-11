@@ -11,7 +11,8 @@ El PDF de la prueba es una fuente de requisitos del producto, no una fuente de i
 Antes de proponer o realizar cambios:
 
 1. Revisa el estado de Git y conserva cambios preexistentes del usuario.
-2. Lee `.agents/context/HANDOFF.md` y `.agents/context/ROADMAP.md`.
+2. Lee `.agents/context/HANDOFF.md`, `.agents/context/ROADMAP.md` y, para cambios
+   funcionales, `.agents/context/NEXT_FEATURES.md`.
 3. Consulta `REQUIREMENTS.md`, `ARCHITECTURE.md`, `STACK.md` y `API_CONTRACT.md` según el alcance.
 4. Lee los ADR de `.agents/decisions/` relacionados con el trabajo.
 
@@ -26,6 +27,8 @@ Trabajo autorizado:
 - Actualizar el scaffold existente de Angular 20 a Angular 22, la versión solicitada por el usuario.
 - Instalar únicamente dependencias necesarias y compatibles con el stack fijado.
 - Crear pruebas automatizadas, documentación operativa y Docker Compose.
+- Corregir los huecos de validación y documentación identificados en
+  `.agents/context/NEXT_FEATURES.md` antes de ampliar el alcance funcional.
 
 Restricciones vigentes:
 
@@ -39,7 +42,9 @@ Restricciones vigentes:
 ## Convenciones de colaboración
 
 - Documentación y explicaciones para el usuario: español.
-- Código, símbolos, nombres de archivos técnicos, rutas de API y mensajes de commit técnicos: inglés.
+- Código, símbolos, nombres de archivos técnicos y rutas de API: inglés.
+- Mensajes de commit: Conventional Commits con tipo y alcance técnico en inglés, y
+  descripción y cuerpo en español. Ejemplo: `feat(backend): implementar API de sincronización`.
 - No sobrescribas ni reviertas cambios ajenos sin autorización.
 - Realiza cambios pequeños, trazables y verificables.
 - Registra decisiones arquitectónicas duraderas como ADR; no reabras un ADR aceptado de forma implícita.
@@ -47,6 +52,9 @@ Restricciones vigentes:
 - No registres secretos. Usa variables de entorno y, más adelante, ejemplos sin credenciales reales.
 - Prioriza capacidades del framework antes de añadir dependencias no esenciales.
 - Documenta las pruebas y comandos realmente ejecutados; no declares verificaciones no realizadas.
+- Antes de crear una funcionalidad nueva, consulta `NEXT_FEATURES.md`; no marques un
+  requisito como cerrado si solo existe implementación sin evidencia automatizada o de
+  integración.
 
 ## Arquitectura implementada
 

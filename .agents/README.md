@@ -5,13 +5,14 @@ Este directorio reúne información neutral respecto al proveedor del agente. `A
 ## Navegación
 
 - `context/REQUIREMENTS.md`: requisitos y trazabilidad.
-- `context/ARCHITECTURE.md`: arquitectura objetivo y flujos.
-- `context/STACK.md`: tecnologías y compatibilidad prevista.
-- `context/API_CONTRACT.md`: superficie HTTP futura de alto nivel.
+- `context/ARCHITECTURE.md`: arquitectura implementada y flujos.
+- `context/STACK.md`: tecnologías, versiones efectivas y compatibilidad.
+- `context/API_CONTRACT.md`: superficie HTTP implementada y sus huecos documentales.
 - `context/ROADMAP.md`: fases, entregables y puertas de aprobación.
 - `context/HANDOFF.md`: fotografía breve del estado actual.
+- `context/NEXT_FEATURES.md`: trabajo priorizado y criterios de cierre para las próximas funcionalidades.
 - `context/SKILLS_CANDIDATES.md`: skills que el usuario podrá evaluar manualmente.
-- `decisions/`: ADR aceptados, aunque todavía no implementados.
+- `decisions/`: ADR aceptados, con su estado de implementación explícito.
 - `templates/`: formatos para nuevos ADR y futuros handoffs.
 
 ## Mantenimiento
@@ -20,3 +21,4 @@ Este directorio reúne información neutral respecto al proveedor del agente. `A
 - Marcar siempre si algo está `PLANIFICADO`, `EN CURSO` o `IMPLEMENTADO`.
 - Distinguir requisitos del PDF, decisiones del usuario e inferencias de diseño.
 - No crear `.agents/skills/` ni archivos `SKILL.md` durante `CONTEXT_BOOTSTRAP`.
+- Para commits, usar tipo y alcance en inglés, con descripción y cuerpo en español.

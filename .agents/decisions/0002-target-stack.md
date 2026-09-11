@@ -1,6 +1,6 @@
 # ADR 0002: Stack técnico objetivo
 
-- Estado: Aceptado, no implementado
+- Estado: Implementado; validación integral de Compose pendiente
 - Fecha: 2026-09-11
 - Alcance de implementación: Fases 1 a 8
 
@@ -24,4 +24,5 @@ La prueba exige JDK 11, Spring Boot 2.7.x, Spring MVC, PostgreSQL 10, Neo4j, Kaf
 - No se emplearán APIs de Spring Boot 3/4, `jakarta.*`, Hibernate 6 ni versiones incompatibles de Neo4j.
 - El BOM de Spring Boot gobernará versiones siempre que sea posible.
 - Cada actualización fuera de estas líneas exige una prueba de compatibilidad y un nuevo ADR.
-- En la Fase 0 estas tecnologías solo se documentan; no se crean dependencias ni proyectos.
+- El cierre requiere comprobar el arranque conjunto con las imágenes fijadas y no solo la
+  compatibilidad declarada.

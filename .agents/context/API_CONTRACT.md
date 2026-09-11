@@ -1,8 +1,9 @@
-# Contrato HTTP objetivo
+# Contrato HTTP implementado
 
 Estado: `IMPLEMENTADO; OPENAPI ES LA REFERENCIA EJECUTABLE`
 
-Prefijo previsto: `/api/v1`. Los nombres son parte de la dirección del diseño, pero los esquemas OpenAPI definitivos se escribirán en la fase de API.
+Prefijo implementado: `/api/v1`. Springdoc genera la especificación ejecutable en
+`/v3/api-docs` y Swagger UI en `/swagger-ui.html`.
 
 ## Convenciones
 
@@ -12,7 +13,9 @@ Prefijo previsto: `/api/v1`. Los nombres son parte de la dirección del diseño,
 - Identificadores expuestos como valores estables propios, manteniendo `externalId` cuando aporte trazabilidad.
 - Token opaco en `Authorization: Bearer <token>`.
 - Errores con una única forma: `timestamp`, `status`, `code`, `message`, `path`, `fieldErrors` opcional y `traceId` cuando exista.
-- La documentación OpenAPI describirá autenticación, parámetros, ejemplos y todos los códigos relevantes.
+- La documentación OpenAPI genera rutas, parámetros y esquemas desde los controladores.
+  Pendiente: declarar de forma explícita la seguridad y todos los códigos de error por
+  operación, incluyendo ejemplos representativos.
 
 ## Autenticación
 
@@ -53,7 +56,10 @@ La identidad de usuario se obtiene del token y nunca de un identificador enviado
 | `GET /api/v1/admin/sync-runs/{syncRunId}` | `ADMIN` | Expone estado, contadores y fallos parciales |
 | `GET /api/v1/admin/sync-runs` | `ADMIN` | Historial paginado de ejecuciones |
 
-La petición de inicio no esperará a que finalice toda la sincronización. Reintentos accidentales se controlarán mediante una política idempotente que deberá concretarse en el ADR de mensajería.
+La petición de inicio no espera a que finalice toda la sincronización. El contrato de
+mensajería, reintentos y DLT está concretado en ADR-0006. Varias ejecuciones pueden
+iniciarse; los datos convergen por las garantías de idempotencia, pero no hay una llave
+de idempotencia HTTP para deduplicar solicitudes de inicio.
 
 ## Códigos transversales
 

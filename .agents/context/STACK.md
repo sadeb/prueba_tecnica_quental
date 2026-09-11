@@ -1,6 +1,6 @@
-# Stack objetivo y dependencias previstas
+# Stack efectivo y compatibilidad
 
-Estado: `EN IMPLEMENTACIÓN`
+Estado: `IMPLEMENTADO; VALIDACIÓN INTEGRAL PARCIAL`
 
 ## Backend
 
@@ -20,14 +20,15 @@ Estado: `EN IMPLEMENTACIÓN`
 | OpenAPI | `springdoc-openapi-ui` 1.8.0, línea compatible con Spring Boot 2 |
 | Operación | Spring Boot Actuator |
 
-El futuro `pom.xml` heredará de `spring-boot-starter-parent:2.7.18` para centralizar versiones. Solo se fijarán manualmente versiones no gestionadas o cuando exista una razón de compatibilidad documentada. No se usarán Flyway, WebFlux ni JWT salvo un cambio explícito de decisión.
+El `pom.xml` hereda de `spring-boot-starter-parent:2.7.18` para centralizar versiones. Solo se fijan manualmente versiones no gestionadas o con una razón de compatibilidad documentada. No se usan Flyway, WebFlux ni JWT salvo un cambio explícito de decisión.
 
-Dependencias de pruebas previstas:
+Dependencias de pruebas instaladas:
 
 - `spring-boot-starter-test`.
 - `spring-security-test`.
 - `spring-kafka-test`.
-- Testcontainers para PostgreSQL, Kafka y Neo4j cuando corresponda.
+- Testcontainers para PostgreSQL, Kafka y Neo4j; todavía no se usan en pruebas y deben
+  retirarse o incorporarse en una prueba real antes del cierre.
 - WireMock o servidor HTTP local equivalente compatible con Java 11 para aislar Rick and Morty API.
 
 ## Base de datos y mensajería
@@ -39,7 +40,8 @@ Dependencias de pruebas previstas:
 | Apache Kafka | 2.0.1, artefacto Scala 2.12 | Transporte de eventos |
 | ZooKeeper | Versión compatible con la distribución Kafka fijada | Coordinación del broker legado |
 
-La imagen exacta y su digest se verificarán antes de crear Compose; no se utilizará `latest`.
+Las imágenes exactas se fijaron en `docker-compose.yml`; no se utiliza `latest`. Falta
+validar el arranque integral desde una base vacía.
 
 ## Frontend
 
@@ -50,8 +52,8 @@ La imagen exacta y su digest se verificarán antes de crear Compose; no se utili
 | Lenguaje | TypeScript 6.0.x |
 | UI | Bootstrap 5.3.8 |
 | HTTP | Cliente HTTP oficial de Angular |
-| Formularios | Reactive Forms |
-| Tests | Runner oficial generado por Angular, pruebas unitarias/de componente/servicio/guard |
+| Formularios | Signal Forms (API Angular 22) |
+| Tests | Runner oficial generado por Angular; existen pruebas de shell y sesión, pendientes guards, interceptor, servicios y componentes funcionales |
 | E2E | Fuera de alcance; no instalar Playwright |
 
 Frontend y backend serán proyectos independientes. El frontend obtendrá la URL base desde configuración de entorno y no importará artefactos de construcción del backend.

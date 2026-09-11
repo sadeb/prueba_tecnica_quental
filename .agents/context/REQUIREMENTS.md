@@ -104,14 +104,14 @@ Campos mínimos:
 
 ## Bonus incluidos por decisión del usuario
 
-Se implementarán todos los bonus cuando se autoricen sus fases:
+Estado actual de los bonus:
 
-- Autenticación propia basada en tokens.
-- Persistencia del JSON crudo.
-- DLT y registro de mensajes procesados.
-- Versionado relacional mediante Liquibase.
-- Cobertura adicional de pruebas.
-- Decisiones adicionales justificadas mediante ADR.
+- Autenticación propia basada en tokens: `IMPLEMENTADO`; pruebas específicas pendientes.
+- Persistencia del JSON crudo: `IMPLEMENTADO`; reproceso explícito pendiente.
+- DLT y registro de mensajes procesados: `IMPLEMENTADO`; prueba DLT pendiente.
+- Versionado relacional mediante Liquibase: `IMPLEMENTADO Y VALIDADO EN H2`.
+- Cobertura adicional de pruebas: `PARCIAL`; consultar `NEXT_FEATURES.md`.
+- Decisiones adicionales justificadas mediante ADR: `IMPLEMENTADO`.
 
 ## Evaluación y entrega
 
