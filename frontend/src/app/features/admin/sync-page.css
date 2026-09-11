@@ -39,6 +39,11 @@
 .section-heading h2 {
   font: 750 2rem/1 var(--font-display);
 }
+.polling-note {
+  margin: 0.35rem 0 0;
+  color: var(--color-muted);
+  font: 0.72rem/1.4 var(--font-mono);
+}
 .run-item {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -58,6 +63,19 @@
 .run-item h3 {
   margin: 0.45rem 0;
   font: 740 1.2rem/1 var(--font-display);
+}
+.run-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.trigger-badge {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--color-line);
+  color: var(--color-muted);
+  font: 650 0.65rem/1 var(--font-mono);
+  text-transform: uppercase;
 }
 .run-item time {
   color: var(--color-muted);
@@ -94,6 +112,7 @@
 }
 .run-error {
   grid-column: 1 / -1;
+  margin: 0;
   color: var(--color-coral-dark);
 }
 

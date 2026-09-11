@@ -66,6 +66,18 @@ navegación activos para resolver falta de espacio.
 - La marca decorativa del portal es puramente visual y debe permanecer contenida por
   `.auth-intro`; nunca debe producir scroll horizontal.
 
+## Sincronización
+
+- La pantalla conserva el estado local con signals y deriva con `computed` la presencia
+  de ejecuciones y el sondeo activo.
+- Una ejecución manual recién iniciada se consulta cada 60 segundos hasta alcanzar un
+  estado terminal; el sondeo se cancela al destruir el componente.
+- Los códigos internos se presentan en español y el porcentaje se etiqueta como
+  procesamiento de mensajes, para no confundir un 100 % procesado con una descarga
+  completa.
+- El historial identifica el disparador `Manual` o `Automática` y separa errores de
+  descarga de los mensajes fallidos en Kafka.
+
 ## Patrones para nuevas pantallas
 
 - Partir de `.page-shell` para el contenido de una página estándar.
@@ -98,3 +110,7 @@ en los viewports indicados, sin desbordamiento horizontal. Favoritos y sincroniz
 redirigieron a login en la comprobación sin sesión. Login y registro encajaron sin scroll
 adicional en `1024x600` y `1366x768`; la evidencia de comandos se conserva en
 `HANDOFF.md`.
+
+La pantalla de sincronización se validó tras incorporar origen, polling y mensajes
+traducidos en `375x667`, `768x1024`, `1024x600` y `1440x900`, sin desbordamiento
+horizontal.

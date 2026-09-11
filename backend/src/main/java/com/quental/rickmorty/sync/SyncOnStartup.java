@@ -18,6 +18,6 @@ public class SyncOnStartup {
 
     @EventListener(ApplicationReadyEvent.class)
     public void synchronize() {
-        if (enabled) syncService.start();
+        if (enabled) syncService.startAutomatically();
     }
 }

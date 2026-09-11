@@ -42,6 +42,16 @@ consultar la API externa.
    empty y error.
 4. Mantener Playwright fuera del proyecto salvo autorización explícita del usuario.
 
+Evidencia ya incorporada para sincronización:
+
+- La presentación de los estados y disparadores, la traducción del error de descarga y
+  la condición de estado terminal cuentan con prueba unitaria.
+- La pantalla administrativa cuenta con prueba de componente que verifica el sondeo de
+  una sincronización manual a los 60 segundos y su detención al completarse.
+
+Pendiente: conservar esta cobertura al modificar el contrato `SyncRun` y añadir pruebas
+para los demás servicios HTTP y flujos indicados arriba.
+
 Criterio de cierre: las rutas privadas, la expiración y el manejo de errores están
 cubiertos por pruebas reproducibles.
 
@@ -79,12 +89,12 @@ docs(proyecto): documentar arquitectura, contexto de agentes y ejecución local
 
 | Comprobación | Resultado |
 | --- | --- |
-| Backend `./mvnw -B verify` con Java 11 | Correcto; 5 pruebas, JAR generado |
+| Backend `./mvnw -B verify` con Java 11 | Correcto; 9 pruebas, JAR generado |
 | JaCoCo | 41,5 % líneas; 30,6 % ramas |
-| Frontend `npm test -- --watch=false` | Correcto; 4 pruebas |
-| Frontend `npm run build` con Node 24.19.0 | Correcto |
+| Frontend `npm test -- --watch=false` | Correcto; 8 pruebas |
+| Frontend `npm run build` con Node 24.16.0 | Correcto; versión compatible con el mínimo `^24.15.0` |
 | `npm audit` | 0 vulnerabilidades reportadas |
 | `docker compose config --quiet` | Correcto |
-| `docker compose up -d --build backend` y arranque posterior del frontend | Correcto sobre volúmenes locales existentes; seis servicios saludables. Pendiente repetir desde una base limpia |
+| `docker compose up -d --build backend frontend` | Correcto sobre volúmenes locales existentes; seis servicios saludables. Pendiente repetir desde una base limpia |
 
 No se debe convertir ningún resultado pendiente en una afirmación de cumplimiento total.

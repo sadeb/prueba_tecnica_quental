@@ -59,6 +59,13 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - Adaptador `CLAUDE.md`: contiene únicamente `@AGENTS.md`.
 - SPA ajustada con estilos mobile-first, shell basado en `100dvh`, contenedores fluidos,
   breakpoints Bootstrap y objetivos táctiles mínimos de 44 px.
+- Las ejecuciones de sincronización registran su disparador `MANUAL` o `AUTOMATIC`; la
+  sincronización al arranque queda trazada como automática en el historial.
+- La pantalla de sincronización usa signals/computed y, tras iniciar una ejecución
+  manual, consulta su estado cada 60 segundos hasta que termina.
+- Los estados se presentan en español. El fallo `Unable to fetch character page 24` se
+  muestra como un error de descarga contextualizado y el 100 % se identifica como
+  progreso de mensajes.
 - QA responsive de login, registro, catálogo, detalle y página no encontrada en 375x667,
   768x1024, 1024x600 y 1440x900: sin desbordamiento horizontal. Favoritos y
   sincronización redirigieron correctamente a login al no existir sesión.
@@ -67,6 +74,11 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
   natural.
 - Tras los ajustes responsive, `npm test -- --watch=false`: 4 pruebas correctas; y
   `npm run build`: compilación de producción Angular 22 correcta, ambos con Node 24.16.0.
+- Tras la trazabilidad y el polling, `./mvnw -B verify`: 9 pruebas correctas;
+  `npm test -- --watch=false`: 8 pruebas correctas; y `npm run build`: correcto.
+- QA de sincronización en `375x667`, `768x1024`, `1024x600` y `1440x900`: sin
+  desbordamiento horizontal; `FAILED` traducido como `Fallida`, origen visible y fallo
+  de página contextualizado.
 - Contexto persistente de UI creado en `FRONTEND_UI.md` y declarado como lectura
   obligatoria en `AGENTS.md` para cambios de interfaz, layout o estilos.
 

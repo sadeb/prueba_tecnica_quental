@@ -19,6 +19,9 @@ public class SyncRunEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 24)
     private SyncRunStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 16)
+    private SyncRunTrigger trigger;
     @Column(name = "started_at", nullable = false)
     private Instant startedAt;
     @Column(name = "completed_at")
@@ -38,9 +41,14 @@ public class SyncRunEntity {
     }
 
     public static SyncRunEntity start() {
+        return start(SyncRunTrigger.MANUAL);
+    }
+
+    public static SyncRunEntity start(SyncRunTrigger trigger) {
         SyncRunEntity entity = new SyncRunEntity();
         entity.id = UUID.randomUUID().toString();
         entity.status = SyncRunStatus.QUEUING;
+        entity.trigger = trigger;
         entity.startedAt = Instant.now();
         return entity;
     }
@@ -70,6 +78,7 @@ public class SyncRunEntity {
 
     public String getId() { return id; }
     public SyncRunStatus getStatus() { return status; }
+    public SyncRunTrigger getTrigger() { return trigger; }
     public Instant getStartedAt() { return startedAt; }
     public Instant getCompletedAt() { return completedAt; }
     public int getPagesFetched() { return pagesFetched; }

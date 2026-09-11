@@ -61,6 +61,10 @@ mensajería, reintentos y DLT está concretado en ADR-0006. Varias ejecuciones p
 iniciarse; los datos convergen por las garantías de idempotencia, pero no hay una llave
 de idempotencia HTTP para deduplicar solicitudes de inicio.
 
+Cada ejecución incluye `trigger`, con valor `MANUAL` cuando procede del endpoint y
+`AUTOMATIC` cuando la inicia la configuración de arranque. Ambos tipos se persisten y
+aparecen en el mismo historial.
+
 ## Códigos transversales
 
 - `200`/`201` para lecturas y creación completada.

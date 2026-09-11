@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-sync-run-trigger
+      author: codex
+      changes:
+        - addColumn:
+            tableName: sync_runs
+            columns:
+              - column:
+                  name: trigger
+                  type: VARCHAR(16)
+                  defaultValue: MANUAL
+                  constraints:
+                    nullable: false
+        - dropDefaultValue:
+            tableName: sync_runs
+            columnName: trigger
+            columnDataType: VARCHAR(16)
+      rollback:
+        - dropColumn:
+            tableName: sync_runs
+            columnName: trigger

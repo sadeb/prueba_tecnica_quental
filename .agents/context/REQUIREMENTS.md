@@ -45,6 +45,7 @@
 
 - `PDF-OBL`: ofrecer un proceso de sincronización lanzable explícitamente que pagine toda la fuente y publique en Kafka.
 - `USR`: el disparador principal será un endpoint administrativo y podrá existir un flag opcional de sincronización al arranque.
+- `USR`: las sincronizaciones automáticas se persistirán en el mismo historial que las manuales, identificando su origen.
 - `PDF-OBL`: separar productor (descarga/publicación) y consumidor (transformación/persistencia).
 - `PDF-OBL`: garantizar idempotencia de extremo a extremo ante resincronización y entrega al menos una vez.
 - `PDF-OBL`: registrar fallos parciales; un mensaje defectuoso no bloqueará el consumo ni dejará un fallo sin traza.
@@ -91,6 +92,8 @@ Campos mínimos:
 - `PDF-OBL`: proteger rutas con guards, persistir sesión entre recargas y controlar sesiones expiradas/no autorizadas.
 - `PDF-OBL`: representar explícitamente estados de carga, vacío y error.
 - `PDF-OBL`: separar presentación, lógica de negocio y acceso a datos.
+- `USR`: después de iniciar una sincronización manual, actualizar su estado en la SPA cada minuto hasta que finalice.
+- `USR`: usar signals de Angular para el estado reactivo local y traducir para el usuario los estados y fallos técnicos de sincronización.
 - `USR`: no incorporar Playwright; usar pruebas unitarias, de componentes, servicios y guards.
 
 ## 6. Pruebas

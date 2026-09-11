@@ -2,6 +2,7 @@ package com.quental.rickmorty.sync;
 
 import com.quental.rickmorty.shared.NotFoundException;
 import com.quental.rickmorty.sync.domain.SyncRunEntity;
+import com.quental.rickmorty.sync.domain.SyncRunTrigger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,17 @@ public class SyncService {
     }
 
     public SyncRunEntity start() {
+        return start(SyncRunTrigger.MANUAL);
+    }
+
+    public SyncRunEntity startAutomatically() {
+        return start(SyncRunTrigger.AUTOMATIC);
+    }
+
+    private SyncRunEntity start(SyncRunTrigger trigger) {
         // Persist and commit the run before handing it to the asynchronous worker.
         // Otherwise the worker may start before the surrounding transaction commits.
-        SyncRunEntity run = repository.saveAndFlush(SyncRunEntity.start());
+        SyncRunEntity run = repository.saveAndFlush(SyncRunEntity.start(trigger));
         worker.execute(run.getId());
         return run;
     }

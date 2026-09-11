@@ -13,6 +13,10 @@ export class SyncApi {
     return this.http.post<SyncRun>(this.baseUrl, {});
   }
 
+  get(id: string): Observable<SyncRun> {
+    return this.http.get<SyncRun>(`${this.baseUrl}/${id}`);
+  }
+
   list(page = 0, size = 20): Observable<PageResponse<SyncRun>> {
     return this.http.get<PageResponse<SyncRun>>(this.baseUrl, { params: { page, size } });
   }

@@ -52,7 +52,9 @@ Los controladores dependerán de casos de uso, no de repositorios ni clientes ex
 
 ## Flujo de sincronización implementado
 
-1. Un administrador inicia una ejecución mediante la API; opcionalmente, una propiedad puede activarla al arrancar.
+1. Un administrador inicia una ejecución mediante la API; opcionalmente, una propiedad
+   puede activarla al arrancar. Ambos disparadores se registran en `sync_runs` como
+   `MANUAL` o `AUTOMATIC`.
 2. El coordinador registra una `sync_run`, pagina Rick and Morty API y aplica timeouts y validación.
 3. Cada respuesta válida se conserva como payload crudo con identidad reproducible.
 4. El productor publica mensajes con versión de esquema y una clave estable basada en tipo e identificador externo.
@@ -98,6 +100,8 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 - Servicios para API y estado de sesión; interceptor para autorización y normalización de fallos.
 - Guards para rutas privadas y administrativas.
 - Componentes de presentación sin llamadas HTTP directas.
+- La pantalla administrativa usa signals para su estado local y consulta cada minuto la
+  ejecución manual recién iniciada hasta alcanzar un estado terminal.
 - Modelado explícito de `loading`, `empty`, `success` y `error`.
 - Persistencia del token entre recargas y cierre controlado de sesión ante `401`/`403`.
 - Shell responsive mobile-first con header, contenido y footer coordinados por `100dvh`;

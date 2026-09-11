@@ -20,7 +20,11 @@ Servicios:
 - Health: <http://localhost:8989/actuator/health>
 - Neo4j Browser: <http://localhost:7474>
 
-El usuario definido por `ADMIN_USERNAME` y `ADMIN_PASSWORD` se crea o actualiza de forma idempotente al arrancar. Inicia sesión como administrador y lanza la primera sincronización desde la sección **Sincronizar**. También puede activarse `SYNC_ON_STARTUP=true`.
+El usuario definido por `ADMIN_USERNAME` y `ADMIN_PASSWORD` se crea o actualiza de forma
+idempotente al arrancar. Inicia sesión como administrador y lanza la primera sincronización
+desde la sección **Sincronizar**. También puede activarse `SYNC_ON_STARTUP=true`; estas
+ejecuciones aparecen como automáticas en el mismo historial. Tras iniciar una ejecución
+manual, la SPA actualiza su estado cada minuto hasta que finaliza.
 
 Para detener sin borrar datos:
 
