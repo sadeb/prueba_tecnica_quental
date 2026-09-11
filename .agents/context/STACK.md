@@ -1,8 +1,6 @@
 # Stack objetivo y dependencias previstas
 
-Estado: `PLANIFICADO - NO INSTALADO`
-
-Las versiones aquí registradas son decisiones para las futuras fases. No existe todavía `pom.xml`, proyecto Angular, wrapper ni descarga de dependencias.
+Estado: `EN IMPLEMENTACIÓN`
 
 ## Backend
 
@@ -47,9 +45,10 @@ La imagen exacta y su digest se verificarán antes de crear Compose; no se utili
 
 | Elemento | Decisión |
 | --- | --- |
-| Framework | Angular estable vigente al autorizar la fase frontend; se fijará la versión exacta antes del scaffold |
-| Lenguaje | TypeScript compatible con la versión Angular elegida |
-| UI | Bootstrap 5.x fijado |
+| Framework | Angular 22.1.x |
+| Runtime | Node.js 24.19.0 para desarrollo y build; mínimo compatible `^24.15.0` |
+| Lenguaje | TypeScript 6.0.x |
+| UI | Bootstrap 5.3.8 |
 | HTTP | Cliente HTTP oficial de Angular |
 | Formularios | Reactive Forms |
 | Tests | Runner oficial generado por Angular, pruebas unitarias/de componente/servicio/guard |

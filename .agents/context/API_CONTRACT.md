@@ -1,6 +1,6 @@
 # Contrato HTTP objetivo
 
-Estado: `BORRADOR DE ALTO NIVEL - NO IMPLEMENTADO`
+Estado: `IMPLEMENTADO; OPENAPI ES LA REFERENCIA EJECUTABLE`
 
 Prefijo previsto: `/api/v1`. Los nombres son parte de la dirección del diseño, pero los esquemas OpenAPI definitivos se escribirán en la fase de API.
 
@@ -33,7 +33,7 @@ No se expondrá recuperación de contraseña, OAuth ni refresh token salvo decis
 | `GET /api/v1/characters/{characterId}` | Público | Detalle con episodios, origen y ubicación actual |
 | `GET /api/v1/characters/{characterId}/related` | Público | Relacionados calculados en Neo4j, ordenados por episodios comunes |
 
-Un recurso inexistente devuelve `404`; filtros inválidos o paginación fuera de límites devuelven `400`. El tamaño máximo se fijará en la implementación y quedará reflejado en OpenAPI.
+Un recurso inexistente devuelve `404`; filtros inválidos o paginación fuera de límites devuelven `400`. El tamaño máximo es 100 elementos por página.
 
 ## Favoritos
 

@@ -1,10 +1,10 @@
-# Infraestructura reservada
+# Infraestructura local
 
-Estado: `NO GENERADA`
+Estado: `IMPLEMENTADA EN DOCKER COMPOSE`
 
-Este directorio está reservado para la futura infraestructura reproducible. Durante `CONTEXT_BOOTSTRAP` no debe contener Dockerfiles, `docker-compose.yml`, scripts de arranque, volúmenes ni datos locales.
+La infraestructura reproducible está definida en [`docker-compose.yml`](../docker-compose.yml). Los Dockerfiles viven junto a cada aplicación para mantener su contexto de construcción pequeño.
 
-La Fase 3 preparará, con versiones fijadas y verificadas:
+Servicios con versiones fijadas:
 
 - PostgreSQL 10.
 - Neo4j Community 4.4.
@@ -12,4 +12,4 @@ La Fase 3 preparará, con versiones fijadas y verificadas:
 - Backend y frontend.
 - Health checks, red interna, volúmenes y `.env.example` sin secretos.
 
-La infraestructura solo podrá crearse después de autorización explícita y actualización de [AGENTS.md](../AGENTS.md), [roadmap](../.agents/context/ROADMAP.md) y [handoff](../.agents/context/HANDOFF.md).
+Copiar `.env.example` a `.env`, cambiar todas las contraseñas y ejecutar `docker compose up --build`. Los volúmenes nombrados conservan PostgreSQL y Neo4j entre reinicios.

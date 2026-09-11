@@ -2,9 +2,9 @@
 
 ## Estado
 
-- Fase activa: `0 - CONTEXT_BOOTSTRAP`.
-- Única fase autorizada: Fase 0.
-- Regla: ninguna fase posterior comienza por inferencia. Requiere autorización explícita del usuario y actualización coordinada de `AGENTS.md` y `HANDOFF.md`.
+- Fase activa: `8 - VERIFICATION`.
+- Fases autorizadas: 1 a 8 por petición explícita del usuario del 2026-09-11.
+- Angular fue creado inicialmente en 20.3.x; se actualizará a Angular 22 antes de desarrollar funcionalidades.
 
 ## Fase 0 - Contexto multiagente
 
@@ -21,7 +21,7 @@ Puerta de salida: estructura válida, enlaces coherentes y ausencia de proyectos
 
 ## Fase 1 - Scaffold backend Maven
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO Y COMPILADO`.
 
 - Crear proyecto Java 11 con Apache Maven 3.9.11 ejecutado mediante Maven Wrapper y Spring Boot 2.7.18.
 - Preparar `pom.xml` con MVC, Validation, Security, JPA/Hibernate, PostgreSQL, Liquibase, Neo4j, Kafka, Actuator, OpenAPI y pruebas compatibles.
@@ -32,7 +32,7 @@ Puerta de salida: build reproducible en Java 11, árbol de dependencias coherent
 
 ## Fase 2 - Scaffold frontend Angular
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO EN ANGULAR 22; BUILD Y PRUEBAS BASE CORRECTOS`.
 
 - Verificar y fijar Angular estable, Node y TypeScript compatibles en ese momento.
 - Generar proyecto independiente con routing, estilos Bootstrap y entorno para la URL de la API.
@@ -43,7 +43,7 @@ Puerta de salida: build y pruebas base reproducibles sin dependencia del backend
 
 ## Fase 3 - Infraestructura local
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO; CONFIGURACIÓN COMPOSE VALIDADA, ARRANQUE INTEGRAL PENDIENTE`.
 
 - Fijar imágenes compatibles para PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y ZooKeeper.
 - Crear Dockerfiles de aplicación y Compose completo con health checks, redes, volúmenes y configuración por entorno.
@@ -53,7 +53,7 @@ Puerta de salida: servicios saludables y comandos documentados.
 
 ## Fase 4 - Persistencia y migraciones
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO; LIQUIBASE E HIBERNATE VALIDADOS EN PRUEBAS`.
 
 - Diseñar modelo relacional, restricciones y claves externas estables.
 - Crear changelog maestro y cambios Liquibase incrementales; desactivar generación de esquema por Hibernate.
@@ -64,7 +64,7 @@ Puerta de salida: migraciones desde base vacía, validación Hibernate y pruebas
 
 ## Fase 5 - Integración, Kafka y Neo4j
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO; CONSUMO/PERSISTENCIA/IDEMPOTENCIA VALIDADOS, DLT Y NEO4J PENDIENTES DE PRUEBA`.
 
 - Implementar cliente externo validado y aislado de red en pruebas.
 - Cerrar ADR de temas, claves, payload versionado, reintentos y DLT.
@@ -76,7 +76,7 @@ Puerta de salida: sincronización repetible y prueba de integración sin infraes
 
 ## Fase 6 - Seguridad y API
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO; PRUEBAS ESPECÍFICAS DE AUTORIZACIÓN Y CONTRATO PENDIENTES`.
 
 - Implementar registro, login, logout, tokens opacos y roles.
 - Crear bootstrap `ADMIN` mediante entorno de forma segura e idempotente.
@@ -87,7 +87,7 @@ Puerta de salida: pruebas de autorización, validación, errores y contrato.
 
 ## Fase 7 - SPA funcional
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `IMPLEMENTADO; PRUEBAS ESPECÍFICAS DE GUARDS/INTERCEPTOR Y FLUJOS PENDIENTES`.
 
 - Implementar autenticación, catálogo, detalle, relacionados y favoritos.
 - Incorporar interceptor, guards, persistencia de sesión y expiración controlada.
@@ -98,7 +98,7 @@ Puerta de salida: flujo de usuario completo contra la API propia.
 
 ## Fase 8 - Verificación y entrega
 
-Estado: `BLOQUEADO POR APROBACIÓN`.
+Estado: `EN CURSO`.
 
 - Ejecutar pruebas backend/frontend e integración completa.
 - Validar reinicio, resincronización, DLT, caída temporal de dependencias e idempotencia.

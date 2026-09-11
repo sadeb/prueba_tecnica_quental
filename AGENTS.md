@@ -15,26 +15,26 @@ Antes de proponer o realizar cambios:
 3. Consulta `REQUIREMENTS.md`, `ARCHITECTURE.md`, `STACK.md` y `API_CONTRACT.md` según el alcance.
 4. Lee los ADR de `.agents/decisions/` relacionados con el trabajo.
 
-## Fase activa: CONTEXT_BOOTSTRAP
+## Fase activa: VERIFICATION
 
-La implementación de aplicaciones aún no está autorizada.
+La implementación de las fases 1 a 7 está presente y la fase 8 permanece activa hasta
+completar la validación integral documentada en `HANDOFF.md`.
 
-Permitido en esta fase:
+Trabajo autorizado:
 
-- Analizar requisitos y mantener la documentación de contexto.
-- Mantener la estructura reservada de `backend/`, `frontend/` e `infra/`.
-- Corregir enlaces, trazabilidad, plantillas y decisiones documentales.
-- Ejecutar verificaciones de solo lectura o validaciones de estos archivos.
+- Completar backend, frontend, migraciones Liquibase, mensajería, grafo, seguridad e infraestructura.
+- Actualizar el scaffold existente de Angular 20 a Angular 22, la versión solicitada por el usuario.
+- Instalar únicamente dependencias necesarias y compatibles con el stack fijado.
+- Crear pruebas automatizadas, documentación operativa y Docker Compose.
 
-Prohibido hasta autorización explícita del usuario:
+Restricciones vigentes:
 
-- Generar proyectos Spring Boot o Angular.
-- Crear `pom.xml`, `package.json`, `angular.json`, directorios `src/` o wrappers de herramientas.
-- Instalar dependencias, plugins o skills; crear archivos `SKILL.md` o locks de skills.
-- Crear código fuente, migraciones Liquibase, especificaciones OpenAPI generadas o Docker Compose ejecutable.
-- Levantar infraestructura o descargar imágenes y dependencias del futuro proyecto.
-
-Cuando el usuario autorice una nueva fase, actualiza primero `ROADMAP.md`, `HANDOFF.md` y esta sección en el mismo cambio que habilite el trabajo.
+- Backend compilado y ejecutado con Java 11 y Spring Boot 2.7.18.
+- Angular 22 con una versión compatible de Node y TypeScript.
+- Liquibase es el único propietario del esquema; Hibernate usa `ddl-auto: validate`.
+- No instalar nuevas skills ni plugins sin petición explícita.
+- No llamar a Rick and Morty API desde el navegador; solo el backend integra la fuente externa.
+- No registrar secretos, artefactos generados, cachés ni dependencias descargadas.
 
 ## Convenciones de colaboración
 
@@ -48,9 +48,10 @@ Cuando el usuario autorice una nueva fase, actualiza primero `ROADMAP.md`, `HAND
 - Prioriza capacidades del framework antes de añadir dependencias no esenciales.
 - Documenta las pruebas y comandos realmente ejecutados; no declares verificaciones no realizadas.
 
-## Arquitectura objetivo ya decidida
+## Arquitectura implementada
 
-Todo lo siguiente está planificado, pero todavía no implementado:
+Todo lo siguiente está decidido e implementado, sujeto a las verificaciones pendientes
+identificadas en el handoff:
 
 - Backend Java 11 con Maven, Spring Boot 2.7.18 y Spring MVC.
 - Persistencia de atributos y usuarios en PostgreSQL mediante JPA/Hibernate; migraciones solo con Liquibase.

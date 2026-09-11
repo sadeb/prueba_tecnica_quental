@@ -1,11 +1,14 @@
-# Frontend reservado
+# Frontend Angular
 
-Estado: `NO GENERADO`
+SPA standalone en Angular 22. El navegador consume exclusivamente la API propia bajo `/api/v1`.
 
-Este directorio está reservado para la futura SPA Angular desacoplada. Durante `CONTEXT_BOOTSTRAP` no debe contener `package.json`, `angular.json`, `src/`, `node_modules/` ni dependencias instaladas.
+```bash
+npm ci
+npm start
+npm test -- --watch=false
+npm run build
+```
 
-Antes del scaffold se requiere autorización explícita para la Fase 2. En ese momento se verificará y fijará una versión estable de Angular junto con Node y TypeScript compatibles.
+La aplicación organiza tipos de contrato, clientes HTTP, sesión, interceptor y guards en `core/`; las pantallas se cargan de forma diferida desde `features/`. No contiene acceso directo a Rick and Morty API.
 
-La aplicación futura usará Bootstrap, Reactive Forms, servicios HTTP, interceptor de autenticación/errores, guards y pruebas unitarias o de componentes. No se instalará Playwright.
-
-Referencias: [AGENTS.md](../AGENTS.md), [arquitectura](../.agents/context/ARCHITECTURE.md) y [contrato de API](../.agents/context/API_CONTRACT.md).
+El runtime fijado para desarrollo y contenedor es Node 24.19.0. Bootstrap aporta la base accesible de componentes y `styles.css` define la identidad visual del archivo interdimensional.

@@ -1,6 +1,6 @@
 # ADR 0003: Transactional outbox para propagación fiable
 
-- Estado: Aceptado, no implementado
+- Estado: Aceptado e implementado
 - Fecha: 2026-09-11
 - Alcance de implementación: Fases 4 y 5
 
@@ -17,7 +17,7 @@ La solución debe resistir la entrega al menos una vez de Kafka y fallos parcial
 - Hacer consumidores idempotentes mediante identificador único de mensaje, claves externas estables, upsert y `MERGE` en Neo4j.
 - Enviar eventos no recuperables a DLT y conservar su relación con `sync_run`.
 
-Los nombres de temas, esquema exacto del payload, número de reintentos y política de backoff se concretarán mediante un ADR de mensajería antes de la Fase 5.
+Los nombres de temas, esquema del payload, reintentos y backoff se concretan en ADR-0006.
 
 ## Consecuencias
 

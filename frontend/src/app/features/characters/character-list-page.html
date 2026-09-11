@@ -1,0 +1,49 @@
+<main class="page-shell">
+  <header class="catalog-header">
+    <div>
+      <p class="kicker">ARCHIVO INTERDIMENSIONAL / CATÁLOGO</p>
+      <h1>Señales localizadas</h1>
+    </div>
+    @if (result()) {
+      <p class="result-count"><strong>{{ result()!.totalElements }}</strong> expedientes sincronizados</p>
+    }
+  </header>
+
+  <form class="filter-rail" (submit)="search($event)" aria-label="Filtros de personajes">
+    <label>Nombre <input type="search" placeholder="Rick…" [formField]="filterForm.name" /></label>
+    <label>Estado
+      <select [formField]="filterForm.status">
+        <option value="">Todos</option><option value="Alive">Vivo</option><option value="Dead">Muerto</option><option value="unknown">Desconocido</option>
+      </select>
+    </label>
+    <label>Especie <input type="search" placeholder="Human" [formField]="filterForm.species" /></label>
+    <label>Género
+      <select [formField]="filterForm.gender">
+        <option value="">Todos</option><option value="Female">Femenino</option><option value="Male">Masculino</option><option value="Genderless">Sin género</option><option value="unknown">Desconocido</option>
+      </select>
+    </label>
+    <button class="primary-action" type="submit">Aplicar</button>
+    <button class="text-action" type="button" (click)="clearFilters()">Limpiar</button>
+  </form>
+
+  @if (favoriteNotice()) { <div class="notice" role="status">{{ favoriteNotice() }}</div> }
+
+  @if (loading()) {
+    <section class="state-panel" aria-live="polite"><span class="scanner" aria-hidden="true"></span><h2>Rastreando dimensiones…</h2><p>Consultando la copia local sincronizada.</p></section>
+  } @else if (errorMessage()) {
+    <section class="state-panel error" role="alert"><h2>La señal se interrumpió</h2><p>{{ errorMessage() }}</p><button type="button" class="secondary-action" (click)="load(result()?.page ?? 0)">Reintentar</button></section>
+  } @else if (result()?.content?.length === 0) {
+    <section class="state-panel"><h2>No hay coincidencias</h2><p>Ajusta los filtros o solicita una sincronización al administrador.</p></section>
+  } @else {
+    <section class="character-grid" aria-label="Resultados">
+      @for (character of result()!.content; track character.id) {
+        <app-character-card [character]="character" [action]="'add'" (actionRequested)="addFavorite($event)" />
+      }
+    </section>
+    <nav class="pagination" aria-label="Paginación">
+      <button type="button" class="secondary-action" [disabled]="result()!.page === 0" (click)="load(result()!.page - 1)">← Anterior</button>
+      <span>Página {{ result()!.page + 1 }} de {{ result()!.totalPages || 1 }}</span>
+      <button type="button" class="secondary-action" [disabled]="result()!.page + 1 >= result()!.totalPages" (click)="load(result()!.page + 1)">Siguiente →</button>
+    </nav>
+  }
+</main>

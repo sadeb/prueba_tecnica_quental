@@ -1,8 +1,8 @@
 # Arquitectura objetivo
 
-Estado: `PLANIFICADO - NO IMPLEMENTADO`
+Estado: `EN IMPLEMENTACIÓN`
 
-Este documento fija la dirección técnica para las fases posteriores. No autoriza a crear proyectos, código, migraciones ni infraestructura durante `CONTEXT_BOOTSTRAP`.
+Este documento describe la arquitectura autorizada por el usuario. Su implementación se realiza de forma incremental y verificable durante `FULL_IMPLEMENTATION`.
 
 ## Principios
 
@@ -61,7 +61,7 @@ Los controladores dependerán de casos de uso, no de repositorios ni clientes ex
 8. Los errores reintentables usan backoff acotado. Los no recuperables terminan en DLT y quedan ligados a la ejecución.
 9. La ejecución expone conteos de páginas, mensajes, éxitos y errores; los fallos parciales no se ocultan.
 
-La definición exacta de temas, payloads, reintentos y tablas se cerrará en la fase de sincronización mediante un ADR específico antes de implementarlos.
+La definición exacta de temas, payloads y reintentos está registrada en ADR-0006; las tablas se gestionan exclusivamente mediante Liquibase.
 
 ## Modelo conceptual
 
@@ -102,4 +102,4 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 
 ## Despliegue objetivo
 
-Docker Compose levantará finalmente frontend, backend, PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y ZooKeeper, con health checks, configuración por entorno y versiones fijadas. En la fase actual no existe ningún archivo Compose.
+Docker Compose levantará frontend, backend, PostgreSQL 10, Neo4j 4.4, Kafka 2.0.1 y ZooKeeper, con health checks, configuración por entorno y versiones fijadas.

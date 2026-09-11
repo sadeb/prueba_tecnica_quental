@@ -1,14 +1,14 @@
-# Backend reservado
+# Backend Spring Boot
 
-Estado: `NO GENERADO`
+Servicio Java 11 construido con Maven y Spring Boot 2.7.18. Expone la API propia, sincroniza Rick and Morty mediante Kafka y persiste atributos en PostgreSQL y relaciones en Neo4j.
 
-Este directorio está reservado para el futuro servicio Java 11 con Maven y Spring Boot 2.7.18. Durante `CONTEXT_BOOTSTRAP` no debe contener `pom.xml`, Maven Wrapper, `src/`, configuración ejecutable ni dependencias descargadas.
+## Desarrollo
 
-Antes de generar el proyecto se requiere autorización explícita para la Fase 1 y la actualización de:
+```bash
+./mvnw test
+./mvnw spring-boot:run
+```
 
-- [`AGENTS.md`](../AGENTS.md)
-- [Roadmap](../.agents/context/ROADMAP.md)
-- [Handoff](../.agents/context/HANDOFF.md)
-- [Stack objetivo](../.agents/context/STACK.md)
+La aplicación espera PostgreSQL, Kafka y Neo4j. La configuración se obtiene de variables de entorno; consulta `application.yml` y el `.env.example` raíz.
 
-La futura base incluirá Spring MVC, Validation, Security, JPA/Hibernate, PostgreSQL, Liquibase, Neo4j, Kafka, Actuator, OpenAPI y pruebas compatibles con Java 11.
+Liquibase es el único propietario del esquema relacional. Hibernate está configurado con `ddl-auto: validate`.
