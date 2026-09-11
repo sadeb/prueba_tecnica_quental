@@ -58,6 +58,17 @@ Restricciones vigentes:
   requisito como cerrado si solo existe implementación sin evidencia automatizada o de
   integración.
 
+## Autorización previa de ejecución
+
+- Usa la skill local `project-execution-authorization` cuando una tarea pueda requerir
+  ejecutar frontend, backend, Docker/Docker Compose o el navegador integrado.
+- No ejecutes comandos de frontend o backend, comandos Docker/Docker Compose ni abras o
+  interactúes con el navegador integrado sin autorización explícita previa del usuario
+  en la conversación actual. La autorización de una tarea, diagnóstico o comando
+  anterior no se extiende a operaciones posteriores.
+- Puedes inspeccionar y editar archivos sin esta autorización. Si la verificación exige
+  una operación restringida, indica cuál falta y espera autorización.
+
 ## Arquitectura implementada
 
 Todo lo siguiente está decidido e implementado, sujeto a las verificaciones pendientes

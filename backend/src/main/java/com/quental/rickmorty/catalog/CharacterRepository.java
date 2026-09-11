@@ -22,7 +22,7 @@ public interface CharacterRepository extends JpaRepository<CharacterEntity, Long
     @Query("select c from CharacterEntity c where c.id = :id")
     Optional<CharacterEntity> findDetailedById(@Param("id") Long id);
 
-    @Query(value = "select c from UserEntity u join u.favorites c where u.id = :userId",
+    @Query(value = "select c from UserEntity u join u.favorites c where u.id = :userId order by c.name asc, c.id asc",
             countQuery = "select count(c) from UserEntity u join u.favorites c where u.id = :userId")
     Page<CharacterEntity> findFavorites(@Param("userId") Long userId, Pageable pageable);
 }

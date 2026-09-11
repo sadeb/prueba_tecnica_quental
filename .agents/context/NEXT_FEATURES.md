@@ -12,8 +12,10 @@ de evidencia del alcance ya implementado.
 
 1. Añadir pruebas `MockMvc` de registro, login, token inválido/expirado/revocado,
    `401`, `403` y acceso `ADMIN`.
-2. Añadir pruebas de favoritos: alta, listado, baja idempotente y aislamiento entre
-   usuarios.
+2. Añadir pruebas de favoritos: alta, baja idempotente y aislamiento entre usuarios.
+   El listado paginado y ordenado ya está cubierto por
+   `FavoriteServiceIntegrationTest`; faltan pruebas HTTP con `MockMvc` y las demás
+   operaciones de la ruta.
 3. Completar anotaciones Springdoc: `SecurityRequirement` para operaciones protegidas y
    `ApiResponses` para `400`, `401`, `403`, `404`, `409`, `502` y `500` cuando proceda.
 4. Probar que el bootstrap ADMIN crea un usuario desde entorno sin alterar uno existente.
@@ -89,7 +91,7 @@ docs(proyecto): documentar arquitectura, contexto de agentes y ejecución local
 
 | Comprobación | Resultado |
 | --- | --- |
-| Backend `./mvnw -B verify` con Java 11 | Correcto; 9 pruebas, JAR generado |
+| Backend `./mvnw -B verify` con Java 11 | Correcto; 10 pruebas, JAR generado |
 | JaCoCo | 41,5 % líneas; 30,6 % ramas |
 | Frontend `npm test -- --watch=false` | Correcto; 8 pruebas |
 | Frontend `npm run build` con Node 24.16.0 | Correcto; versión compatible con el mínimo `^24.15.0` |

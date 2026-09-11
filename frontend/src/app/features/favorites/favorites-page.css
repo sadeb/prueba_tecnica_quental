@@ -13,6 +13,7 @@
 .favorites-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: 1fr;
   gap: 1.15rem;
 }
 .pagination {

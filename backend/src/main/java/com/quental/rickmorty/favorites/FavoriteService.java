@@ -8,7 +8,6 @@ import com.quental.rickmorty.catalog.domain.CharacterEntity;
 import com.quental.rickmorty.shared.NotFoundException;
 import com.quental.rickmorty.shared.PageResponse;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +25,7 @@ public class FavoriteService {
     @Transactional(readOnly = true)
     public PageResponse<CharacterSummaryResponse> list(Long userId, int page, int size) {
         return PageResponse.from(characterRepository.findFavorites(userId,
-                PageRequest.of(page, size, Sort.by("name").ascending())), CharacterSummaryResponse::from);
+                PageRequest.of(page, size)), CharacterSummaryResponse::from);
     }
 
     @Transactional

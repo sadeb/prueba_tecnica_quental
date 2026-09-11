@@ -38,6 +38,9 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - Angular 22.1.x, Node 24.15 o superior compatible, TypeScript 6.0.x, Bootstrap; sin Playwright.
 - Los bonus de autenticación, JSON crudo, DLT, mensajes procesados y Liquibase están
   implementados; la cobertura adicional y el reproceso explícito continúan pendientes.
+- La ejecución de frontend, backend, Docker/Docker Compose y el uso del navegador
+  integrado exige autorización explícita previa en la conversación actual; la skill
+  local `project-execution-authorization` y `AGENTS.md` fijan esta restricción.
 
 ## Verificaciones
 
@@ -81,12 +84,30 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
   de página contextualizado.
 - Contexto persistente de UI creado en `FRONTEND_UI.md` y declarado como lectura
   obligatoria en `AGENTS.md` para cambios de interfaz, layout o estilos.
+- Las tarjetas del catálogo y favoritos comparten la altura de la tarjeta más alta del
+  grid; el artículo y su imagen rellenan la celda, y la acción queda alineada al pie sin
+  depender de que el personaje tenga o no un tipo informado.
+- Tras igualar las tarjetas, `npm test -- --watch=false`: 8 pruebas correctas; `npm run
+  build`: correcto, ambos con Node 24.16.0. El build del contenedor frontend con Node
+  24.19.0 también fue correcto.
+- QA del catálogo con 20 tarjetas en `375x667`, `768x1024`, `1024x600` y `1440x900`:
+  una única altura de tarjeta e imagen por viewport, acciones alineadas y sin
+  desbordamiento horizontal.
+- Corregido el listado de favoritos: el orden de la consulta JPQL se aplica al alias
+  `CharacterEntity` y no al usuario raíz. Así, `GET /api/v1/users/me/favorites` vuelve
+  a responder paginado y ordenado por nombre en PostgreSQL, sin el `500` de Hibernate.
+- Nueva prueba de integración `FavoriteServiceIntegrationTest`: valida el listado
+  paginado y el orden alfabético sobre H2 con Liquibase. Usa una base H2 aislada para
+  no interferir con la prueba de consumo Kafka que comparte el perfil `test`.
+- Tras la corrección, `JAVA_HOME=.../microsoft-11.jdk/Contents/Home ./mvnw -B verify`:
+  10 pruebas correctas y JAR generado. Una primera repetición detectó una respuesta
+  `404` transitoria en `RickMortyClientTest`; la ejecución completa posterior fue verde.
 
 ## Siguiente paso recomendado
 
-Seguir `NEXT_FEATURES.md`, comenzando por P0: pruebas de API/seguridad/favoritos y DLT,
-proyección y consulta Neo4j. Después ejecutar el escenario completo desde una base vacía
-con `docker compose up --build`.
+Seguir `NEXT_FEATURES.md`, comenzando por P0: pruebas HTTP de seguridad y operaciones
+restantes de favoritos, además de DLT, proyección y consulta Neo4j. Después ejecutar el
+escenario completo desde una base vacía con `docker compose up --build`.
 
 ## Riesgos abiertos
 
