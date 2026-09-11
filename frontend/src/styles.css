@@ -14,27 +14,160 @@
   --color-muted: #5f6b75;
   --color-line: #d5dad6;
   --color-line-strong: #8b969b;
-  --font-display: "Avenir Next", Avenir, "Segoe UI", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-display: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   color-scheme: light;
 }
 
-* { box-sizing: border-box; }
-html { min-width: 320px; scroll-behavior: smooth; }
-body { margin: 0; min-height: 100vh; background: var(--color-paper); color: var(--color-ink); font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
-button, input, select { font: inherit; }
-button, a { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: .2rem solid var(--color-cyan); outline-offset: .2rem; }
-.page-shell { width: min(100% - 2rem, 88rem); min-height: calc(100vh - 9rem); margin-inline: auto; }
-.kicker { margin: 0; color: var(--color-teal-dark); font: 750 .72rem/1 var(--font-mono); letter-spacing: .14em; }
-.primary-action, .secondary-action { border-radius: 0; padding: .78rem 1rem; font-weight: 780; transition: transform .15s, box-shadow .15s; }
-.primary-action { border: 1px solid var(--color-ink); background: var(--color-lime); color: var(--color-ink); box-shadow: .3rem .3rem 0 var(--color-cyan); }
-.primary-action:hover:not(:disabled) { transform: translate(-.1rem, -.1rem); box-shadow: .45rem .45rem 0 var(--color-cyan); }
-.primary-action:disabled, .secondary-action:disabled { opacity: .48; cursor: not-allowed; }
-.secondary-action { border: 1px solid var(--color-line-strong); background: transparent; color: var(--color-ink); }
-.text-action { border: 0; padding: .25rem 0; background: transparent; color: var(--color-teal-dark); font-weight: 750; text-decoration: underline; text-underline-offset: .2rem; }
-.alert-panel { margin: 1rem 0; border-left: .35rem solid var(--color-coral); padding: 1rem; background: color-mix(in srgb, var(--color-coral) 10%, white); color: var(--color-coral-dark); }
-.state-panel { min-height: 22rem; display: grid; place-content: center; justify-items: center; padding: 2rem; text-align: center; }.state-panel h1, .state-panel h2 { margin: .8rem 0 .3rem; font: 750 2rem/1 var(--font-display); }.state-panel p { color: var(--color-muted); }.state-panel.error { color: var(--color-coral-dark); }
-.scanner { width: 2.5rem; aspect-ratio: 1; border: .25rem solid var(--color-line); border-top-color: var(--color-cyan); border-radius: 50%; animation: scan 1s linear infinite; }
-@keyframes scan { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+* {
+  box-sizing: border-box;
+}
+html {
+  min-inline-size: 20rem;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  overflow-wrap: anywhere;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+svg {
+  display: block;
+  max-inline-size: 100%;
+}
+button,
+input,
+select {
+  min-block-size: 2.75rem;
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 0.2rem solid var(--color-cyan);
+  outline-offset: 0.2rem;
+}
+.page-shell {
+  inline-size: min(calc(100% - 2rem), 88rem);
+  margin-inline: auto;
+}
+#main-content > router-outlet + * {
+  display: block;
+  min-inline-size: 0;
+  min-block-size: 0;
+  flex: 1;
+}
+.kicker {
+  margin: 0;
+  color: var(--color-teal-dark);
+  font: 750 0.72rem/1 var(--font-mono);
+  letter-spacing: 0.14em;
+}
+.primary-action,
+.secondary-action {
+  min-inline-size: 2.75rem;
+  border-radius: 0;
+  padding: 0.78rem 1rem;
+  font-weight: 780;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.primary-action {
+  border: 1px solid var(--color-ink);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  box-shadow: 0.3rem 0.3rem 0 var(--color-cyan);
+}
+.primary-action:hover:not(:disabled) {
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.45rem 0.45rem 0 var(--color-cyan);
+}
+.primary-action:disabled,
+.secondary-action:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.secondary-action {
+  border: 1px solid var(--color-line-strong);
+  background: transparent;
+  color: var(--color-ink);
+}
+.text-action {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  border: 0;
+  padding: 0.5rem 0;
+  background: transparent;
+  color: var(--color-teal-dark);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+.alert-panel {
+  margin: 1rem 0;
+  border-left: 0.35rem solid var(--color-coral);
+  padding: 1rem;
+  background: color-mix(in srgb, var(--color-coral) 10%, white);
+  color: var(--color-coral-dark);
+}
+.state-panel {
+  min-height: 22rem;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+.state-panel h1,
+.state-panel h2 {
+  margin: 0.8rem 0 0.3rem;
+  font: 750 2rem/1 var(--font-display);
+}
+.state-panel p {
+  color: var(--color-muted);
+}
+.state-panel.error {
+  color: var(--color-coral-dark);
+}
+.scanner {
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border: 0.25rem solid var(--color-line);
+  border-top-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: scan 1s linear infinite;
+}
+@keyframes scan {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (min-width: 48rem) {
+  .page-shell {
+    inline-size: min(calc(100% - 3rem), 88rem);
+  }
+}

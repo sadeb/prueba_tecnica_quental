@@ -6,7 +6,7 @@
 
 ## Contexto
 
-El scaffold existente declara Angular 20.3.31, aunque el usuario solicitó explícitamente Angular 22. La matriz oficial de compatibilidad de Angular 22 requiere Node `^22.22.3`, `^24.15.0` o `^26.0.0` y TypeScript 6.0.x. El Node local 22.12.0 no es compatible, pero el entorno dispone de Node 24.19.0.
+El scaffold existente declara Angular 20.3.31, aunque el usuario solicitó explícitamente Angular 22. La matriz oficial de compatibilidad de Angular 22 requiere Node `^22.22.3`, `^24.15.0` o `^26.0.0` y TypeScript 6.0.x. El pin del proyecto es Node 24.19.0; la sesión de validación responsive posterior dispuso de Node 24.16.0, igualmente compatible con el mínimo de Angular 22.
 
 ## Decisión
 

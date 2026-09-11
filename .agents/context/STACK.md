@@ -51,12 +51,18 @@ validar el arranque integral desde una base vacía.
 | Runtime | Node.js 24.19.0 para desarrollo y build; mínimo compatible `^24.15.0` |
 | Lenguaje | TypeScript 6.0.x |
 | UI | Bootstrap 5.3.8 |
+| Layout | Mobile-first, CSS Grid/Flexbox fluido y breakpoints `36rem`/`48rem`/`62rem`; ver `FRONTEND_UI.md` |
 | HTTP | Cliente HTTP oficial de Angular |
 | Formularios | Signal Forms (API Angular 22) |
 | Tests | Runner oficial generado por Angular; existen pruebas de shell y sesión, pendientes guards, interceptor, servicios y componentes funcionales |
 | E2E | Fuera de alcance; no instalar Playwright |
 
 Frontend y backend serán proyectos independientes. El frontend obtendrá la URL base desde configuración de entorno y no importará artefactos de construcción del backend.
+
+La validación responsive más reciente se ejecutó con Node 24.16.0, compatible con el
+mínimo `^24.15.0`. `.nvmrc` mantiene el pin objetivo 24.19.0; al preparar un entorno de
+desarrollo nuevo se debe instalar esa versión o una versión posterior compatible antes
+de ejecutar Angular.
 
 ## Restricciones de compatibilidad
 

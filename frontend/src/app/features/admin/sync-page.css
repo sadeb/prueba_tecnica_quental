@@ -1,1 +1,131 @@
-.sync-page { padding-top: 3rem; }.sync-header { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }.sync-header h1 { margin: .5rem 0 1rem; font: 780 clamp(3.5rem, 8vw, 7rem)/.85 var(--font-display); letter-spacing: -.06em; }.sync-header p:last-child { max-width: 42rem; color: var(--color-muted); }.system-route { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .8rem; margin: 3rem 0; padding: 1.4rem; background: var(--color-navy); color: white; font: 650 .8rem/1 var(--font-mono); }.system-route i { color: var(--color-lime); font-style: normal; }.section-heading { display: flex; justify-content: space-between; align-items: center; border-bottom: .2rem solid var(--color-ink); }.section-heading h2 { font: 750 2rem/1 var(--font-display); }.run-item { display: grid; grid-template-columns: 1.2fr 1fr .8fr; gap: 2rem; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--color-line); }.run-id { max-width: 18rem; overflow: hidden; margin: 0; color: var(--color-muted); font: .7rem/1 var(--font-mono); text-overflow: ellipsis; }.run-item h3 { margin: .45rem 0; font: 740 1.2rem/1 var(--font-display); }.run-item time { color: var(--color-muted); font-size: .8rem; }.metrics { display: flex; gap: 1.5rem; }.metrics span { color: var(--color-muted); font-size: .72rem; }.metrics strong { display: block; color: var(--color-ink); font: 750 1.5rem/1 var(--font-display); }.progress-copy > span { display: block; margin-bottom: .4rem; text-align: right; font: 700 .8rem/1 var(--font-mono); }.progress-track { height: .45rem; background: var(--color-line); }.progress-track i { display: block; height: 100%; background: var(--color-cyan); }.run-error { grid-column: 1 / -1; color: var(--color-coral-dark); } @media (max-width: 800px) { .sync-header { display: block; }.sync-header button { margin-top: 1.5rem; }.run-item { grid-template-columns: 1fr; gap: 1rem; }.progress-copy > span { text-align: left; } }
+.sync-page {
+  padding-top: 2rem;
+}
+.sync-header h1 {
+  margin: 0.5rem 0 1rem;
+  font: 780 clamp(3rem, 14vw, 7rem)/0.85 var(--font-display);
+  letter-spacing: -0.06em;
+}
+.sync-header p:last-child {
+  max-width: 42rem;
+  color: var(--color-muted);
+}
+.sync-header button {
+  margin-top: 1.5rem;
+}
+.system-route {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 2rem 0;
+  padding: 1rem;
+  background: var(--color-navy);
+  color: white;
+  font: 650 0.8rem/1.4 var(--font-mono);
+}
+.system-route i {
+  color: var(--color-lime);
+  font-style: normal;
+}
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  border-bottom: 0.2rem solid var(--color-ink);
+}
+.section-heading h2 {
+  font: 750 2rem/1 var(--font-display);
+}
+.run-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--color-line);
+}
+.run-id {
+  max-width: 100%;
+  overflow: hidden;
+  margin: 0;
+  color: var(--color-muted);
+  font: 0.7rem/1 var(--font-mono);
+  text-overflow: ellipsis;
+}
+.run-item h3 {
+  margin: 0.45rem 0;
+  font: 740 1.2rem/1 var(--font-display);
+}
+.run-item time {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+.metrics span {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+.metrics strong {
+  display: block;
+  color: var(--color-ink);
+  font: 750 1.5rem/1 var(--font-display);
+}
+.progress-copy > span {
+  display: block;
+  margin-bottom: 0.4rem;
+  text-align: left;
+  font: 700 0.8rem/1 var(--font-mono);
+}
+.progress-track {
+  height: 0.45rem;
+  background: var(--color-line);
+}
+.progress-track i {
+  display: block;
+  height: 100%;
+  background: var(--color-cyan);
+}
+.run-error {
+  grid-column: 1 / -1;
+  color: var(--color-coral-dark);
+}
+
+@media (min-width: 48rem) {
+  .sync-page {
+    padding-top: 3rem;
+  }
+  .sync-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 2rem;
+  }
+  .sync-header h1 {
+    font-size: clamp(3.5rem, 8vw, 7rem);
+  }
+  .sync-header button {
+    margin-top: 0;
+  }
+  .system-route {
+    justify-content: space-between;
+    margin-block: 3rem;
+    padding: 1.4rem;
+  }
+  .run-item {
+    grid-template-columns: 1.2fr 1fr 0.8fr;
+    gap: 2rem;
+  }
+  .run-id {
+    max-width: 18rem;
+  }
+  .progress-copy > span {
+    text-align: right;
+  }
+}

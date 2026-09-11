@@ -57,7 +57,18 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - Parseo de `.gemini/settings.json`: correcto.
 - Resolución de enlaces Markdown locales: correcta.
 - Adaptador `CLAUDE.md`: contiene únicamente `@AGENTS.md`.
-- QA visual manual del acceso en viewport estrecho: correcto.
+- SPA ajustada con estilos mobile-first, shell basado en `100dvh`, contenedores fluidos,
+  breakpoints Bootstrap y objetivos táctiles mínimos de 44 px.
+- QA responsive de login, registro, catálogo, detalle y página no encontrada en 375x667,
+  768x1024, 1024x600 y 1440x900: sin desbordamiento horizontal. Favoritos y
+  sincronización redirigieron correctamente a login al no existir sesión.
+- Login y registro encajan sin scroll en laptops de 1024x600 y 1366x768; en móvil el
+  formulario se prioriza antes del bloque introductorio y el desplazamiento vertical es
+  natural.
+- Tras los ajustes responsive, `npm test -- --watch=false`: 4 pruebas correctas; y
+  `npm run build`: compilación de producción Angular 22 correcta, ambos con Node 24.16.0.
+- Contexto persistente de UI creado en `FRONTEND_UI.md` y declarado como lectura
+  obligatoria en `AGENTS.md` para cambios de interfaz, layout o estilos.
 
 ## Siguiente paso recomendado
 
@@ -67,8 +78,9 @@ con `docker compose up --build`.
 
 ## Riesgos abiertos
 
-- El Node local 22.12.0 no soporta Angular 22; las validaciones se ejecutaron con Node
-  24.19.0 y ese mínimo está fijado en el proyecto.
+- `.nvmrc` fija Node 24.19.0, pero el ejecutable disponible en esta sesión fue 24.16.0.
+  Es compatible con el mínimo `^24.15.0` y se usó para la validación responsive;
+  instalar el pin del proyecto al preparar un entorno nuevo.
 - Los seis servicios de Compose se validaron sobre los volúmenes locales existentes;
   aún falta repetir el escenario integral desde una base limpia.
 - Seguridad, favoritos, DLT, Neo4j, guards e interceptor están implementados, pero aún

@@ -100,6 +100,8 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 - Componentes de presentación sin llamadas HTTP directas.
 - Modelado explícito de `loading`, `empty`, `success` y `error`.
 - Persistencia del token entre recargas y cierre controlado de sesión ante `401`/`403`.
+- Shell responsive mobile-first con header, contenido y footer coordinados por `100dvh`;
+  las convenciones de layout y su validación se documentan en `FRONTEND_UI.md`.
 
 ## Despliegue implementado
 

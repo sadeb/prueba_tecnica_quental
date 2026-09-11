@@ -1,27 +1,160 @@
-.detail-page { padding-top: 2rem; }
-.back-link { color: var(--color-teal-dark); font-weight: 750; }
-.profile-header { display: grid; grid-template-columns: minmax(16rem, 28rem) 1fr; gap: clamp(2rem, 6vw, 6rem); align-items: center; margin: 2rem 0 5rem; }
-.profile-image { position: relative; background: var(--color-navy); box-shadow: -1.2rem 1.2rem 0 var(--color-cyan); }
-.profile-image::after { content: ''; position: absolute; right: -1rem; top: -1rem; width: 4.5rem; height: 4.5rem; border-top: .3rem solid var(--color-lime); border-right: .3rem solid var(--color-lime); }
-.profile-image img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; }
-.profile-copy h1 { max-width: 11ch; margin: .6rem 0 1rem; font: 780 clamp(3.4rem, 8vw, 7.5rem)/.83 var(--font-display); letter-spacing: -.065em; }
-.identity-line { display: flex; flex-wrap: wrap; gap: .5rem; }
-.identity-line span { border: 1px solid var(--color-line-strong); padding: .35rem .65rem; font: 650 .78rem/1 var(--font-mono); }
-.type { color: var(--color-muted); }
-.notice { color: var(--color-teal-dark); font-weight: 700; }
-.location-grid { display: grid; grid-template-columns: .75fr 1fr 1fr; gap: 1rem; align-items: stretch; }
-.location-grid > h2 { margin: 0; font: 750 2rem/1 var(--font-display); }
-.location-grid article { border-top: .3rem solid var(--color-cyan); padding: 1.25rem; background: white; }
-.location-grid h3 { margin: .4rem 0; font: 730 1.4rem/1.1 var(--font-display); }
-.location-grid article > p:last-child { color: var(--color-muted); }
-.detail-columns { display: grid; grid-template-columns: 1.25fr .75fr; gap: 4rem; margin: 5rem 0; }
-.detail-columns h2 { margin: .5rem 0 1.5rem; font: 750 2.25rem/1 var(--font-display); }
-.section-index { font: 700 .7rem/1 var(--font-mono); letter-spacing: .12em; color: var(--color-teal-dark); }
-.episode-list, .related-list { list-style: none; padding: 0; margin: 0; }
-.episode-list li { display: grid; grid-template-columns: 5rem 1fr auto; gap: 1rem; padding: .9rem 0; border-top: 1px solid var(--color-line); align-items: baseline; }
-.episode-list span, .episode-list small { color: var(--color-muted); font-family: var(--font-mono); }
-.related-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--color-line); }
-.related-list a { color: var(--color-ink); font-weight: 750; }
-.related-list span { color: var(--color-muted); font-size: .85rem; }
-@media (max-width: 820px) { .profile-header, .detail-columns { grid-template-columns: 1fr; } .profile-copy h1 { font-size: clamp(3.2rem, 17vw, 6rem); } .location-grid { grid-template-columns: 1fr; } }
-@media (max-width: 520px) { .episode-list li { grid-template-columns: 4.2rem 1fr; } .episode-list small { grid-column: 2; } }
+.detail-page {
+  padding-top: 2rem;
+}
+.back-link {
+  color: var(--color-teal-dark);
+  font-weight: 750;
+}
+.profile-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
+  margin: 2rem 0 3rem;
+}
+.profile-image {
+  position: relative;
+  background: var(--color-navy);
+  box-shadow: -1.2rem 1.2rem 0 var(--color-cyan);
+}
+.profile-image::after {
+  content: '';
+  position: absolute;
+  right: -1rem;
+  top: -1rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-top: 0.3rem solid var(--color-lime);
+  border-right: 0.3rem solid var(--color-lime);
+}
+.profile-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.profile-copy h1 {
+  max-width: 11ch;
+  margin: 0.6rem 0 1rem;
+  font: 780 clamp(2.8rem, 15vw, 6rem)/0.86 var(--font-display);
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+}
+.identity-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.identity-line span {
+  border: 1px solid var(--color-line-strong);
+  padding: 0.35rem 0.65rem;
+  font: 650 0.78rem/1 var(--font-mono);
+}
+.type {
+  color: var(--color-muted);
+}
+.notice {
+  color: var(--color-teal-dark);
+  font-weight: 700;
+}
+.location-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+.location-grid > h2 {
+  margin: 0;
+  font: 750 2rem/1 var(--font-display);
+}
+.location-grid article {
+  border-top: 0.3rem solid var(--color-cyan);
+  padding: 1.25rem;
+  background: white;
+}
+.location-grid h3 {
+  margin: 0.4rem 0;
+  font: 730 1.4rem/1.1 var(--font-display);
+}
+.location-grid article > p:last-child {
+  color: var(--color-muted);
+}
+.detail-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 3rem;
+  margin: 3rem 0;
+}
+.detail-columns h2 {
+  margin: 0.5rem 0 1.5rem;
+  font: 750 2.25rem/1 var(--font-display);
+}
+.section-index {
+  font: 700 0.7rem/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--color-teal-dark);
+}
+.episode-list,
+.related-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.episode-list li {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  gap: 0.5rem 1rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--color-line);
+  align-items: baseline;
+}
+.episode-list small {
+  grid-column: 2;
+}
+.episode-list span,
+.episode-list small {
+  color: var(--color-muted);
+  font-family: var(--font-mono);
+}
+.related-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-line);
+}
+.related-list a {
+  color: var(--color-ink);
+  font-weight: 750;
+}
+.related-list span {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+@media (min-width: 48rem) {
+  .profile-header {
+    grid-template-columns: minmax(16rem, 28rem) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    margin-bottom: 5rem;
+  }
+  .profile-copy h1 {
+    font-size: clamp(3.4rem, 8vw, 7.5rem);
+    letter-spacing: -0.065em;
+    overflow-wrap: normal;
+  }
+  .location-grid {
+    grid-template-columns: 0.75fr 1fr 1fr;
+  }
+  .detail-columns {
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 4rem;
+    margin-block: 5rem;
+  }
+  .episode-list li {
+    grid-template-columns: 5rem minmax(0, 1fr) auto;
+    gap: 1rem;
+  }
+  .episode-list small {
+    grid-column: auto;
+  }
+}

@@ -13,6 +13,8 @@ Antes de proponer o realizar cambios:
 1. Revisa el estado de Git y conserva cambios preexistentes del usuario.
 2. Lee `.agents/context/HANDOFF.md`, `.agents/context/ROADMAP.md` y, para cambios
    funcionales, `.agents/context/NEXT_FEATURES.md`.
+   Para cambios de interfaz, layout o estilos del frontend, lee además
+   `.agents/context/FRONTEND_UI.md`.
 3. Consulta `REQUIREMENTS.md`, `ARCHITECTURE.md`, `STACK.md` y `API_CONTRACT.md` según el alcance.
 4. Lee los ADR de `.agents/decisions/` relacionados con el trabajo.
 
