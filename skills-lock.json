@@ -12,6 +12,12 @@
       "sourceType": "github",
       "skillPath": "angular-new-app/SKILL.md",
       "computedHash": "49bd84ab08bd3498c52f476bed48fbb942dc6dbc0925607e84549adbed34bccf"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/ui-ux-pro-max/SKILL.md",
+      "computedHash": "4080ff883b26b670a5a224fb332e89ecc15319535f4d14279947ad7812fec558"
     }
   }
 }
