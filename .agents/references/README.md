@@ -10,7 +10,8 @@ Notas breves por tecnología, **en las versiones fijadas**. Hechos verificables,
 | [kafka-2.0.1.md](kafka-2.0.1.md) | Broker 2.0.1, spring-kafka, imágenes Docker |
 | [postgresql-10.md](postgresql-10.md) | Postgres 10, JPA, migraciones |
 | [neo4j.md](neo4j.md) | Neo4j 4.4, Spring Data Neo4j 6, Cypher para el grafo |
-| [angular-bootstrap.md](angular-bootstrap.md) | Angular CLI, Bootstrap, interceptores, guardas |
+| [angular-bootstrap.md](angular-bootstrap.md) | Versión instalada, `ng new`, Bootstrap, entornos, rutas, Docker |
+| [angular-oficial/](angular-oficial/README.md) | Extracto filtrado de la documentación oficial de Angular; solo desde las hojas de `angular-spa` |
 | [docker-compose.md](docker-compose.md) | Servicios, imágenes, healthchecks, redes |
 | [openapi-springdoc.md](openapi-springdoc.md) | Documentación OpenAPI en Boot 2.7 |
 | [testing-backend.md](testing-backend.md) | JUnit 5, MockMvc, EmbeddedKafka, H2/Testcontainers |

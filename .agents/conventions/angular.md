@@ -12,14 +12,12 @@ src/app
 ├── app.routes.ts
 └── app.config.ts        # provideHttpClient(withInterceptors([...])), provideRouter
 ```
-- **Página (contenedor)** = orquesta servicios y estado; sufijo `.page.ts` o `-page.component.ts`. **Presentacional** = solo `input()`/`output()`/`model()` (sin decoradores `@Input`/`@Output`), sin inyectar servicios de datos.
-- Un servicio por recurso de la API; el único lugar con `HttpClient`. Devuelven `Observable<T>` tipado; sin `any`.
-- Estado por vista con un objeto `ViewState<T>` (`loading | empty | error | ready`) en signal; la plantilla cubre los 4 estados siempre ([spec/06](../spec/06-frontend-angular.md) punto 5).
+- **Página (contenedor)** orquesta servicios y estado; sufijo `.page.ts` o `-page.component.ts`. **Presentacional** solo recibe `input()` y emite `output()`; va en `shared/` si es reutilizable.
+- Un servicio por recurso de la API en `core/` o `features/*/`; es el único lugar con `HttpClient`.
+- Estado por vista con `ViewState<T>` (`loading | empty | error | ready`) en `shared/`; la plantilla cubre los 4 estados siempre ([spec/06](../spec/06-frontend-angular.md) punto 5).
 - Filtros y página en **query params** de la ruta (`?name=&status=&page=`): recargar conserva el estado y es testeable.
-- Errores: el interceptor convierte `HttpErrorResponse` en `ApiError` ([formato-error.md](formato-error.md)); las páginas muestran `error.message`; 401 lo resuelve el interceptor (logout + redirect).
+- Errores: el interceptor convierte `HttpErrorResponse` en `ApiError` ([formato-error.md](formato-error.md)); las páginas muestran `error.message`.
 - Bootstrap: clases utilitarias y componentes CSS (`card`, `form-control`, `btn`, `alert`, `spinner-border`, `pagination`). Sin CSS custom salvo lo imprescindible.
-- Sin `any` (`unknown` si el tipo es incierto), `strict: true` en `tsconfig`. Sin `subscribe` anidados; `takeUntilDestroyed()` o `async`/signals.
-- Buenas prácticas oficiales de Angular (componentes, plantillas, signals, formularios, servicios, reglas por versión): skill [angular-best-practices](../skills/angular-best-practices/SKILL.md) ([ADR-007](../decisions/ADR-007-best-practices-angular.md)).
-- Accesibilidad: `label` asociado a inputs, `aria-live` en alertas de error, botones con texto; objetivo AXE sin errores y WCAG AA ([angular-componentes-plantillas](../skills/angular-componentes-plantillas/SKILL.md)).
+- Reglas de escritura (TypeScript, componentes, plantillas, accesibilidad, signals, formularios, servicios, reglas por versión, lista de prohibido): skill [angular-spa](../skills/angular-spa/SKILL.md) y su hoja por tipo de fichero ([ADR-007](../decisions/ADR-007-best-practices-angular.md)). Este fichero no las repite.
 
-Relacionado: [nomenclatura.md](nomenclatura.md), [references/angular-bootstrap.md](../references/angular-bootstrap.md), [references/testing-frontend.md](../references/testing-frontend.md), [ADR-007](../decisions/ADR-007-best-practices-angular.md).
+Relacionado: [nomenclatura.md](nomenclatura.md), [references/angular-bootstrap.md](../references/angular-bootstrap.md), [references/testing-frontend.md](../references/testing-frontend.md).

@@ -12,4 +12,6 @@ Requisito: al menos una prueba sobre lógica no trivial ([spec/07-pruebas.md](..
 
 El agente **no ejecuta** `ng test` ([no-run-commands](../skills/no-run-commands/SKILL.md)).
 
+Profundizar, solo si hace falta: [angular-oficial/testing-fundamentals.md](angular-oficial/testing-fundamentals.md), [angular-oficial/router-testing.md](angular-oficial/router-testing.md).
+
 Relacionado: [workflows/17-pruebas-frontend.md](../workflows/17-pruebas-frontend.md), [conventions/angular.md](../conventions/angular.md).
