@@ -14,7 +14,7 @@ Páginas de registro e inicio de sesión, persistencia del token, guarda de ruta
 3. `authInterceptor`: añade `Authorization` si hay token y la URL es de `apiBaseUrl`.
 4. `errorInterceptor`: mapea a `ApiError`; 401 → `logout()` + navegación a `/login` con `returnUrl`; deja 4xx/5xx como `ApiError` para las páginas.
 5. `authGuard`: protege `/favorites` (y las que se decidan).
-6. `login.page` y `register.page`: formularios reactivos, estados `submitting`/`error`, feedback Bootstrap, redirección a `returnUrl` o `/characters`.
+6. `login.page` y `register.page`: formularios según [angular-formularios](../skills/angular-formularios/SKILL.md), estados `submitting`/`error`, feedback Bootstrap, redirección a `returnUrl` o `/characters`.
 7. Navbar reacciona a `isAuthenticated`.
 
 ## Hecho cuando

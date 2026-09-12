@@ -12,5 +12,6 @@ Estados: `Propuesta` (redactada por el agente, pendiente de confirmación humana
 | [ADR-004](ADR-004-consistencia-postgres-neo4j.md) | Coherencia entre PostgreSQL y Neo4j ante fallos parciales | Propuesta |
 | [ADR-005](ADR-005-autenticacion.md) | Autenticación con token propio (bonus B1) | Propuesta |
 | [ADR-006](ADR-006-mensajes-irrecuperables.md) | Dead Letter Topic y registro de mensajes procesados (bonus B3) | Propuesta |
+| [ADR-007](ADR-007-best-practices-angular.md) | Adopción de las buenas prácticas oficiales de Angular y reglas por versión | Propuesta |
 
 Plantilla: [TEMPLATE.md](TEMPLATE.md). Numerar consecutivamente. Un ADR nuevo por cada dependencia externa no listada en [references/stack-versiones.md](../references/stack-versiones.md).

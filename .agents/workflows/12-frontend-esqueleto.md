@@ -1,6 +1,6 @@
 # 12 · Esqueleto frontend
 
-**Rol**: [desarrollador-frontend](../agents/desarrollador-frontend.md) · Skill: [angular-spa](../skills/angular-spa/SKILL.md)
+**Rol**: [desarrollador-frontend](../agents/desarrollador-frontend.md) · Skills: [angular-spa](../skills/angular-spa/SKILL.md), [angular-best-practices](../skills/angular-best-practices/SKILL.md)
 
 ## Objetivo
 Proyecto Angular standalone con Bootstrap, estructura de carpetas, `HttpClient` con interceptores registrados, rutas base, componentes compartidos de estado y Dockerfile con nginx.
@@ -9,7 +9,7 @@ Proyecto Angular standalone con Bootstrap, estructura de carpetas, `HttpClient` 
 [conventions/angular.md](../conventions/angular.md), [references/angular-bootstrap.md](../references/angular-bootstrap.md), [conventions/formato-error.md](../conventions/formato-error.md).
 
 ## Pasos
-1. El **humano** ejecuta `ng new frontend --standalone --routing --style=scss --skip-git` y `npm i bootstrap@5.3` (el agente no ejecuta: [no-run-commands](../skills/no-run-commands/SKILL.md)). Anotar versiones en [angular-bootstrap.md](../references/angular-bootstrap.md).
+1. El **humano** ejecuta `ng new frontend --standalone --routing --style=scss --skip-git` y `npm i bootstrap@5.3` (el agente no ejecuta: [no-run-commands](../skills/no-run-commands/SKILL.md)). Anotar versiones en [angular-bootstrap.md](../references/angular-bootstrap.md) y marcar qué reglas por versión aplican ([angular-best-practices](../skills/angular-best-practices/SKILL.md#reglas-que-dependen-de-la-versión)).
 2. `styles.scss` importa Bootstrap. `strict: true`.
 3. `environments/`: `apiBaseUrl`. `proxy.conf.json` para `/api` → `http://localhost:8080`.
 4. `core/`: `api-error.model.ts`, `token.storage.ts`, `auth.service.ts` (esqueleto), `auth.interceptor.ts`, `error.interceptor.ts`, `auth.guard.ts` (se completan en [13](13-frontend-auth.md)).

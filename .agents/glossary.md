@@ -12,4 +12,6 @@
 - **At-least-once**: garantía de entrega de Kafka por defecto; un mensaje puede llegar más de una vez.
 - **Placeholder**: nodo/fila creado solo con `external_id` cuando se referencia una entidad aún no sincronizada. Ver [decisions/ADR-004-consistencia-postgres-neo4j.md](decisions/ADR-004-consistencia-postgres-neo4j.md).
 - **Componente de presentación / contenedor**: en Angular, componente sin lógica de datos (solo inputs/outputs) vs. componente que orquesta servicios. Ver [conventions/angular.md](conventions/angular.md).
+- **Signal**: primitiva reactiva de Angular para el estado (`signal`, `computed`, `linkedSignal`, `model`). Ver [skills/angular-signals-estado](skills/angular-signals-estado/SKILL.md).
+- **Signal Forms**: API de formularios basada en signals (`@angular/forms/signals`), estable en Angular ≥ 22. Ver [skills/angular-formularios](skills/angular-formularios/SKILL.md).
 - **ADR**: Architecture Decision Record. Ver [decisions/TEMPLATE.md](decisions/TEMPLATE.md).

@@ -14,7 +14,7 @@ Listado con filtros (name, status, species, gender) y paginación; detalle con e
 3. `character-filters` (presentacional): formulario con `output` `filtersChange` (debounce en `name`).
 4. `character-card` (presentacional) y `character-list.page`: filtros y página desde query params; cambiar filtro → `page=0`; `ViewState` con `loading/empty/error/ready`; `pagination` compartida.
 5. `character-detail.page`: carga detalle y relacionados en paralelo (`forkJoin`) o con estados independientes (preferible: el fallo de relacionados no rompe el detalle); enlaces a otros personajes; botón favorito si autenticado (se conecta en [15](15-frontend-favoritos.md)).
-6. Imágenes con `loading="lazy"` y `alt`.
+6. Imágenes con `loading="lazy"` y `alt` ([angular-componentes-plantillas](../skills/angular-componentes-plantillas/SKILL.md)).
 
 ## Hecho cuando
 Filtrar, paginar, recargar (estado conservado) y ver detalle con relacionados; apagar el backend muestra la alerta de error con "Reintentar".
