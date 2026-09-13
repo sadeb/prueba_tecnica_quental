@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin/sync")
-@Tag(name = "Admin", description = "Synchronisation with the external source. Requires any authenticated user (no roles in scope, ADR-005).")
+@Tag(name = "Admin", description = "Synchronisation with the external source. Requires the system administrator (role ADMIN, ADR-012).")
 @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
 public class SyncAdminController {
 
@@ -39,6 +39,7 @@ public class SyncAdminController {
                     + "Asynchronous: returns 202 with the run id; poll GET /api/admin/sync/{runId}. Idempotent end to end (ADR-002).")
     @ApiResponse(responseCode = "202", description = "Run accepted")
     @ApiResponse(responseCode = "401", description = "Missing or invalid token", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    @ApiResponse(responseCode = "403", description = "Token without role ADMIN", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "409", description = "A run is already in progress", content = @Content(schema = @Schema(implementation = ApiError.class)))
     public ResponseEntity<SyncStartResponse> launch() {
         SyncRun run = producerService.launch();
@@ -49,6 +50,7 @@ public class SyncAdminController {
     @Operation(summary = "State and counters of a synchronisation run")
     @ApiResponse(responseCode = "200", description = "Run found")
     @ApiResponse(responseCode = "401", description = "Missing or invalid token", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    @ApiResponse(responseCode = "403", description = "Token without role ADMIN", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "404", description = "Unknown run", content = @Content(schema = @Schema(implementation = ApiError.class)))
     public SyncRunResponse get(@PathVariable Long runId) {
         return SyncRunResponse.from(runService.get(runId));

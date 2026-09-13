@@ -1,0 +1,18 @@
+# Liquibase master changelog (ADR-011). One formatted-SQL file per change, applied in order.
+# The SQL is the subset accepted by PostgreSQL 10 and by H2 2.x in MODE=PostgreSQL (tests).
+databaseChangeLog:
+  - include:
+      file: changes/001-init.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/002-sync-runs.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/003-users.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/004-user-favorites.sql
+      relativeToChangelogFile: true
+  - include:
+      file: changes/005-users-role.sql
+      relativeToChangelogFile: true

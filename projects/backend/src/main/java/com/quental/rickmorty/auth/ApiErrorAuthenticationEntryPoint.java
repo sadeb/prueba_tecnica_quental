@@ -28,10 +28,16 @@ public class ApiErrorAuthenticationEntryPoint implements AuthenticationEntryPoin
 
     static void writeUnauthorized(ObjectMapper objectMapper, HttpServletRequest request,
                                   HttpServletResponse response, String message) throws IOException {
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        writeError(objectMapper, request, response, HttpStatus.UNAUTHORIZED, "UNAUTHORIZED", message);
+    }
+
+    /** Shared by the entry point, the bearer filter and the access-denied handler: same body as the advice. */
+    static void writeError(ObjectMapper objectMapper, HttpServletRequest request, HttpServletResponse response,
+                           HttpStatus status, String error, String message) throws IOException {
+        response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        ApiError body = ApiError.of(HttpStatus.UNAUTHORIZED.value(), "UNAUTHORIZED", message, request.getRequestURI());
+        ApiError body = ApiError.of(status.value(), error, message, request.getRequestURI());
         objectMapper.writeValue(response.getWriter(), body);
     }
 }

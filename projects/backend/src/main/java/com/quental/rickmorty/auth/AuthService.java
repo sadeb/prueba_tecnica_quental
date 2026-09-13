@@ -44,7 +44,7 @@ public class AuthService {
         User user = users.findByUsername(username)
                 .filter(found -> passwordEncoder.matches(request.getPassword(), found.getPasswordHash()))
                 .orElseThrow(() -> new UnauthorizedException("Bad credentials"));
-        IssuedToken token = tokenService.issue(user.getId(), user.getUsername());
+        IssuedToken token = tokenService.issue(user.getId(), user.getUsername(), user.getRole());
         return new LoginResponse(token.getToken(), token.getExpiresAt(), user.getUsername());
     }
 

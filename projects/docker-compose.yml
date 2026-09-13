@@ -165,6 +165,9 @@ services:
       SYNC_ON_STARTUP: "false"
       AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET}
       AUTH_TOKEN_TTL_HOURS: ${AUTH_TOKEN_TTL_HOURS}
+      # Administrador del sistema, creado/actualizado por el backend al arrancar (ADR-012).
+      AUTH_ADMIN_USERNAME: ${ADMIN_USERNAME}
+      AUTH_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       # Swagger UI y /v3/api-docs desactivables en produccion (ADR-009).
       SWAGGER_ENABLED: ${SWAGGER_ENABLED:-true}
     ports:

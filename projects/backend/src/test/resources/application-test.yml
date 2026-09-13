@@ -1,4 +1,4 @@
-# Test profile: H2 in PostgreSQL mode + Flyway, embedded Kafka (bootstrap servers injected by
+# Test profile: H2 in PostgreSQL mode + Liquibase, embedded Kafka (bootstrap servers injected by
 # @EmbeddedKafka), Neo4j auto-configuration excluded (GraphRepository is mocked). No network, no Docker.
 spring:
   datasource:
@@ -10,8 +10,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none            # H2 reports "timestamp with time zone" with a JDBC type Hibernate's validate rejects
-  flyway:
-    enabled: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.neo4j.Neo4jAutoConfiguration
@@ -44,6 +44,9 @@ auth:
   token:
     secret: test-secret-test-secret-test-secret-0123
     ttl-hours: 1
+  admin:
+    username: admin
+    password: admin-test-password
 
 logging:
   level:

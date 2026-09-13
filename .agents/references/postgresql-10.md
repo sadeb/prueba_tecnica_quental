@@ -4,7 +4,7 @@
 - Driver JDBC 42.x (gestionado por Boot) es compatible con 10.
 - Tipos útiles disponibles en 10: `jsonb` (bonus JSON crudo), `bigserial`, `timestamptz`, índices únicos parciales, `ON CONFLICT ... DO UPDATE` (upsert nativo, desde 9.5).
 - Hibernate dialect: `org.hibernate.dialect.PostgreSQL10Dialect`.
-- `spring.jpa.hibernate.ddl-auto=validate` en producción del compose; el esquema lo crea Flyway (`V1__init.sql`, `V2__...`). En tests con H2 puede usarse `create-drop` o Flyway con H2 en modo Postgres (`MODE=PostgreSQL`).
+- `spring.jpa.hibernate.ddl-auto=validate` en producción del compose; el esquema lo crea Liquibase (`db/changelog/db.changelog-master.yaml` → `changes/001-init.sql`, `002-…`; [ADR-011](../decisions/ADR-011-liquibase-migraciones.md)). En tests se aplica el mismo changelog sobre H2 en modo Postgres (`MODE=PostgreSQL`).
 - Convención de nombres: tablas y columnas en `snake_case`, plural para tablas (`characters`, `episodes`, `locations`, `character_episodes`, `users`, `user_favorites`, `raw_payloads`, `sync_runs`, `processed_messages`).
 - Upsert idempotente por `external_id` (constraint `UNIQUE`). Ver [ADR-001](../decisions/ADR-001-identificador-externo.md) y [ADR-002](../decisions/ADR-002-idempotencia-sync.md).
 - Tabla N:M `character_episodes(character_id, episode_id)` con PK compuesta → reinsertar no duplica.

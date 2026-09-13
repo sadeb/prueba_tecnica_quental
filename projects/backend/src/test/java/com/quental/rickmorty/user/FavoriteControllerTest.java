@@ -117,7 +117,7 @@ class FavoriteControllerTest {
     }
 
     private String bearer() {
-        return tokenService.issue(USER_ID, "rick").getToken();
+        return tokenService.issue(USER_ID, "rick", UserRole.USER).getToken();
     }
 
     private static CharacterSummaryResponse summary(long id) {

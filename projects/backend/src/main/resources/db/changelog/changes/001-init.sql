@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset rickmorty:001-init
 -- Synchronised entities (ADR-001): internal id + unique external_id. Descriptive columns are nullable
 -- because a row may be created as a placeholder from a forward reference (ADR-004).
 -- DDL restricted to the subset accepted by PostgreSQL 10 and H2 2.x in MODE=PostgreSQL (tests).

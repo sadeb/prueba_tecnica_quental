@@ -1,6 +1,7 @@
 package com.quental.rickmorty.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quental.rickmorty.auth.ApiErrorAccessDeniedHandler;
 import com.quental.rickmorty.auth.ApiErrorAuthenticationEntryPoint;
 import com.quental.rickmorty.auth.AuthTokenProperties;
 import com.quental.rickmorty.auth.BearerTokenFilter;
@@ -24,7 +25,8 @@ import java.util.List;
 
 /**
  * Spring Security used only for BCrypt, the bearer filter and route protection (ADR-005).
- * Stateless, no CSRF (no cookies), CORS for the SPA origin. Protected: /api/users/me/**, /api/admin/**.
+ * Stateless, no CSRF (no cookies), CORS for the SPA origin. Protected: /api/users/me/** (any authenticated
+ * user) and /api/admin/** (ROLE_ADMIN only, ADR-012; a valid token without the role gets 403 ApiError).
  * Everything else is public by design (synchronised data is public, OpenAPI, health), which also lets
  * unmapped routes answer 404 ApiError instead of 401 (conventions/formato-error.md).
  */
@@ -44,10 +46,13 @@ public class SecurityConfig {
         http.csrf().disable()
                 .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .exceptionHandling().authenticationEntryPoint(new ApiErrorAuthenticationEntryPoint(objectMapper)).and()
+                .exceptionHandling()
+                        .authenticationEntryPoint(new ApiErrorAuthenticationEntryPoint(objectMapper))
+                        .accessDeniedHandler(new ApiErrorAccessDeniedHandler(objectMapper)).and()
                 .authorizeHttpRequests(auth -> auth
                         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .antMatchers("/api/users/me/**", "/api/admin/**").authenticated()
+                        .antMatchers("/api/admin/**").hasRole("ADMIN")
+                        .antMatchers("/api/users/me/**").authenticated()
                         .anyRequest().permitAll())
                 .addFilterBefore(new BearerTokenFilter(tokenService, objectMapper), UsernamePasswordAuthenticationFilter.class);
         return http.build();

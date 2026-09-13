@@ -5,6 +5,7 @@ import com.quental.rickmorty.common.ConflictException;
 import com.quental.rickmorty.common.NotFoundException;
 import com.quental.rickmorty.config.SecurityConfig;
 import com.quental.rickmorty.sync.producer.SyncProducerService;
+import com.quental.rickmorty.user.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,6 +42,16 @@ class SyncAdminControllerTest {
         mockMvc.perform(post("/api/admin/sync"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.error").value("UNAUTHORIZED"));
+    }
+
+    @Test
+    void shouldReturn403ForAuthenticatedUserWithoutAdminRole() throws Exception {
+        String userToken = tokenService.issue(2L, "morty", UserRole.USER).getToken();
+
+        mockMvc.perform(post("/api/admin/sync").header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.error").value("FORBIDDEN"))
+                .andExpect(jsonPath("$.path").value("/api/admin/sync"));
     }
 
     @Test
@@ -85,7 +96,7 @@ class SyncAdminControllerTest {
     }
 
     private String bearer() {
-        return tokenService.issue(1L, "rick").getToken();
+        return tokenService.issue(1L, "admin", UserRole.ADMIN).getToken();
     }
 
     private static SyncRun run(long id) {

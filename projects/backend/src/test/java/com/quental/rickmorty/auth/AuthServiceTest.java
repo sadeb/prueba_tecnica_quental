@@ -8,6 +8,7 @@ import com.quental.rickmorty.common.ConflictException;
 import com.quental.rickmorty.common.UnauthorizedException;
 import com.quental.rickmorty.user.User;
 import com.quental.rickmorty.user.UserJpaRepository;
+import com.quental.rickmorty.user.UserRole;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -67,7 +68,7 @@ class AuthServiceTest {
         when(users.findByUsername("rick")).thenReturn(Optional.of(user));
         when(encoder.matches("wubbalubba", "$2a$hash")).thenReturn(true);
         Instant expiresAt = Instant.parse("2026-09-14T00:00:00Z");
-        when(tokenService.issue(7L, "rick")).thenReturn(new IssuedToken("a.b.c", expiresAt));
+        when(tokenService.issue(7L, "rick", UserRole.USER)).thenReturn(new IssuedToken("a.b.c", expiresAt));
 
         LoginResponse response = service.login(login("RICK", "wubbalubba"));
 
@@ -82,7 +83,7 @@ class AuthServiceTest {
         when(encoder.matches("nope", "$2a$hash")).thenReturn(false);
 
         assertThatThrownBy(() -> service.login(login("rick", "nope"))).isInstanceOf(UnauthorizedException.class);
-        verify(tokenService, never()).issue(anyLong(), any());
+        verify(tokenService, never()).issue(anyLong(), any(), any());
     }
 
     @Test

@@ -17,11 +17,11 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: validate          # schema owned by Flyway; Hibernate only checks it
+      ddl-auto: validate          # schema owned by Liquibase; Hibernate only checks it
     properties:
       hibernate.jdbc.time_zone: UTC
-  flyway:
-    enabled: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml   # ADR-011
   neo4j:
     uri: bolt://localhost:4788    # compose publishes 4788 -> 7687
     authentication:
@@ -90,6 +90,11 @@ auth:
     # Development default (>= 32 bytes). Overridden by AUTH_TOKEN_SECRET in compose (.env).
     secret: dev-only-secret-change-me-0123456789abcdef
     ttl-hours: 8
+  admin:
+    # System administrator (ADR-012): created or updated at startup, the only account with role ADMIN.
+    # Development defaults; overridden by AUTH_ADMIN_USERNAME / AUTH_ADMIN_PASSWORD in compose (.env).
+    username: admin
+    password: admin1234
 
 app:
   cors:

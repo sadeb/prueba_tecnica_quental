@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Reads "Authorization: Bearer <token>", validates it and populates the SecurityContext.
+ * The authority is ROLE_<role claim> (USER or ADMIN, ADR-012); /api/admin/** requires ROLE_ADMIN.
  * No header: continue anonymously (public routes work; protected ones hit the entry point).
  * Invalid header: answer 401 ApiError right here and stop the chain.
  * Not a Spring bean on purpose: Boot would register a Filter bean a second time outside the security chain.
@@ -49,7 +50,7 @@ public class BearerTokenFilter extends OncePerRequestFilter {
         }
         AuthenticatedUser principal = new AuthenticatedUser(claims.getUserId(), claims.getUsername());
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                principal, null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                principal, null, List.of(new SimpleGrantedAuthority("ROLE_" + claims.getRole().name())));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }

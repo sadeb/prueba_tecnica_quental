@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/** H2 in PostgreSQL mode with the real Flyway migrations; no Docker (spec/07 point 3). */
+/** H2 in PostgreSQL mode with the real Liquibase changelog; no Docker (spec/07 point 3). */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")

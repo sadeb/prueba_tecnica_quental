@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset rickmorty:002-sync-runs
 -- One row per explicit synchronisation (ADR-002). Counters are the trace required by spec/03.
 create table sync_runs (
     id                 bigserial primary key,

@@ -16,5 +16,7 @@ Estados: `Propuesta` (redactada por el agente, pendiente de confirmación humana
 | [ADR-008](ADR-008-imagenes-docker.md) | Imágenes Docker multi-arch, healthchecks y límites de recursos | Propuesta |
 | [ADR-009](ADR-009-openapi-toggle.md) | OpenAPI/Swagger activable por entorno (`SWAGGER_ENABLED`) | Propuesta |
 | [ADR-010](ADR-010-frontend-sesion-tema-errores.md) | Frontend: entrada única `/login`, sesión, tema claro/oscuro, idioma y tratamiento de errores | Propuesta |
+| [ADR-011](ADR-011-liquibase-migraciones.md) | Liquibase como gestor de migraciones (formatted SQL, changelog maestro YAML) | Propuesta |
+| [ADR-012](ADR-012-administrador-sistema.md) | Administrador del sistema desde `.env` y rol `ADMIN` para `/api/admin/**` | Propuesta |
 
 Plantilla: [TEMPLATE.md](TEMPLATE.md). Numerar consecutivamente. Un ADR nuevo por cada dependencia externa no listada en [references/stack-versiones.md](../references/stack-versiones.md).

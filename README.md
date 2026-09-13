@@ -19,7 +19,7 @@ cd projects && docker compose up --build
 
 PostgreSQL, Neo4j, ZooKeeper y Kafka están bajo el perfil de compose `infra`, activado por defecto mediante `COMPOSE_PROFILES=infra` en [projects/.env](projects/.env). Si se sobrescribe esa variable hay que pasar `--profile infra` explícitamente.
 
-Credenciales de desarrollo en [projects/.env](projects/.env) (versionadas a propósito). Puertos publicados en el host (los del compose; los internos son los estándar):
+Credenciales de desarrollo en [projects/.env](projects/.env) (versionadas a propósito), incluidas las del **administrador del sistema** (`ADMIN_USERNAME` / `ADMIN_PASSWORD`, por defecto `admin` / `admin1234`): el backend crea esa cuenta al arrancar y aplica un cambio de contraseña en el siguiente arranque ([ADR-012](.agents/decisions/ADR-012-administrador-sistema.md)). El esquema de PostgreSQL lo versiona Liquibase ([ADR-011](.agents/decisions/ADR-011-liquibase-migraciones.md)); si el volumen `pg_data` viene de una versión anterior con Flyway, hace falta `docker compose down -v`. Puertos publicados en el host (los del compose; los internos son los estándar):
 
 | Servicio | URL en el host |
 |---|---|
@@ -57,14 +57,18 @@ curl -s -X POST http://localhost:4080/api/auth/register -H 'Content-Type: applic
 TOKEN=$(curl -s -X POST http://localhost:4080/api/auth/login -H 'Content-Type: application/json' -d '{"username":"rick","password":"wubbalubba"}' | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])'); echo $TOKEN
 ```
 
-2. Lanzar la sincronización (requiere token; en un entorno real exigiría rol administrador) y consultar su estado:
+2. Lanzar la sincronización y consultar su estado. Solo puede hacerlo el administrador de `.env` (rol `ADMIN`); con el token de un usuario normal responde 403 `FORBIDDEN`:
 
 ```bash
-curl -s -X POST http://localhost:4080/api/admin/sync -H "Authorization: Bearer $TOKEN"
+ADMIN_TOKEN=$(curl -s -X POST http://localhost:4080/api/auth/login -H 'Content-Type: application/json' -d '{"username":"admin","password":"admin1234"}' | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])'); echo $ADMIN_TOKEN
 ```
 
 ```bash
-curl -s http://localhost:4080/api/admin/sync/1 -H "Authorization: Bearer $TOKEN"
+curl -s -X POST http://localhost:4080/api/admin/sync -H "Authorization: Bearer $ADMIN_TOKEN"
+```
+
+```bash
+curl -s http://localhost:4080/api/admin/sync/1 -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 La sync es asíncrona: `status` pasa de `RUNNING` a `COMPLETED` (o `PARTIAL` si alguna página falló). Contadores: `publishedMessages`, `skippedItems`, `failedPages`, `failedMessages` (mensajes enviados a DLT). Reejecutarla es seguro: los upserts son idempotentes.
@@ -156,9 +160,11 @@ Resumen por ADR (detalle y justificación de desarrollo en [docs/decisiones-tecn
 - [ADR-008](.agents/decisions/ADR-008-imagenes-docker.md) · imágenes multi-arch fijadas, healthchecks reales, límites de memoria.
 - [ADR-009](.agents/decisions/ADR-009-openapi-toggle.md) · Swagger/OpenAPI activable por `SWAGGER_ENABLED`.
 - [ADR-010](.agents/decisions/ADR-010-frontend-sesion-tema-errores.md) · frontend: `/login` única ruta pública, interceptores auth/retry/error, `ApiError` en español por contexto, tema claro/oscuro persistido.
+- [ADR-011](.agents/decisions/ADR-011-liquibase-migraciones.md) · Liquibase como gestor de migraciones: changelog maestro YAML + un fichero formatted SQL por cambio, mismo DDL para Postgres 10 y H2.
+- [ADR-012](.agents/decisions/ADR-012-administrador-sistema.md) · administrador del sistema desde `.env` (creado/actualizado al arrancar), rol `ADMIN` en el token y `/api/admin/**` solo para él (403 en caso contrario).
 
 ## Limitaciones conocidas y siguientes pasos
-- Sin roles: `POST /api/admin/sync` lo puede lanzar cualquier usuario autenticado. Sin refresh token ni revocación.
+- Roles mínimos (`USER`/`ADMIN`): el único administrador es el de `.env`; no hay gestión de roles por API. Sin refresh token ni revocación.
 - Reproceso del DLT fuera de alcance: inspeccionar con `kafka-console-consumer.sh --bootstrap-server kafka:29092 --topic rm.characters.DLT --from-beginning` dentro del contenedor `kafka`.
 - Kafka desde el host: ver limitación del listener anunciado.
 - Pendiente: comprobación manual del frontend contra el backend levantado y cierre del README de entrega (workflow 18).

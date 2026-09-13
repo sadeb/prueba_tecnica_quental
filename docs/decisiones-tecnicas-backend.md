@@ -35,7 +35,7 @@ Paquetes según [conventions/java-spring.md](../.agents/conventions/java-spring.
 ### Decisiones
 - **POM** (`pom.xml`): parent `spring-boot-starter-parent:2.7.18`; todas las versiones las gestiona el BOM salvo `springdoc-openapi-ui:1.8.0` (última release 1.x, octubre 2024; la referencia decía 1.7.0 y se ha actualizado). Kafka es `org.springframework.kafka:spring-kafka`: **no existe** `spring-boot-starter-kafka` aunque el workflow lo llamara "starter". `maven-surefire-plugin` incluye `**/*IT.java`: sin esa línea `SyncFlowIT` no se ejecutaría con `mvn test` y la prueba obligatoria quedaría silenciosamente fuera.
 - **Gestor de transacciones explícito** (`config/PersistenceConfig`): con JPA y Neo4j en el classpath, Boot autoconfigura dos beans llamados `transactionManager`, ambos `@ConditionalOnMissingBean(TransactionManager)`; solo sobrevive uno (verificado en los jars de Boot 2.7.18) y los repositorios JPA podrían acabar sobre el gestor de Neo4j. Se declara `JpaTransactionManager` `@Primary`; Neo4j trabaja en auto-commit por sentencia (coherente con [ADR-004](../.agents/decisions/ADR-004-consistencia-postgres-neo4j.md): no hay transacción distribuida).
-- **Configuración** (`application.yml`): valores por defecto para desarrollo local contra los puertos que publica el compose (Postgres 4432, Neo4j 4788, Kafka 4093); dentro del compose todo llega por variables `SPRING_*`, `SYNC_ON_STARTUP`, `AUTH_TOKEN_*`, `SWAGGER_ENABLED` (relaxed binding, sin placeholders salvo los dos toggles). `open-in-view=false` (mapeo de relaciones LAZY dentro de servicios `readOnly`), `ddl-auto=validate` (el esquema lo posee Flyway), `throw-exception-if-no-handler-found=true` + `add-mappings=false` para que una ruta no mapeada produzca `ApiError` 404.
+- **Configuración** (`application.yml`): valores por defecto para desarrollo local contra los puertos que publica el compose (Postgres 4432, Neo4j 4788, Kafka 4093); dentro del compose todo llega por variables `SPRING_*`, `SYNC_ON_STARTUP`, `AUTH_TOKEN_*`, `SWAGGER_ENABLED` (relaxed binding, sin placeholders salvo los dos toggles). `open-in-view=false` (mapeo de relaciones LAZY dentro de servicios `readOnly`), `ddl-auto=validate` (el esquema lo posee Liquibase desde [ADR-011](../.agents/decisions/ADR-011-liquibase-migraciones.md); ver §14), `throw-exception-if-no-handler-found=true` + `add-mappings=false` para que una ruta no mapeada produzca `ApiError` 404.
 - **Propiedades tipadas** con `@ConfigurationProperties` + setters + `@EnableConfigurationProperties` en la configuración que las consume. Se evitó `@ConstructorBinding` (en Boot 2.7 prohíbe `@Component` y complica los slices) para eliminar riesgo de arranque.
 - **Errores** (`common/GlobalExceptionHandler`): único productor de cuerpos de error; tabla de [formato-error.md](../.agents/conventions/formato-error.md) más 405 `METHOD_NOT_ALLOWED` y `DataIntegrityViolationException` → 409 (la restricción única es la última palabra ante duplicados concurrentes). `details` se omite cuando no hay errores de campo (`@JsonInclude(NON_NULL)`, decisión "omitir" fijada). Mensajes internos de Hibernate/Neo4j/Kafka nunca llegan al cliente: 503 genérico y `ERROR` en log.
 
@@ -64,7 +64,7 @@ Commit propuesto: `chore(backend): scaffold spring boot 2.7 project on jdk 11 wi
 **Requisito**: [spec/04](../.agents/spec/04-modelo-de-datos.md); [ADR-001](../.agents/decisions/ADR-001-identificador-externo.md), [ADR-002](../.agents/decisions/ADR-002-idempotencia-sync.md), [ADR-004](../.agents/decisions/ADR-004-consistencia-postgres-neo4j.md).
 
 ### Decisiones
-- **Esquema versionado con Flyway** (bonus B4): `V1__init.sql` (locations, episodes, characters, character_episodes), `V2__sync_runs.sql`, `V3__users.sql`, `V4__user_favorites.sql`. Cada tabla sincronizada: `id bigserial` + `external_id bigint UNIQUE` ([ADR-001](../.agents/decisions/ADR-001-identificador-externo.md)) + `placeholder boolean` ([ADR-004](../.agents/decisions/ADR-004-consistencia-postgres-neo4j.md)) + `created_at/updated_at`. Columnas descriptivas **nullable** porque una fila puede nacer como placeholder solo con `external_id`.
+- **Esquema versionado** (bonus B4; originalmente Flyway, migrado a **Liquibase** en §14 / [ADR-011](../.agents/decisions/ADR-011-liquibase-migraciones.md) conservando el mismo SQL): `001-init.sql` (locations, episodes, characters, character_episodes), `002-sync-runs.sql`, `003-users.sql`, `004-user-favorites.sql`, `005-users-role.sql`. Cada tabla sincronizada: `id bigserial` + `external_id bigint UNIQUE` ([ADR-001](../.agents/decisions/ADR-001-identificador-externo.md)) + `placeholder boolean` ([ADR-004](../.agents/decisions/ADR-004-consistencia-postgres-neo4j.md)) + `created_at/updated_at`. Columnas descriptivas **nullable** porque una fila puede nacer como placeholder solo con `external_id`.
 - **DDL en el subconjunto común Postgres 10 / H2 2.1 `MODE=PostgreSQL`** (verificado contra H2 local): `bigserial`, `timestamp with time zone`, índices simples, FK con `on delete cascade`, `unique`. Excluidos a propósito: `timestamptz` (H2 lo rechaza), índices parciales o por expresión, `ON CONFLICT ... DO UPDATE`, `jsonb`. Precio: el filtro `name` usa `lower(name) LIKE` sin índice funcional; con 826 filas es irrelevante y se documenta.
 - **Upsert en JPA, no en SQL**: buscar por `external_id` → crear o actualizar → `save`, todo en `@Transactional`. Es idempotente por construcción del estado final ([ADR-002](../.agents/decisions/ADR-002-idempotencia-sync.md)) y funciona igual en H2 y Postgres. Alternativa `ON CONFLICT DO UPDATE` nativo: más rápido pero no portable a los tests y obliga a SQL a mano para la N:M.
 - **N:M `character_episodes`** como `@ManyToMany` con `Set<Episode>` y **reemplazo completo** del conjunto en cada upsert (`Character.applyRelations`): un personaje eliminado de un episodio en la fuente desaparece de la relación. Un solo "escritor" de la relación (el snapshot del personaje); el snapshot del episodio trae `characterExternalIds` para el grafo pero no escribe la N:M en Postgres, evitando dos escritores compitiendo por la misma fila.
@@ -85,7 +85,7 @@ cd projects/backend && JAVA_HOME=$(/usr/libexec/java_home -v 11) ./mvnw -q test 
 ```
 Pegar `Tests run:` y fallos.
 
-Commit propuesto: `feat(db): add flyway schema and idempotent jpa upserts keyed by external id`
+Commit propuesto: `feat(db): add versioned schema and idempotent jpa upserts keyed by external id`
 
 ## 4. Workflow 07 · Persistencia Neo4j
 
@@ -208,7 +208,7 @@ Commits propuestos: `feat(sync): publish external snapshots to kafka topics via 
 ### Revisión
 - ✔ Sin `jjwt`/`nimbus`; cero dependencias nuevas.
 - ✔ Casos límite en `TokenServiceTest`: firma alterada, payload alterado, caducado, otro secreto, formatos rotos.
-- Limitaciones documentadas: sin roles, sin refresh, sin revocación ([ADR-005](../.agents/decisions/ADR-005-autenticacion.md)).
+- Limitaciones documentadas: sin refresh, sin revocación ([ADR-005](../.agents/decisions/ADR-005-autenticacion.md)). Roles mínimos `USER`/`ADMIN` añadidos después (§14, [ADR-012](../.agents/decisions/ADR-012-administrador-sistema.md)).
 - ✘→✔ (revisión independiente) `AuthService.login` reutilizaba `InvalidTokenException` para "credenciales incorrectas": mismo 401 pero nombre engañoso. Nueva `common/UnauthorizedException` (credenciales, o ausencia de usuario en `CurrentUser`), mapeada a 401 junto a `InvalidTokenException`.
 - Decisión defendida ante el revisor: un token **caducado o manipulado devuelve 401 incluso en rutas públicas** (`BearerTokenFilter` corta la cadena). Es lo que pide ADR-005 ("cualquier fallo → 401") y lo que necesita el SPA para cerrar sesión de forma centralizada; la alternativa (ignorar la cabecera inválida y seguir anónimo) ocultaría sesiones caducadas hasta la primera ruta protegida.
 
@@ -304,14 +304,14 @@ Commit propuesto: `docs(api): document endpoints, parameters and error responses
 | `SyncProducerServiceTest` | unitario (cliente/publicador/run mockeados) | orden locations→episodes→characters y todas las páginas; página fallida → `PARTIAL` y siguiente entidad; elemento inválido → `skipped`; publicación fallida → página fallida; error inesperado → `FAILED` |
 | `SyncRunServiceTest` | unitario | 409 si `RUNNING`; creación; atribución del fallo al último run o al indicado; sin run → solo aviso; 404 |
 | `AuthServiceTest` | unitario | normalización (trim + minúsculas) y hash; usuario duplicado → 409; contraseña incorrecta y usuario inexistente → mismo 401 |
-| `SyncAdminControllerTest` | `@WebMvcTest` | 401 sin token; 202 con `runId`; 409 sync en curso; estado y contadores; 404 |
-| `CharacterQueryServiceTest` | `@DataJpaTest` H2 + Flyway | filtros reales en SQL: nombre parcial case-insensitive, combinación status/species/gender, página más allá del final con totales, detalle con origen/ubicación/episodios ordenados por código, placeholders ocultos |
+| `SyncAdminControllerTest` | `@WebMvcTest` | 401 sin token; **403 con token `USER`**; 202 con `runId` (token `ADMIN`); 409 sync en curso; estado y contadores; 404 |
+| `CharacterQueryServiceTest` | `@DataJpaTest` H2 + Liquibase | filtros reales en SQL: nombre parcial case-insensitive, combinación status/species/gender, página más allá del final con totales, detalle con origen/ubicación/episodios ordenados por código, placeholders ocultos |
 | `TokenServiceTest` | unitario | roundtrip; firma y payload alterados; caducado (reloj fijo); otro secreto; formatos rotos |
 | `AuthControllerTest` | `@WebMvcTest` | 201; 409 `ApiError`; 400 con `details`; JSON malformado; 200 con token; 401 |
 | `FavoriteControllerTest` | `@WebMvcTest` (+ filtro real) | 401 sin token con `ApiError`; token manipulado; listado del usuario del token; 201 y 200 repetido; 404; 204 y 404 |
 | `FavoriteServiceTest` | unitario | crear / ya existente; personaje inexistente; eliminar inexistente; listado |
 | `CharacterControllerTest` | `@WebMvcTest` | `size=101` → 400 `details[size]`; enum inválido → 400; enum en minúsculas OK; página fuera de rango → 200 vacío; 404 `ApiError`; `limit=0` → 400; ruta no mapeada → 404; método no soportado → 405; id no numérico → 400; Neo4j caído → 503; violación de integridad → 409; excepción inesperada → 500 sin detalles internos |
-| `CharacterPersistenceServiceTest` (+ `Episode*`, `Location*`) | `@DataJpaTest` H2 + Flyway | placeholders creados; upsert ×2 sin duplicar (filas y N:M); reemplazo del conjunto y actualización de atributos; origen `null`; placeholder completado conservando id |
+| `CharacterPersistenceServiceTest` (+ `Episode*`, `Location*`) | `@DataJpaTest` H2 + Liquibase | placeholders creados; upsert ×2 sin duplicar (filas y N:M); reemplazo del conjunto y actualización de atributos; origen `null`; placeholder completado conservando id |
 | `RelatedCharactersServiceTest` | unitario | orden del grafo conservado; `sharedEpisodes`; id sin fila o placeholder omitido; lista vacía sin consultar Postgres; 404 |
 | **`SyncFlowIT`** | `@SpringBootTest` + `@EmbeddedKafka` + H2 + `@MockBean GraphRepository` | publicar → fila + placeholders; mismo mensaje ×2 → mismos conteos; `{not-json` → `rm.characters.DLT` con cabeceras de excepción y el siguiente mensaje válido se procesa; `schemaVersion 99` → DLT y `failed_messages ≥ 1` en su run; mensajes de `rm.locations` y `rm.episodes` persistidos por el mismo listener |
 
@@ -324,7 +324,7 @@ Commit propuesto: `docs(api): document endpoints, parameters and error responses
 
 ### Revisión
 - ✔ Cada caso límite obligatorio de [testing-aislado](../.agents/skills/testing-aislado/SKILL.md) tiene una fila en la tabla.
-- ✔ (revisión independiente, verificado en los jars) el slice `@WebMvcTest` aplica `throw-exception-if-no-handler-found` y `add-mappings=false` (`MockMvcDispatcherServletCustomizer`), incluye `@ControllerAdvice`, `WebMvcConfigurer` y `MethodValidationPostProcessor`; `@DataJpaTest` incluye Flyway; H2 2.1.214 acepta `bigserial` y Hibernate 5.6 inserta identidades con `default`.
+- ✔ (revisión independiente, verificado en los jars) el slice `@WebMvcTest` aplica `throw-exception-if-no-handler-found` y `add-mappings=false` (`MockMvcDispatcherServletCustomizer`), incluye `@ControllerAdvice`, `WebMvcConfigurer` y `MethodValidationPostProcessor`; `@DataJpaTest` incluye Liquibase (`LiquibaseAutoConfiguration` está en `AutoConfigureDataJpa`); H2 2.1.214 acepta `bigserial` y Hibernate 5.6 inserta identidades con `default`.
 
 Revisión independiente de los tests (subagente en rol QA/revisor):
 - ✘→✔ **Test rojo determinista**: `Jackson2ObjectMapperBuilder.json().build()` no desactiva `WRITE_DATES_AS_TIMESTAMPS` (eso lo hace la autoconfiguración de Boot), así que `fetchedAt` se serializaba como número y la aserción ISO fallaba. Ahora `TestData.objectMapper()` desactiva esa feature y lo usan el codec, el token y el productor.
@@ -362,8 +362,36 @@ Commit propuesto: `test(backend): cover external client, sync flow with embedded
 ## 13. Limitaciones conocidas y qué se haría con más tiempo
 - **Kafka desde el host**: el compose anuncia `EXTERNAL://localhost:9092` pero publica `4093:9092`; un backend fuera de Docker se conecta y es redirigido a 9092. No se ha tocado el compose por decisión del candidato; la corrección es una línea (`KAFKA_ADVERTISED_LISTENERS: …,EXTERNAL://localhost:4093`). Dentro del compose no afecta.
 - El `README.md` documenta los puertos reales del compose (4080, 4300, 4575/4788, 4093), que no coincidían con la versión anterior del README.
-- Sin roles ni refresh token; `POST /api/admin/sync` abierto a cualquier usuario autenticado (ADR-005).
+- Sin refresh token. Roles mínimos: solo el administrador de `.env` tiene `ADMIN` y no hay gestión de roles por API (ADR-012).
 - Sin reproceso del DLT (se inspecciona con las herramientas de consola de Kafka).
 - Neo4j no se ejecuta en tests (el Cypher se valida en el arranque real). Con más tiempo: `neo4j-harness` 4.4 o Testcontainers como perfil opcional.
 - Bonus no abordados por decisión: B2 (`raw_payloads` con el JSON crudo) y el registro `processed_messages` de B3; ambos encajan en el diseño actual (tabla nueva + upsert por `(entity_type, external_id)` / inserción en la transacción del upsert).
 - Índice funcional `lower(name)` descartado por compatibilidad con H2; en Postgres real bastaría una migración `V5` con `CREATE INDEX … ON characters (lower(name))` protegida por perfil.
+
+## 14. Liquibase como gestor de migraciones y administrador del sistema en `.env`
+
+**Requisito**: fijado por el proyecto el 2026-09-13; [ADR-011](../.agents/decisions/ADR-011-liquibase-migraciones.md), [ADR-012](../.agents/decisions/ADR-012-administrador-sistema.md).
+
+### Decisiones
+- **Flyway → Liquibase** (`liquibase-core`, versión del BOM: 4.9.x). Changelog maestro `db/changelog/db.changelog-master.yaml` con `include` explícito (orden visible) de un fichero **formatted SQL** por cambio en `db/changelog/changes/`: `001-init`, `002-sync-runs`, `003-users`, `004-user-favorites` (el mismo DDL de las antiguas `V1..V4`, ya verificado para Postgres 10 y H2 `MODE=PostgreSQL`) y `005-users-role`. Se descartó reescribir el DDL en XML/YAML: obligaría a re-verificar cada tipo en los dos motores sin ganar nada (el proyecto no cambiará de motor).
+- `spring.liquibase.change-log` explícito en `application.yml` y `application-test.yml`; `ddl-auto=validate` se mantiene. Boot ordena `SpringLiquibase` antes del `EntityManagerFactory` y de los `ApplicationRunner`.
+- **Administrador del sistema**: `ADMIN_USERNAME` / `ADMIN_PASSWORD` en `projects/.env` → compose → `AUTH_ADMIN_USERNAME` / `AUTH_ADMIN_PASSWORD` → `auth.admin.*` (`AdminUserProperties`, validada con las mismas reglas que `RegisterRequest`). `AdminUserInitializer` (`ApplicationRunner @Order(0)`) crea la cuenta con rol `ADMIN` o, si existe, garantiza el rol y rehace el hash BCrypt solo si la contraseña configurada ya no coincide (idempotente; cambiar `.env` se aplica al siguiente arranque sin `down -v`). El hash se calcula en Java y no en un changeset: BCrypt lleva sal y la contraseña no es inmutable.
+- **Rol en el token**: claim `role` obligatorio (`USER`/`ADMIN`); sin él o con valor desconocido → 401 (los tokens anteriores caducan de facto: basta reloguear). `BearerTokenFilter` concede `ROLE_<role>`; `SecurityConfig`: `/api/admin/**` → `hasRole("ADMIN")`, `/api/users/me/**` → `authenticated()`. Token válido sin rol → **403 `FORBIDDEN`** con `ApiError` vía `ApiErrorAccessDeniedHandler` (la decisión ocurre en la cadena de filtros; el `AccessDeniedException` nunca llega al `ControllerAdvice`). Anónimo sigue recibiendo 401 (`ExceptionTranslationFilter` distingue anónimo de autenticado).
+- Registro público siempre `USER`; no hay endpoint para cambiar roles. Cambiar `ADMIN_USERNAME` crea un segundo administrador y no degrada al anterior (documentado en ADR-012).
+
+### Revisión
+- ✔ Una sola dependencia cambia por otra (Flyway ↔ Liquibase); ninguna nueva. ADR-011 y ADR-012 redactados.
+- ✔ Frontend sin cambios: no consume `/api/admin/**` y el contrato de `LoginResponse` no varía.
+- ✔ Tests actualizados: `TokenServiceTest` (claim `role` en roundtrip, rol `ADMIN`), `AuthServiceTest`, `FavoriteControllerTest`, `SyncAdminControllerTest` (nuevo 403), `AdminUserInitializerTest` (crear / no-op / rehash / promover). `SyncFlowIT` arranca el contexto completo y por tanto ejecuta el inicializador contra H2 (`auth.admin.*` en `application-test.yml`).
+- Vigilar en la verificación humana: Liquibase 4.9 con H2 2.1 y `DATABASE_TO_LOWER=TRUE` (tablas `databasechangelog*` en minúsculas). Si fallara la detección del lock, la alternativa es quitar `DATABASE_TO_LOWER` de la URL de test.
+
+### Verificación (humano)
+```bash
+cd projects/backend && JAVA_HOME=$(/usr/libexec/java_home -v 11) mvn -q test 2>&1 | grep -E "Tests run:|FAIL|ERROR\]" | tail -25
+```
+```bash
+cd projects && docker compose down -v && docker compose up --build
+```
+Esperado: en el log del backend `Administrator 'admin' created`; `POST /api/admin/sync` con token de `admin` → 202 y con token de un usuario registrado → 403 `FORBIDDEN`. Cambiar `ADMIN_PASSWORD` en `.env` y `docker compose up -d backend` → `Administrator 'admin' updated from configuration`.
+
+Commits propuestos: `build(db): replace flyway with liquibase keeping the same sql changesets` · `feat(auth): provision system administrator from env and restrict admin routes to role ADMIN`

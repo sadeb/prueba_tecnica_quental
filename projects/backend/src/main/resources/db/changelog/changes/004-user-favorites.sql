@@ -1,3 +1,6 @@
+--liquibase formatted sql
+
+--changeset rickmorty:004-user-favorites
 -- Surrogate id + unique (user, character) instead of a composite PK: same guarantee, simpler JPA mapping.
 create table user_favorites (
     id           bigserial primary key,

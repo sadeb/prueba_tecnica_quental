@@ -3,6 +3,7 @@ package com.quental.rickmorty.auth;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.quental.rickmorty.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import java.util.Map;
 
 /**
  * Self-issued JWT-compact tokens signed with HMAC-SHA256 (ADR-005, bonus B1): header.payload.signature,
- * Base64 URL without padding, javax.crypto only. Claims: sub (username), uid, iat, exp.
+ * Base64 URL without padding, javax.crypto only. Claims: sub (username), uid, role, iat, exp.
  * Verification: exactly 3 parts, decodable Base64, signature compared in constant time, alg HS256,
  * exp in the future. Any failure -> InvalidTokenException (401).
  */
@@ -47,12 +48,13 @@ public class TokenService {
         this.clock = clock;
     }
 
-    public IssuedToken issue(long userId, String username) {
+    public IssuedToken issue(long userId, String username, UserRole role) {
         Instant now = Instant.now(clock);
         Instant expiresAt = now.plus(Duration.ofHours(properties.getTtlHours()));
         Map<String, Object> payload = new LinkedHashMap<>();
         payload.put("sub", username);
         payload.put("uid", userId);
+        payload.put("role", role.name());
         payload.put("iat", now.getEpochSecond());
         payload.put("exp", expiresAt.getEpochSecond());
         String header = encode(HEADER_JSON.getBytes(StandardCharsets.UTF_8));
@@ -83,6 +85,7 @@ public class TokenService {
         long exp = requiredLong(payload, "exp");
         long iat = requiredLong(payload, "iat");
         long uid = requiredLong(payload, "uid");
+        UserRole role = requiredRole(payload);
         String sub = payload.path("sub").asText(null);
         if (sub == null || sub.isBlank()) {
             throw new InvalidTokenException("Missing subject");
@@ -90,7 +93,7 @@ public class TokenService {
         if (exp <= Instant.now(clock).getEpochSecond()) {
             throw new InvalidTokenException("Token expired");
         }
-        return new TokenClaims(uid, sub, Instant.ofEpochSecond(iat), Instant.ofEpochSecond(exp));
+        return new TokenClaims(uid, sub, role, Instant.ofEpochSecond(iat), Instant.ofEpochSecond(exp));
     }
 
     private byte[] sign(String input) {
@@ -141,5 +144,17 @@ public class TokenService {
             throw new InvalidTokenException("Missing or invalid claim " + claim);
         }
         return node.asLong();
+    }
+
+    private static UserRole requiredRole(JsonNode payload) {
+        String value = payload.path("role").asText(null);
+        if (value == null) {
+            throw new InvalidTokenException("Missing claim role");
+        }
+        try {
+            return UserRole.valueOf(value);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidTokenException("Unknown role " + value, ex);
+        }
     }
 }
