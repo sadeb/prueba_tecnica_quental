@@ -8,12 +8,12 @@ Requisito origen: [spec/01-entorno-y-versiones.md](../spec/01-entorno-y-versione
 | JDK | 11 (Temurin) | `maven.compiler.release=11`. Imagen build: `maven:3.9.16-eclipse-temurin-11`; runtime: `eclipse-temurin:11.0.31_11-jre-jammy` (`11-jre-alpine` es solo amd64: descartada) |
 | Spring Boot | 2.7.18 | Última 2.7.x. Gestiona Spring Kafka 2.8.x, Spring Data JPA 2.7, SDN 6.3, Flyway 8.5 |
 | Build | Maven 3.9 (wrapper `mvnw` para el humano; la imagen Docker usa `maven:3.9.16`) | Sin Gradle: menos superficie |
-| spring-kafka | 2.8.11 (gestionada) | kafka-clients 3.1.x; compatible con broker 2.0.1 (ver [kafka-2.0.1.md](kafka-2.0.1.md)) |
+| spring-kafka | 2.8.11 (gestionada) | Artefacto `org.springframework.kafka:spring-kafka` (no existe starter). kafka-clients 3.1.x; compatible con broker 2.0.1 (ver [kafka-2.0.1.md](kafka-2.0.1.md)) |
 | Spring Data JPA + Hibernate | gestionadas (Hibernate 5.6) | Driver `org.postgresql:postgresql` gestionado |
 | Spring Data Neo4j | 6.3.x (gestionada) | Driver Java 4.4; servidor Neo4j 4.4 |
 | Flyway | 8.5.x (gestionada) | Bonus migraciones ([spec/08-bonus.md](../spec/08-bonus.md) B4) |
 | Spring Security | 5.7.x (gestionada) | Solo filtro + `PasswordEncoder`; token propio ([ADR-005](../decisions/ADR-005-autenticacion.md)) |
-| springdoc-openapi-ui | 1.7.0 | Última rama 1.x, compatible con Boot 2.x / JDK 11 |
+| springdoc-openapi-ui | 1.8.0 | Última release de la rama 1.x (oct-2024), compatible con Boot 2.x / JDK 11. Activable por `SWAGGER_ENABLED` ([ADR-009](../decisions/ADR-009-openapi-toggle.md)) |
 | Validación | `spring-boot-starter-validation` (Hibernate Validator 6, javax) | Boot 2.7 usa `javax.*`, no `jakarta.*` |
 
 ## Infraestructura (docker-compose)

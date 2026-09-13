@@ -1,0 +1,54 @@
+# Test profile: H2 in PostgreSQL mode + Flyway, embedded Kafka (bootstrap servers injected by
+# @EmbeddedKafka), Neo4j auto-configuration excluded (GraphRepository is mocked). No network, no Docker.
+spring:
+  datasource:
+    # One database per Spring context (random name): SyncFlowIT commits rows that must not leak into slices.
+    url: jdbc:h2:mem:rickmorty-${random.uuid};MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none            # H2 reports "timestamp with time zone" with a JDBC type Hibernate's validate rejects
+  flyway:
+    enabled: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.neo4j.Neo4jAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.neo4j.Neo4jDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.neo4j.Neo4jRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.neo4j.Neo4jReactiveDataAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.neo4j.Neo4jReactiveRepositoriesAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.neo4j.Neo4jHealthContributorAutoConfiguration
+  kafka:
+    admin:
+      fail-fast: false
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+external-api:
+  base-url: http://localhost:1/api
+  connect-timeout: 1s
+  read-timeout: 1s
+  max-retries: 2
+  retry-backoff: 1ms
+
+sync:
+  on-startup: false
+
+auth:
+  token:
+    secret: test-secret-test-secret-test-secret-0123
+    ttl-hours: 1
+
+logging:
+  level:
+    com.quental.rickmorty: INFO
+    org.apache.kafka: WARN
+    kafka: WARN
+    org.apache.zookeeper: WARN
+    state.change.logger: WARN

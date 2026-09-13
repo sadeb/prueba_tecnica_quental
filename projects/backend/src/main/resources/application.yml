@@ -1,0 +1,100 @@
+# Default profile = local development against the compose infrastructure (host ports).
+# Inside compose every value is overridden by SPRING_* / SYNC_* / AUTH_* env vars (relaxed binding).
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+spring:
+  application:
+    name: rickmorty-backend
+  datasource:
+    url: jdbc:postgresql://localhost:4432/rickmorty
+    username: rickmorty
+    password: rickmorty
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate          # schema owned by Flyway; Hibernate only checks it
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  neo4j:
+    uri: bolt://localhost:4788    # compose publishes 4788 -> 7687
+    authentication:
+      username: neo4j
+      password: neo4jpass
+  kafka:
+    bootstrap-servers: localhost:4093   # compose publishes 4093 -> 9092 (see README: advertised listener caveat)
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        # kafka-clients 3.1 default; broker 2.0.1 supports it. Switch to false if the broker rejects it (ADR-003).
+        enable.idempotence: ${KAFKA_PRODUCER_IDEMPOTENCE:true}
+    consumer:
+      group-id: rm-sync-consumer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    admin:
+      fail-fast: true             # topics are declared by the app; auto-create is off in the broker
+  mvc:
+    throw-exception-if-no-handler-found: true   # unmapped route -> NoHandlerFoundException -> 404 ApiError
+  web:
+    resources:
+      add-mappings: false                        # no static resource handler swallowing unknown paths
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+# OpenAPI / Swagger UI can be switched off in production with SWAGGER_ENABLED=false (ADR-009).
+springdoc:
+  api-docs:
+    enabled: ${SWAGGER_ENABLED:true}
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: ${SWAGGER_ENABLED:true}
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+external-api:
+  base-url: https://rickandmortyapi.com/api
+  connect-timeout: 5s
+  read-timeout: 10s
+  max-retries: 3
+  retry-backoff: 500ms
+
+sync:
+  on-startup: false
+  topics:
+    characters: rm.characters
+    episodes: rm.episodes
+    locations: rm.locations
+  dlt-suffix: .DLT
+
+auth:
+  token:
+    # Development default (>= 32 bytes). Overridden by AUTH_TOKEN_SECRET in compose (.env).
+    secret: dev-only-secret-change-me-0123456789abcdef
+    ttl-hours: 8
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200,http://localhost:4300
+
+logging:
+  level:
+    com.quental.rickmorty: INFO

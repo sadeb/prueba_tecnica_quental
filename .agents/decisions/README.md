@@ -14,5 +14,6 @@ Estados: `Propuesta` (redactada por el agente, pendiente de confirmación humana
 | [ADR-006](ADR-006-mensajes-irrecuperables.md) | Dead Letter Topic y registro de mensajes procesados (bonus B3) | Propuesta |
 | [ADR-007](ADR-007-best-practices-angular.md) | Adopción de las buenas prácticas oficiales de Angular y reglas por versión | Propuesta |
 | [ADR-008](ADR-008-imagenes-docker.md) | Imágenes Docker multi-arch, healthchecks y límites de recursos | Propuesta |
+| [ADR-009](ADR-009-openapi-toggle.md) | OpenAPI/Swagger activable por entorno (`SWAGGER_ENABLED`) | Propuesta |
 
 Plantilla: [TEMPLATE.md](TEMPLATE.md). Numerar consecutivamente. Un ADR nuevo por cada dependencia externa no listada en [references/stack-versiones.md](../references/stack-versiones.md).

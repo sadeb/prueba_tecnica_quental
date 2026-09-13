@@ -14,7 +14,8 @@
     │   ├── Dockerfile
     │   ├── .dockerignore
     │   └── src/main/java/com/quental/rickmorty/...   (ver java-spring.md)
-    │   └── src/main/resources/{application.yml, application-test.yml, db/migration/}
+    │   ├── src/main/resources/{application.yml, db/migration/}
+    │   └── src/test/resources/application-test.yml   (perfil test solo en el classpath de tests)
     └── frontend/             # Angular CLI
         ├── package.json
         ├── Dockerfile

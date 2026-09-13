@@ -4,12 +4,6 @@
 # los parametros de cada JVM / shared_buffers.
 name: rickmorty
 
-x-logging: &logging
-  driver: json-file
-  options:
-    max-size: "5m"
-    max-file: "2"
-
 services:
 
   postgres:
@@ -20,7 +14,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - "4432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
@@ -32,12 +26,13 @@ services:
       retries: 5
       start_period: 30s
       start_interval: 3s
+    profiles:
+      - infra
     deploy:
       resources:
         limits:
           memory: 256M
     restart: unless-stopped
-    logging: *logging
 
   neo4j:
     image: neo4j:4.4.48-community
@@ -49,8 +44,8 @@ services:
       NEO4J_dbms_memory_heap_max__size: 256m
       NEO4J_dbms_memory_pagecache_size: 64m
     ports:
-      - "7575:7474"
-      - "7788:7687"
+      - "4575:7474"
+      - "4788:7687"
     volumes:
       - neo4j_data:/data
     healthcheck:
@@ -61,12 +56,13 @@ services:
       start_period: 90s
       start_interval: 5s
     stop_grace_period: 30s
+    profiles:
+      - infra
     deploy:
       resources:
         limits:
           memory: 640M
     restart: unless-stopped
-    logging: *logging
 
   zookeeper:
     image: zookeeper:3.4.13
@@ -85,12 +81,13 @@ services:
       retries: 5
       start_period: 30s
       start_interval: 3s
+    profiles:
+      - infra
     deploy:
       resources:
         limits:
           memory: 256M
     restart: unless-stopped
-    logging: *logging
 
   kafka:
     image: wurstmeister/kafka:2.12-2.0.1
@@ -117,7 +114,7 @@ services:
       KAFKA_LOG_DIRS: /kafka/kafka-logs
       KAFKA_HEAP_OPTS: "-Xms128m -Xmx256m"
     ports:
-      - "9093:9092"
+      - "4093:9092"
     volumes:
       - kafka_data:/kafka
     healthcheck:
@@ -131,16 +128,20 @@ services:
       start_period: 90s
       start_interval: 5s
     stop_grace_period: 30s
+    profiles:
+      - infra
     deploy:
       resources:
         limits:
           memory: 640M
     restart: unless-stopped
-    logging: *logging
 
   backend:
     build: ./backend
     image: rickmorty-backend:dev
+    # Imagen local, nunca en un registry: `up` siempre construye y no intenta hacer pull
+    # (sin esto Compose prueba el pull primero y muestra 'pull access denied').
+    pull_policy: build
     depends_on:
       postgres:
         condition: service_healthy
@@ -164,8 +165,10 @@ services:
       SYNC_ON_STARTUP: "false"
       AUTH_TOKEN_SECRET: ${AUTH_TOKEN_SECRET}
       AUTH_TOKEN_TTL_HOURS: ${AUTH_TOKEN_TTL_HOURS}
+      # Swagger UI y /v3/api-docs desactivables en produccion (ADR-009).
+      SWAGGER_ENABLED: ${SWAGGER_ENABLED:-true}
     ports:
-      - "8181:8080"
+      - "4080:8080"
     healthcheck:
       # curl viene en eclipse-temurin:*-jammy. -f falla con 503 (health DOWN).
       test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/actuator/health"]
@@ -174,16 +177,18 @@ services:
       retries: 5
       start_period: 90s
       start_interval: 5s
+    profiles:
+      - apps
     deploy:
       resources:
         limits:
           memory: 512M
     restart: unless-stopped
-    logging: *logging
 
   frontend:
     build: ./frontend
     image: rickmorty-frontend:dev
+    pull_policy: build
     depends_on:
       backend:
         condition: service_healthy
@@ -196,12 +201,13 @@ services:
       retries: 3
       start_period: 10s
       start_interval: 2s
+    profiles:
+      - apps
     deploy:
       resources:
         limits:
           memory: 32M
     restart: unless-stopped
-    logging: *logging
 
 # Kafka y ZooKeeper se persisten juntos: si solo persistiera Kafka, tras `down`+`up` el broker
 # arrancaria con logs que ZK no conoce. `docker compose down -v` deja estado limpio.

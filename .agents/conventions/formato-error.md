@@ -19,7 +19,8 @@ Toda respuesta de error de la API propia (4xx/5xx) usa el mismo cuerpo, producid
 | Credenciales incorrectas / token ausente, inválido o caducado | 401 | `UNAUTHORIZED` |
 | Token válido sin permiso (si aplica) | 403 | `FORBIDDEN` |
 | Recurso inexistente (`NotFoundException`, ruta no mapeada) | 404 | `NOT_FOUND` |
-| Conflicto (usuario existente, sync en curso) | 409 | `CONFLICT` |
+| Método HTTP no soportado en la ruta (`HttpRequestMethodNotSupportedException`) | 405 | `METHOD_NOT_ALLOWED` |
+| Conflicto (usuario existente, favorito duplicado concurrente, sync en curso) | 409 | `CONFLICT` |
 | Fallo de la fuente externa durante una operación síncrona | 502 | `EXTERNAL_SERVICE_ERROR` |
 | Neo4j/Postgres/Kafka no disponibles | 503 | `SERVICE_UNAVAILABLE` |
 | Cualquier otra excepción | 500 | `INTERNAL_ERROR` (mensaje genérico; detalle solo en log) |
