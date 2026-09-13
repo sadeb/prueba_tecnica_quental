@@ -155,6 +155,205 @@ select:focus-visible {
     transform: rotate(360deg);
   }
 }
+/* Controles compartidos: botones con icono, paginación, acción destructiva y diálogos */
+.icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+.icon-button:hover:not(:disabled) {
+  border-color: var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-cyan) 12%, white);
+}
+.icon-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.icon-button.edit {
+  color: var(--color-teal-dark);
+}
+.icon-button.delete {
+  color: var(--color-coral-dark);
+}
+.icon-button.delete:hover:not(:disabled) {
+  border-color: var(--color-coral-dark);
+  background: color-mix(in srgb, var(--color-coral) 12%, white);
+}
+.icon-button.add {
+  border-color: var(--color-ink);
+  background: var(--color-lime);
+}
+.icon-button.add:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-lime) 80%, white);
+}
+.page-button {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0;
+  padding: 0 0.6rem;
+  background: white;
+  color: var(--color-ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.page-button:hover:not(:disabled):not(.is-current) {
+  border-color: var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-cyan) 10%, white);
+}
+.page-button.is-current {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.page-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.danger-action {
+  min-block-size: 2.75rem;
+  border: 1px solid var(--color-coral-dark);
+  border-radius: 0;
+  padding: 0.78rem 1rem;
+  background: var(--color-coral-dark);
+  color: white;
+  font-weight: 780;
+}
+.danger-action:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.app-dialog {
+  inline-size: min(100% - 2rem, 34rem);
+  max-inline-size: none;
+  max-block-size: min(100% - 2rem, 90dvh);
+  margin: auto;
+  border: 1px solid var(--color-ink);
+  border-radius: 0;
+  padding: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: 0.6rem 0.6rem 0 var(--color-cyan);
+}
+.app-dialog.danger {
+  box-shadow: 0.6rem 0.6rem 0 var(--color-coral);
+}
+.app-dialog::backdrop {
+  background: rgba(16, 24, 38, 0.55);
+  backdrop-filter: blur(2px);
+}
+.dialog-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+.dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dialog-heading > div {
+  min-inline-size: 0;
+}
+.dialog-heading h2 {
+  margin: 0.4rem 0 0;
+  font: 760 clamp(1.5rem, 5vw, 2rem) / 1 var(--font-display);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.dialog-heading .icon-button {
+  margin: -0.5rem -0.5rem 0 0;
+  color: var(--color-muted);
+}
+.dialog-help {
+  margin: 0;
+  color: var(--color-muted);
+}
+.dialog-card .alert-panel {
+  margin: 0;
+}
+.app-dialog .field-group {
+  display: grid;
+  gap: 0.5rem;
+}
+.app-dialog .field-group label,
+.app-dialog .account-status label {
+  font-weight: 750;
+}
+.app-dialog .field-group input {
+  inline-size: 100%;
+  min-inline-size: 0;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0;
+  padding: 0.75rem 0.9rem;
+  background: white;
+  color: var(--color-ink);
+}
+.app-dialog .field-group input:focus {
+  border-color: var(--color-teal-dark);
+  outline: 0.2rem solid color-mix(in srgb, var(--color-cyan) 42%, transparent);
+}
+.app-dialog .field-error,
+.app-dialog .field-help {
+  margin: 0;
+  font-size: 0.875rem;
+}
+.app-dialog .field-error {
+  color: var(--color-coral-dark);
+}
+.app-dialog .field-help {
+  color: var(--color-muted);
+}
+.app-dialog .account-status label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-block-size: 2.75rem;
+  margin: 0;
+}
+.app-dialog .account-status input[type='checkbox'] {
+  inline-size: 1.25rem;
+  min-block-size: 1.25rem;
+  accent-color: var(--color-teal-dark);
+}
+.dialog-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.dialog-actions > button {
+  inline-size: 100%;
+  justify-content: center;
+}
+@media (min-width: 36rem) {
+  .dialog-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  .dialog-actions > button {
+    inline-size: auto;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -54,7 +54,11 @@ Evidencia ya incorporada para sincronización:
 
 Pendiente: conservar esta cobertura al modificar el contrato `SyncRun` y añadir pruebas
 para los demás servicios HTTP y flujos indicados arriba. El cliente de alta
-administrativa ya cuenta con una prueba HTTP ejecutada correctamente.
+administrativa ya cuenta con una prueba HTTP ejecutada correctamente. La ampliación del
+cliente y la pantalla de gestión de usuarios incluye pruebas de listado, ordenación,
+alta por diálogo y borrado confirmado, además de una prueba MockMvc de ordenación con
+lista blanca; su ejecución posterior al rediseño del datatable sigue pendiente de
+autorización, igual que la QA responsive de la tabla, los diálogos y los toasts.
 
 Criterio de cierre: las rutas privadas, la expiración y el manejo de errores están
 cubiertos por pruebas reproducibles.

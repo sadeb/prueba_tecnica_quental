@@ -1,12 +1,9 @@
 package com.quental.rickmorty.auth;
 
-import com.quental.rickmorty.auth.api.CreateUserRequest;
 import com.quental.rickmorty.auth.api.LoginRequest;
 import com.quental.rickmorty.auth.api.TokenResponse;
 import com.quental.rickmorty.auth.api.UserResponse;
 import com.quental.rickmorty.auth.domain.UserEntity;
-import com.quental.rickmorty.auth.domain.UserRole;
-import com.quental.rickmorty.shared.ConflictException;
 import com.quental.rickmorty.shared.NotFoundException;
 import java.util.Locale;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,16 +22,6 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
-    }
-
-    @Transactional
-    public UserResponse createUser(CreateUserRequest request) {
-        String username = normalize(request.getUsername());
-        if (userRepository.existsByUsernameIgnoreCase(username)) {
-            throw new ConflictException("Username is already registered");
-        }
-        UserEntity user = userRepository.save(new UserEntity(username, passwordEncoder.encode(request.getPassword()), UserRole.USER));
-        return UserResponse.from(user);
     }
 
     @Transactional

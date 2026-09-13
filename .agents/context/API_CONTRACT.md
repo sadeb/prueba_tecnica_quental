@@ -52,7 +52,10 @@ La identidad de usuario se obtiene del token y nunca de un identificador enviado
 
 | Método y ruta | Acceso | Comportamiento |
 | --- | --- | --- |
+| `GET /api/v1/admin/users` | `ADMIN` | Lista paginada y filtrable mediante `search`; admite `sort` (`username`, `role`, `enabled`, `createdAt`, `id`) y `direction` (`asc`/`desc`), con `username` ascendente por defecto y `id` como desempate |
 | `POST /api/v1/admin/users` | `ADMIN` | Crea una cuenta habilitada con rol `USER`; nunca inicia sesión por ella |
+| `PUT /api/v1/admin/users/{userId}` | `ADMIN` | Actualiza nombre, estado y opcionalmente contraseña; el rol no es editable |
+| `DELETE /api/v1/admin/users/{userId}` | `ADMIN` | Elimina una cuenta `USER`, sus sesiones y favoritos mediante cascada |
 | `POST /api/v1/admin/sync-runs` | `ADMIN` | Inicia una ejecución y devuelve `202 Accepted` con su identificador |
 | `GET /api/v1/admin/sync-runs/{syncRunId}` | `ADMIN` | Expone estado, contadores y fallos parciales |
 | `GET /api/v1/admin/sync-runs` | `ADMIN` | Historial paginado de ejecuciones |
@@ -65,6 +68,12 @@ de idempotencia HTTP para deduplicar solicitudes de inicio.
 Cada ejecución incluye `trigger`, con valor `MANUAL` cuando procede del endpoint y
 `AUTOMATIC` cuando la inicia la configuración de arranque. Ambos tipos se persisten y
 aparecen en el mismo historial.
+
+Un valor de `sort` o `direction` fuera de los admitidos responde `400` con código
+`INVALID_REQUEST`.
+
+Las cuentas `ADMIN` aparecen en el listado, pero no se pueden editar ni eliminar.
+El cambio de contraseña de una cuenta `USER` es opcional durante la edición y nunca expone el hash existente.
 
 ## Códigos transversales
 

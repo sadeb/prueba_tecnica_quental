@@ -86,6 +86,9 @@ Campos mínimos:
 - `PDF-BONUS` + `USR`: implementar autenticación propia sin emisor/validador externo.
 - `USR` + `ADR-0004`: utilizar tokens opacos aleatorios de 256 bits; almacenar solo el hash y soportar expiración y revocación.
 - `USR`: proteger sincronización y administración con rol `ADMIN`; crear el administrador inicial desde variables de entorno.
+- `USR` (2026-09-13): permitir que un administrador liste, busque, edite, active,
+  desactive y elimine cuentas desde un datatable Bootstrap; las cuentas `ADMIN` no se
+  pueden editar ni eliminar para preservar el acceso administrativo y el bootstrap.
 
 ## 5. SPA Angular
 
@@ -101,6 +104,8 @@ Campos mínimos:
 - `USR`: después de iniciar una sincronización manual, actualizar su estado en la SPA cada minuto hasta que finalice.
 - `USR`: usar signals de Angular para el estado reactivo local y traducir para el usuario los estados y fallos técnicos de sincronización.
 - `USR`: no incorporar Playwright; usar pruebas unitarias, de componentes, servicios y guards.
+- `USR` (2026-09-13): la pantalla administrativa de usuarios debe usar paginación de
+  servidor, confirmación explícita de borrado y una adaptación legible en móvil.
 
 ## 6. Pruebas
 

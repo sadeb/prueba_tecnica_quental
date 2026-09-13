@@ -52,7 +52,9 @@ public class UserEntity {
         this.createdAt = Instant.now();
     }
 
+    public void updateUsername(String username) { this.username = username; }
     public void updatePassword(String passwordHash) { this.passwordHash = passwordHash; }
+    public void updateEnabled(boolean enabled) { this.enabled = enabled; }
     public boolean addFavorite(CharacterEntity character) { return favorites.add(character); }
     public boolean removeFavorite(CharacterEntity character) { return favorites.remove(character); }
     public Long getId() { return id; }

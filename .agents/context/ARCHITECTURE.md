@@ -40,7 +40,7 @@ Neo4j query layer <---- Kafka consumers <---- Kafka
 
 Se adoptará una organización por capacidad con separación interna de responsabilidades:
 
-- `auth`: alta administrativa de usuarios, login, tokens opacos, roles y bootstrap administrativo.
+- `auth`: gestión administrativa paginada de usuarios, login, tokens opacos, roles y bootstrap administrativo.
 - `catalog`: personajes, episodios, localizaciones, filtros y detalle.
 - `favorites`: favoritos del usuario autenticado.
 - `sync`: coordinación, cliente externo, payload crudo, productor, consumidor e idempotencia.
@@ -95,6 +95,8 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 - Endpoints administrativos restringidos a `ADMIN`; credenciales iniciales solo mediante variables de entorno.
 - No existe autorregistro: solo un administrador autenticado puede crear cuentas, que
   nacen habilitadas con rol `USER`.
+- La administración permite editar y eliminar cuentas estándar. Modificar o eliminar
+  una cuenta `ADMIN` se rechaza como conflicto para conservar una vía de administración.
 
 ## Frontend
 
@@ -102,7 +104,9 @@ Neo4j contendrá nodos con identidad y los atributos mínimos necesarios para co
 - Servicios para API y estado de sesión; interceptor para autorización y normalización de fallos.
 - Guards para rutas privadas y administrativas.
 - Componentes de presentación sin llamadas HTTP directas.
-- La pantalla administrativa usa signals para su estado local y consulta cada minuto la
+- La pantalla administrativa de usuarios usa una tabla Bootstrap con búsqueda y
+  paginación de servidor, formularios Signal Forms y confirmación explícita de borrado.
+- La pantalla de sincronización usa signals para su estado local y consulta cada minuto la
   ejecución manual recién iniciada hasta alcanzar un estado terminal.
 - Modelado explícito de `loading`, `empty`, `success` y `error`.
 - Persistencia del token entre recargas y cierre controlado de sesión ante `401`/`403`.

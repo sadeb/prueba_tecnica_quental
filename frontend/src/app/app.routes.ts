@@ -30,7 +30,7 @@ export const routes: Routes = [
         path: 'admin/users',
         canActivate: [adminGuard],
         loadComponent: () =>
-          import('./features/admin/user-create-page').then((module) => module.UserCreatePage),
+          import('./features/admin/user-management-page').then((module) => module.UserManagementPage),
       },
       {
         path: 'admin/sync',

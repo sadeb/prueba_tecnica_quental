@@ -103,7 +103,8 @@ Rick and Morty API ──sync──> raw payload + transactional outbox
 | `GET` | `/api/v1/characters/{id}` | Autenticado |
 | `GET` | `/api/v1/characters/{id}/related` | Autenticado |
 | `GET/PUT/DELETE` | `/api/v1/users/me/favorites...` | Autenticado |
-| `POST` | `/api/v1/admin/users` | `ADMIN` |
+| `GET/POST` | `/api/v1/admin/users` | `ADMIN` |
+| `PUT/DELETE` | `/api/v1/admin/users/{id}` | `ADMIN` |
 | `POST/GET` | `/api/v1/admin/sync-runs...` | `ADMIN` |
 
 La especificación ejecutable y todos los esquemas están disponibles en Swagger UI cuando el backend está iniciado.

@@ -159,6 +159,19 @@ proyección y consulta Neo4j.
   cuando sí lo está. El catálogo recupera todas las páginas de favoritos para reflejar
   el estado real y permite alternarlo sin recargar; se añadieron pruebas de componente
   y del cliente paginado, pendientes de ejecución por requerir autorización.
+- `/admin/users` incorpora un directorio paginado y filtrable en una tabla Bootstrap,
+  con alta, edición, activación/desactivación y eliminación confirmada. La API añade
+  `GET`, `PUT` y `DELETE` administrativos; el rol no es editable y las cuentas `ADMIN`
+  no se pueden editar ni eliminar. Se añadieron pruebas MockMvc, del cliente HTTP y
+  de la pantalla, pendientes de ejecución por requerir autorización.
+- `/admin/users` se rediseñó como datatable: barra de herramientas con búsqueda
+  diferida y tamaño de página, cabeceras ordenables con `aria-sort`, columna de acciones
+  con iconos SVG (agregar, editar, eliminar) y pie con rango y paginación numerada. Alta,
+  edición y confirmación de borrado se abren en `<dialog>` nativos y los resultados se
+  notifican con toasts mediante el nuevo `ToastService` compartido montado en el shell.
+  La API de listado admite `sort` y `direction` con lista blanca de campos y una prueba
+  MockMvc nueva. Las pruebas del componente cubren ordenación, alta por diálogo y
+  borrado confirmado; su ejecución y la QA responsive quedan pendientes de autorización.
 
 ## Riesgos abiertos
 

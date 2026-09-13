@@ -15,6 +15,13 @@ canónicas de `AGENTS.md`; no sustituye el contrato HTTP ni los guards.
 - Cada feature conserva sus reglas de composición en su propio fichero CSS. No añadir
   llamadas HTTP a componentes de presentación ni desplazar reglas globales a una
   feature sin una razón concreta.
+- Los controles compartidos `.icon-button`, `.icon-label`, `.page-button`,
+  `.danger-action` y el diálogo `.app-dialog` (cabecera, campos, acciones) viven en
+  `styles.css`. Angular limita cada hoja de componente a 8 kB (aviso desde 4 kB); no
+  volver a duplicar esos controles dentro de una feature.
+- `frontend/src/app/shared/` contiene piezas reutilizables: `icon/app-icon` (SVG inline
+  por nombre) y `toast/` (servicio con signals y contenedor fijo). Reutilizarlas antes
+  de añadir una librería de iconos o de notificaciones.
 
 ## Reglas obligatorias
 
@@ -70,10 +77,30 @@ navegación activos para resolver falta de espacio.
 
 ## Administración de usuarios
 
-- `/admin/users` conserva una sola columna en móvil y separa el protocolo de acceso del
-  formulario a partir de `48rem`.
+- `/admin/users` presenta la cabecera de página con la acción principal `Nuevo usuario`
+  y, debajo, un único panel de datatable: barra de herramientas, tabla, y pie con rango
+  de filas y paginación numerada.
+- El datatable se construye con la tabla de Bootstrap y estilos propios; no se incorpora
+  ningún plugin. Búsqueda (con retardo de 350 ms y envío inmediato con Intro), tamaño de
+  página (10, 25 o 50), ordenación por columna y paginación se resuelven en la API.
+- Las cabeceras `Usuario`, `Rol`, `Estado` y `Creación` son botones de ordenación con
+  `aria-sort`; la cabecera `Acciones` incluye un icono `+` para agregar usuarios.
+- La columna `Acciones` usa botones de icono de 44 px (lápiz para editar, papelera para
+  eliminar) con `aria-label` y `title` descriptivos. Los iconos son SVG inline servidos
+  por el componente compartido `app-icon`; no se instala ninguna fuente de iconos.
+- Alta y edición comparten un `<dialog>` nativo con un único formulario de Signal Forms
+  cuyo modo determina si la contraseña es obligatoria. La eliminación usa un segundo
+  `<dialog>` con `role="alertdialog"` y confirmación explícita. Escape y el clic en el
+  fondo cierran los diálogos salvo mientras hay una petición en curso.
+- Los resultados de crear, editar y eliminar se comunican mediante toasts del servicio
+  compartido `ToastService`, montado en el shell como `app-toast-container` con
+  `aria-live`. Los errores de validación de la API se muestran dentro del diálogo.
+- En móvil, las celdas se presentan como registros etiquetados sin scroll horizontal y
+  la cabecera queda oculta visualmente; a partir de `48rem` recuperan el layout tabular.
 - El formulario crea únicamente cuentas con rol `USER`; no ofrece selección de rol ni
   inicia sesión automáticamente con las credenciales creadas.
+- El rol nunca es editable. Las cuentas `ADMIN` se muestran para dar visibilidad, pero
+  sus iconos de editar y eliminar aparecen deshabilitados.
 
 ## Sincronización
 

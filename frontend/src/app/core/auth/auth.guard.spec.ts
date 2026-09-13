@@ -62,7 +62,7 @@ describe('authentication route guards', () => {
     expect(router.url).toBe('/characters');
   });
 
-  it('allows an administrator to open the user creation screen', async () => {
+  it('allows an administrator to open the user management screen', async () => {
     setSession('ADMIN');
     const harness = await RouterTestingHarness.create('/login');
 
