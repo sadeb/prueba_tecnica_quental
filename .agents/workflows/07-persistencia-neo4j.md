@@ -20,7 +20,7 @@ Tras sync, consulta manual en Neo4j Browser devuelve relacionados de Rick (id 1)
 
 ## Ejecuta y pega
 ```bash
-docker compose exec neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" "MATCH (c:Character {externalId:1})-[:APPEARS_IN]->(e)<-[:APPEARS_IN]-(o) WHERE o<>c RETURN o.name, count(e) AS n ORDER BY n DESC LIMIT 5"
+cd projects && docker compose exec neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" "MATCH (c:Character {externalId:1})-[:APPEARS_IN]->(e)<-[:APPEARS_IN]-(o) WHERE o<>c RETURN o.name, count(e) AS n ORDER BY n DESC LIMIT 5"
 ```
 
 ## Commit propuesto

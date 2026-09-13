@@ -20,7 +20,7 @@ Flyway aplica `V1` al arrancar; tests del paso en verde (humano).
 
 ## Ejecuta y pega
 ```bash
-cd backend && ./mvnw -q test -Dtest='*PersistenceServiceTest,*RepositoryTest' && echo TESTS_OK
+cd projects/backend && ./mvnw -q test -Dtest='*PersistenceServiceTest,*RepositoryTest' && echo TESTS_OK
 ```
 
 ## Commit propuesto

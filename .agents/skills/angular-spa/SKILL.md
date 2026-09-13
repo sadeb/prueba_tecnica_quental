@@ -1,6 +1,6 @@
 ---
 name: angular-spa
-description: Entrada única para escribir el frontend Angular standalone con Bootstrap en este proyecto. Buenas prácticas oficiales (angular.dev) adaptadas, TypeScript estricto, reglas que dependen de la versión instalada, lista de prohibiciones e índice de las cuatro hojas por tipo de fichero (componentes-plantillas, signals-estado, formularios, servicios-di). Cargar antes de tocar cualquier fichero de frontend/.
+description: Entrada única para escribir el frontend Angular standalone con Bootstrap en este proyecto. Buenas prácticas oficiales (angular.dev) adaptadas, TypeScript estricto, reglas que dependen de la versión instalada, lista de prohibiciones e índice de las cuatro hojas por tipo de fichero (componentes-plantillas, signals-estado, formularios, servicios-di). Cargar antes de tocar cualquier fichero de projects/frontend/.
 ---
 
 # angular-spa

@@ -1,7 +1,7 @@
 # Rol · Desarrollador backend (Java 11 · Spring Boot 2.7)
 
 ## Misión
-Implementar el paso de workflow asignado en `backend/` siguiendo [conventions/java-spring.md](../conventions/java-spring.md) y los ADRs aplicables.
+Implementar el paso de workflow asignado en `projects/backend/` siguiendo [conventions/java-spring.md](../conventions/java-spring.md) y los ADRs aplicables.
 
 ## Carga de contexto
 El workflow del paso (02–11), el/los ADR enlazados, la referencia técnica enlazada, [nomenclatura](../conventions/nomenclatura.md). Skills: [spring-boot-jdk11](../skills/spring-boot-jdk11/SKILL.md), [kafka-sync](../skills/kafka-sync/SKILL.md), [neo4j-graph](../skills/neo4j-graph/SKILL.md) según el paso.

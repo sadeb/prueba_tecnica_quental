@@ -30,7 +30,7 @@ Cumplir [spec/07](../spec/07-pruebas.md) puntos 1–3 en backend. Se ejecuta por
 
 ## Ejecuta y pega
 ```bash
-cd backend && ./mvnw test 2>&1 | grep -E "Tests run:|FAIL|ERROR\]" | tail -20
+cd projects/backend && ./mvnw test 2>&1 | grep -E "Tests run:|FAIL|ERROR\]" | tail -20
 ```
 
 ## Commit propuesto

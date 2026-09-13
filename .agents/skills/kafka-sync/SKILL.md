@@ -1,6 +1,6 @@
 ---
 name: kafka-sync
-description: Procedimiento para implementar la sincronización con Kafka 2.0.1 y spring-kafka 2.8: productor paginado, consumidor idempotente, topics, claves, DLT y trazabilidad. Cargar al trabajar en backend/src/main/java/.../sync/.
+description: Procedimiento para implementar la sincronización con Kafka 2.0.1 y spring-kafka 2.8: productor paginado, consumidor idempotente, topics, claves, DLT y trazabilidad. Cargar al trabajar en projects/backend/src/main/java/.../sync/.
 ---
 
 # kafka-sync

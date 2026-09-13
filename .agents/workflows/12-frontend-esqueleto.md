@@ -16,14 +16,14 @@ Proyecto Angular standalone con Bootstrap, estructura de carpetas, `HttpClient` 
 5. `shared/`: `loading-spinner`, `empty-state`, `error-alert` (con output `retry`), `pagination`; modelo `ViewState<T>`.
 6. `app.config.ts` con `provideRouter`, `provideHttpClient(withInterceptors([...]))`. `app.routes.ts` con rutas lazy y redirección raíz → `/characters`.
 7. Layout: navbar Bootstrap con enlaces `Characters`, `Favorites`, `Login/Logout`.
-8. `frontend/Dockerfile` (node build → nginx) y `nginx.conf` (SPA fallback + proxy `/api`). Descomentar `frontend` en compose.
+8. `projects/frontend/Dockerfile` y `nginx.conf` ya existen ([01](01-infraestructura-docker.md)): esperan `package-lock.json` y salida en `dist/frontend/browser` (application builder, sin SSR: responder "No" a SSR en `ng new`). Comprobar `outputPath` en `angular.json`; `apiBaseUrl` relativo `/api` en todos los environments (nginx hace el proxy; `proxy.conf.json` en `ng serve`). Importar Bootstrap en `styles.scss` global (dentro de un componente rompe el budget `anyComponentStyle`).
 
 ## Hecho cuando
 `ng build` sin errores; la app arranca y muestra el layout con rutas vacías.
 
 ## Ejecuta y pega
 ```bash
-cd frontend && npx ng build --configuration development 2>&1 | tail -5
+cd projects/frontend && npx ng build --configuration development 2>&1 | tail -5
 ```
 
 ## Commit propuesto

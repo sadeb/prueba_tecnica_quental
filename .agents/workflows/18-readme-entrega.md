@@ -11,7 +11,7 @@ README raíz completo y verificado, ADRs en estado `Aceptada`, repositorio listo
 ## Secciones del README (en este orden)
 1. Descripción en 3 líneas y diagrama de flujo textual (fuente → productor → Kafka → consumidor → Postgres/Neo4j → API → Angular).
 2. Requisitos previos (Docker, opcionalmente JDK 11 y Node para desarrollo).
-3. Arranque con `docker compose up --build` y URLs (frontend, API, Swagger, Neo4j Browser).
+3. Arranque con `cd projects && docker compose up --build` y URLs (frontend, API, Swagger, Neo4j Browser).
 4. Lanzar la sincronización (`POST /api/admin/sync` con token) y comprobar estado.
 5. Desarrollo local: backend fuera de Docker, frontend con `ng serve` y proxy.
 6. Tests: comandos backend y frontend; qué prueba `SyncFlowIT`.
@@ -22,7 +22,7 @@ README raíz completo y verificado, ADRs en estado `Aceptada`, repositorio listo
 ## Pasos
 1. Redactar con frases cortas y comandos en bloques.
 2. Pasar ADRs a `Aceptada` con el humano.
-3. Comprobación por el humano desde cero: `docker compose down -v && docker compose up --build`, seguir el README literalmente.
+3. Comprobación por el humano desde cero: `cd projects && docker compose down -v && docker compose up --build`, seguir el README literalmente.
 4. Revisión final con [revisor-codigo](../agents/revisor-codigo.md) sobre los criterios de [spec/09](../spec/09-criterios-valoracion.md).
 
 ## Hecho cuando
@@ -30,7 +30,7 @@ Un evaluador sin contexto levanta el proyecto siguiendo solo el README.
 
 ## Ejecuta y pega
 ```bash
-docker compose down -v && docker compose up --build -d && sleep 60 && docker compose ps
+cd projects && docker compose down -v && docker compose up --build -d && sleep 60 && docker compose ps
 ```
 
 ## Commit propuesto

@@ -27,7 +27,7 @@ Cumplir [spec/07](../spec/07-pruebas.md) punto 4 y, si hay tiempo, bonus B5.
 
 ## Ejecuta y pega
 ```bash
-cd frontend && npx ng test --watch=false 2>&1 | tail -15
+cd projects/frontend && npx ng test --watch=false 2>&1 | tail -15
 ```
 
 ## Commit propuesto

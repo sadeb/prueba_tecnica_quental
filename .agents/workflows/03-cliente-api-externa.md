@@ -22,7 +22,7 @@ Cliente sin dependencia de controladores ni servicios de dominio; tests del paso
 
 ## Ejecuta y pega
 ```bash
-cd backend && ./mvnw -q test -Dtest='RickAndMortyClientTest,ExternalPayloadValidatorTest,*MapperTest' && echo TESTS_OK
+cd projects/backend && ./mvnw -q test -Dtest='RickAndMortyClientTest,ExternalPayloadValidatorTest,*MapperTest' && echo TESTS_OK
 ```
 Pegar solo `Tests run:` y fallos.
 

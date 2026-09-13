@@ -6,9 +6,11 @@
 - Alternativa si aparecen problemas: sobrescribir `<kafka.version>2.8.2</kafka.version>` en el POM (spring-kafka 2.8 requiere clients ≥ 3.0, así que preferir la primera opción).
 
 ## Imágenes Docker
-- `confluentinc/cp-zookeeper:5.0.1` + `confluentinc/cp-kafka:5.0.1` (Confluent 5.0.x = Apache Kafka 2.0.x). Variables: `KAFKA_ZOOKEEPER_CONNECT`, `KAFKA_ADVERTISED_LISTENERS`, `KAFKA_LISTENER_SECURITY_PROTOCOL_MAP`, `KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1`.
-- O `wurstmeister/zookeeper` + `wurstmeister/kafka:2.12-2.0.1` (tag idéntico al enunciado; `KAFKA_CREATE_TOPICS` opcional).
-- Listeners: `INTERNAL://kafka:29092` para contenedores, `EXTERNAL://localhost:9092` para el host.
+- `zookeeper:3.4.13` (oficial, multi-arch; es la versión de ZK que empaqueta Kafka 2.0.1) + `wurstmeister/kafka:2.12-2.0.1` (tag idéntico al enunciado, multi-arch). Descartadas por ser solo amd64: `confluentinc/cp-kafka:5.0.1`/`cp-zookeeper:5.0.1`, `zookeeper:3.4.14`, `wurstmeister/zookeeper` ([ADR-008](../decisions/ADR-008-imagenes-docker.md)).
+- `wurstmeister/kafka`: cualquier `KAFKA_FOO_BAR` se convierte en `foo.bar` de `server.properties` (excepto `KAFKA_HEAP_OPTS`, `KAFKA_JVM_PERFORMANCE_OPTS`, `KAFKA_OPTS`). Obligatorios: `KAFKA_ZOOKEEPER_CONNECT` y `KAFKA_LISTENERS`. Scripts en `/opt/kafka/bin` (en `PATH`). Con `KAFKA_LISTENERS` definido no necesita el socket de Docker.
+- Listeners: `INTERNAL://kafka:29092` para contenedores, `EXTERNAL://localhost:9092` para el host. `KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL`.
+- Healthcheck: `kafka-broker-api-versions.sh --bootstrap-server 127.0.0.1:29092`. En 2.0.1 `kafka-topics.sh` solo admite `--zookeeper` (no `--bootstrap-server`, que llega en 2.2) y por tanto **no comprueba el broker**. La herramienta lanza una JVM: fijar `KAFKA_HEAP_OPTS='-Xmx48m'` en el comando porque el healthcheck hereda el heap del servicio.
+- Un solo broker: `offsets.topic.replication.factor=1`, `transaction.state.log.replication.factor=1`, `transaction.state.log.min.isr=1`. `auto.create.topics.enable=false` (topics y `.DLT` vía `NewTopic`; `spring.kafka.admin.fail-fast=true`). `log.dirs=/kafka/kafka-logs` fijo (el default de la imagen lleva el hostname del contenedor).
 
 ## spring-kafka 2.8 (lo mínimo)
 - Topics creados por la app con `NewTopic` beans (`KafkaAdmin` auto) → 1 partición, RF 1. Sin `auto.create.topics` implícito.

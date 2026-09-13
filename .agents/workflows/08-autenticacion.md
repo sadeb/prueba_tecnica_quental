@@ -23,7 +23,7 @@ Login devuelve token; `GET /api/users/me/favorites` sin token → 401 con `ApiEr
 
 ## Ejecuta y pega
 ```bash
-cd backend && ./mvnw -q test -Dtest='TokenServiceTest,AuthControllerTest,BearerTokenFilterTest' && echo TESTS_OK
+cd projects/backend && ./mvnw -q test -Dtest='TokenServiceTest,AuthControllerTest,BearerTokenFilterTest' && echo TESTS_OK
 ```
 
 ## Commit propuesto

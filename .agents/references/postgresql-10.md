@@ -1,6 +1,6 @@
 # PostgreSQL 10
 
-- Imagen `postgres:10.23`. Variables: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`. Healthcheck: `pg_isready -U $POSTGRES_USER`.
+- Imagen `postgres:10.23-alpine`. Variables: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`. Healthcheck: `pg_isready -h 127.0.0.1 -U $POSTGRES_USER -d $POSTGRES_DB` (`-h` fuerza TCP; sin él el servidor temporal de `initdb` da un falso OK).
 - Driver JDBC 42.x (gestionado por Boot) es compatible con 10.
 - Tipos útiles disponibles en 10: `jsonb` (bonus JSON crudo), `bigserial`, `timestamptz`, índices únicos parciales, `ON CONFLICT ... DO UPDATE` (upsert nativo, desde 9.5).
 - Hibernate dialect: `org.hibernate.dialect.PostgreSQL10Dialect`.

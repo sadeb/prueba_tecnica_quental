@@ -24,7 +24,7 @@ JDK 11 · Spring Boot 2.7.x · PostgreSQL 10 · Neo4j · Kafka 2.12-2.0.1 · Ang
 - Consulta términos en [`.agents/glossary.md`](.agents/glossary.md).
 
 ## Estructura prevista del repositorio
-Ver [`.agents/conventions/estructura-repositorio.md`](.agents/conventions/estructura-repositorio.md). Resumen: `backend/` (Spring Boot), `frontend/` (Angular), `docker-compose.yml`, `README.md`.
+Ver [`.agents/conventions/estructura-repositorio.md`](.agents/conventions/estructura-repositorio.md). Resumen: `projects/backend/` (Spring Boot), `projects/frontend/` (Angular), `projects/docker-compose.yml` + `projects/.env`, `README.md` raíz.
 
 ## Estado actual
-Solo existe la estructura de contexto para agentes. No hay código ni infraestructura todavía. Primer paso: [`workflows/00-bootstrap-repositorio.md`](.agents/workflows/00-bootstrap-repositorio.md).
+Existe la estructura de contexto para agentes y la infraestructura Docker ([workflows/00](.agents/workflows/00-bootstrap-repositorio.md) y [01](.agents/workflows/01-infraestructura-docker.md) hechos; [ADR-008](.agents/decisions/ADR-008-imagenes-docker.md)): `projects/docker-compose.yml`, `.env`, Dockerfiles de backend y frontend y `nginx.conf`. No hay código todavía. Siguiente paso: [`workflows/02-backend-esqueleto.md`](.agents/workflows/02-backend-esqueleto.md).

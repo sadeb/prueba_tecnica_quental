@@ -1,6 +1,6 @@
 # Neo4j 4.4 + Spring Data Neo4j 6.3
 
-- Imagen `neo4j:4.4`. Variables: `NEO4J_AUTH=neo4j/<password>`. Puertos 7474 (browser), 7687 (bolt). Healthcheck: `wget -q -O- http://localhost:7474 || exit 1`.
+- Imagen `neo4j:4.4.48-community`. Variables: `NEO4J_AUTH=neo4j/<password>` (solo aplica en la primera inicialización del volumen), `NEO4J_dbms_memory_heap_max__size=256m`, `NEO4J_dbms_memory_pagecache_size=64m`. Puertos 7474 (browser), 7687 (bolt). Healthcheck: `wget --no-verbose --tries=1 --spider http://127.0.0.1:7474 || exit 1`.
 - Propiedades Boot: `spring.neo4j.uri=bolt://neo4j:7687`, `spring.neo4j.authentication.username/password`.
 - SDN 6: `@Node`, `@Id` (usar `externalId` como id de negocio; `@Id @GeneratedValue` no es necesario), `@Relationship(type="APPEARS_IN", direction=OUTGOING)`. Repositorios `Neo4jRepository<T, Long>`; consultas con `@Query` en Cypher.
 - Para escritura idempotente **preferir Cypher `MERGE` explícito** (vía `Neo4jClient` o `@Query`) a `save()` del repositorio: `save()` de SDN reemplaza colecciones de relaciones y es fácil generar duplicados o borrados no deseados.

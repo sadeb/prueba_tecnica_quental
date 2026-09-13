@@ -20,7 +20,7 @@ Flujo completo con `curl` usando el token del [08](08-autenticacion.md).
 
 ## Ejecuta y pega
 ```bash
-cd backend && ./mvnw -q test -Dtest='Favorite*Test' && echo TESTS_OK
+cd projects/backend && ./mvnw -q test -Dtest='Favorite*Test' && echo TESTS_OK
 ```
 
 ## Commit propuesto

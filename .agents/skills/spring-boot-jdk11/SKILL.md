@@ -1,6 +1,6 @@
 ---
 name: spring-boot-jdk11
-description: Procedimiento para escribir código Java 11 con Spring Boot 2.7 en este proyecto: restricciones de lenguaje, starters, estructura de paquetes, manejo de errores y configuración. Cargar antes de tocar cualquier fichero de backend/.
+description: Procedimiento para escribir código Java 11 con Spring Boot 2.7 en este proyecto: restricciones de lenguaje, starters, estructura de paquetes, manejo de errores y configuración. Cargar antes de tocar cualquier fichero de projects/backend/.
 ---
 
 # spring-boot-jdk11

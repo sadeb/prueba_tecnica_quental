@@ -1,7 +1,7 @@
 # Rol · Desarrollador frontend (Angular standalone · Bootstrap)
 
 ## Misión
-Implementar el paso de workflow asignado en `frontend/` siguiendo [conventions/angular.md](../conventions/angular.md).
+Implementar el paso de workflow asignado en `projects/frontend/` siguiendo [conventions/angular.md](../conventions/angular.md).
 
 ## Carga de contexto
 El workflow del paso (12–15, 17), [references/angular-bootstrap.md](../references/angular-bootstrap.md), [conventions/api-rest.md](../conventions/api-rest.md) (contrato que consume), [formato-error](../conventions/formato-error.md). Skills: [angular-spa](../skills/angular-spa/SKILL.md) más **solo** la hoja del fichero que toque (su tabla indica cuál).

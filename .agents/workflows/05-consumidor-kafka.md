@@ -20,10 +20,10 @@ Tras una sync completa: `characters` = 826, `episodes` = 51, `locations` = 126 e
 
 ## Ejecuta y pega
 ```bash
-docker compose exec postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "select (select count(*) from characters) c, (select count(*) from episodes) e, (select count(*) from locations) l, (select count(*) from character_episodes) ce;"
+cd projects && docker compose exec postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "select (select count(*) from characters) c, (select count(*) from episodes) e, (select count(*) from locations) l, (select count(*) from character_episodes) ce;"
 ```
 ```bash
-docker compose exec neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" "MATCH (n) RETURN labels(n)[0] AS label, count(*) AS n"
+cd projects && docker compose exec neo4j cypher-shell -u neo4j -p "$NEO4J_PASSWORD" "MATCH (n) RETURN labels(n)[0] AS label, count(*) AS n"
 ```
 Pegar ambas tablas, antes y después de una segunda sync.
 
