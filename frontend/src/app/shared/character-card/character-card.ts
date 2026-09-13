@@ -11,8 +11,9 @@ import { CharacterSummary } from '../../core/models/catalog.models';
 })
 export class CharacterCard {
   readonly character = input.required<CharacterSummary>();
-  readonly action = input<'add' | 'remove' | null>(null);
-  readonly actionRequested = output<CharacterSummary>();
+  readonly favorite = input(false);
+  readonly pending = input(false);
+  readonly favoriteToggled = output<CharacterSummary>();
 
   protected statusClass(status: string): string {
     return status.toLowerCase() === 'alive'

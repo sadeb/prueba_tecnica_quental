@@ -37,7 +37,12 @@
   } @else {
     <section class="character-grid" aria-label="Resultados">
       @for (character of result()!.content; track character.id) {
-        <app-character-card [character]="character" [action]="'add'" (actionRequested)="addFavorite($event)" />
+        <app-character-card
+          [character]="character"
+          [favorite]="isFavorite(character.id)"
+          [pending]="favoritesLoading() || pendingFavoriteIds().has(character.id)"
+          (favoriteToggled)="toggleFavorite($event)"
+        />
       }
     </section>
     <nav class="pagination" aria-label="Paginación">

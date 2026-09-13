@@ -154,6 +154,11 @@ proyección y consulta Neo4j.
   Rick and Morty. También se tradujeron etiquetas decorativas que permanecían en inglés,
   sin alterar los valores procedentes de la API externa ni los valores enviados como
   filtros. La verificación de frontend queda pendiente de autorización de ejecución.
+- La acción de favoritos de cada tarjeta se representa mediante un corazón accesible a
+  la derecha: gris y delineado cuando el personaje no está guardado, rojo y relleno
+  cuando sí lo está. El catálogo recupera todas las páginas de favoritos para reflejar
+  el estado real y permite alternarlo sin recargar; se añadieron pruebas de componente
+  y del cliente paginado, pendientes de ejecución por requerir autorización.
 
 ## Riesgos abiertos
 

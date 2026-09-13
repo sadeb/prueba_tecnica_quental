@@ -5,6 +5,7 @@
 }
 .character-card {
   --status: var(--color-muted);
+  position: relative;
   display: grid;
   grid-template-columns: minmax(5.5rem, 6.5rem) minmax(0, 1fr);
   min-block-size: 8.5rem;
@@ -43,7 +44,7 @@
 .card-copy {
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.1rem;
+  padding: 1rem 3.9rem 1rem 1.1rem;
   min-inline-size: 0;
 }
 .eyebrow {
@@ -88,17 +89,61 @@ h2 a:hover {
   color: var(--color-muted);
   font-size: 0.8rem;
 }
-.card-action {
-  align-self: flex-start;
+.favorite-button {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 0.65rem;
+  inset-inline-end: 0.65rem;
+  display: grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  min-inline-size: 2.75rem;
   min-block-size: 2.75rem;
-  margin-block-start: auto;
-  border: 0;
-  padding: 0.5rem 0;
-  background: transparent;
-  color: var(--color-teal-dark);
-  font-weight: 750;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--color-muted) 32%, transparent);
+  border-radius: 50%;
+  padding: 0;
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.14s ease,
+    box-shadow 0.18s ease;
+}
+.favorite-button svg {
+  inline-size: 1.45rem;
+  block-size: 1.45rem;
+  overflow: visible;
+}
+.favorite-button path {
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  transition: fill 0.18s ease;
+}
+.favorite-button:hover:not(:disabled) {
+  border-color: currentColor;
+  background: color-mix(in srgb, var(--color-coral) 9%, white);
+  color: var(--color-coral-dark);
+  transform: translateY(-0.1rem) scale(1.06);
+  box-shadow: 0 0.35rem 0.8rem rgba(16, 24, 38, 0.16);
+}
+.favorite-button:active:not(:disabled) {
+  transform: scale(0.9);
+}
+.favorite-button.is-favorite {
+  border-color: color-mix(in srgb, var(--color-coral-dark) 35%, transparent);
+  color: var(--color-coral-dark);
+}
+.favorite-button.is-favorite path {
+  fill: currentColor;
+}
+.favorite-button:disabled {
+  cursor: wait;
+  opacity: 0.55;
 }
 
 @media (min-width: 36rem) {
