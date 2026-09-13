@@ -2,17 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { AuthStore } from '../auth/auth-store';
-import { LoginRequest, RegisterRequest, TokenResponse, User } from '../models/auth.models';
+import { LoginRequest, TokenResponse, User } from '../models/auth.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
   private readonly http = inject(HttpClient);
   private readonly authStore = inject(AuthStore);
   private readonly baseUrl = '/api/v1/auth';
-
-  register(request: RegisterRequest): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/register`, request);
-  }
 
   login(request: LoginRequest): Observable<TokenResponse> {
     return this.http

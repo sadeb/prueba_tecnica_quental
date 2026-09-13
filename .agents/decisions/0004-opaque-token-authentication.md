@@ -16,6 +16,9 @@ El usuario decidió implementar el bonus de autenticación propia sin emisor ni 
 - Validar en cada petición el hash, expiración, revocación, estado del usuario y roles.
 - Usar el esquema HTTP `Bearer` y revocar el token actual al cerrar sesión.
 - Proteger sincronización y endpoints administrativos con el rol `ADMIN`.
+- No exponer autorregistro. Solo un usuario autenticado con rol `ADMIN` puede crear
+  cuentas nuevas mediante el endpoint administrativo, y esas cuentas reciben rol
+  `USER`.
 - Crear de forma idempotente el administrador inicial usando credenciales suministradas por
   variables de entorno, sin valores reales versionados. Si ya existe, no se sobrescriben
   sus credenciales ni su rol.

@@ -23,7 +23,7 @@ canónicas de `AGENTS.md`; no sustituye el contrato HTTP ni los guards.
   `max-width` salvo que exista una necesidad local documentada.
 - Usar los breakpoints compartidos: `36rem` (576 px), `48rem` (768 px) y `62rem`
   (992 px). El único breakpoint de altura actual es el de autenticación
-  `min-width: 62rem` + `max-height: 48rem`, necesario para que login y registro entren
+  `min-width: 62rem` + `max-height: 48rem`, necesario para que el login entre
   en laptops de poca altura.
 - Usar propiedades lógicas y dimensiones fluidas: `inline-size`, `block-size`,
   `minmax(0, 1fr)`, `clamp()` y `vmin` cuando la altura y la anchura influyan a la vez.
@@ -60,11 +60,20 @@ navegación activos para resolver falta de espacio.
 - En móvil y tablet, `.auth-panel` se muestra antes de `.auth-intro`, para priorizar la
   tarea de acceso. La introducción permanece disponible después mediante desplazamiento
   vertical natural.
-- A partir de `62rem`, login y registro usan dos columnas. En una laptop de poca altura
+- A partir de `62rem`, el login usa dos columnas. En una laptop de poca altura
   se reduce padding, tamaño del título y márgenes para que el header, el formulario y el
   footer entren en el viewport.
 - La marca decorativa del portal es puramente visual y debe permanecer contenida por
   `.auth-intro`; nunca debe producir scroll horizontal.
+- No se muestra autorregistro ni enlace de alta pública. La pantalla informa que las
+  cuentas nuevas dependen de un administrador.
+
+## Administración de usuarios
+
+- `/admin/users` conserva una sola columna en móvil y separa el protocolo de acceso del
+  formulario a partir de `48rem`.
+- El formulario crea únicamente cuentas con rol `USER`; no ofrece selección de rol ni
+  inicia sesión automáticamente con las credenciales creadas.
 
 ## Sincronización
 
@@ -93,7 +102,7 @@ navegación activos para resolver falta de espacio.
 ## Validación requerida
 
 Para cambios de layout, comprobar al menos `375x667`, `768x1024`, `1024x600` y
-`1440x900`. En login y registro, comprobar también `1366x768`.
+`1440x900`. En login, comprobar también `1366x768`.
 
 - No debe haber scroll horizontal (`scrollWidth === clientWidth`).
 - Los formularios, errores, títulos largos, navegación y footer deben ser alcanzables y
@@ -105,11 +114,17 @@ Para cambios de layout, comprobar al menos `375x667`, `768x1024`, `1024x600` y
 
 ## Evidencia vigente
 
-El 2026-09-11 se verificaron login, registro, catálogo, detalle y página no encontrada
-en los viewports indicados, sin desbordamiento horizontal. Favoritos y sincronización
-redirigieron a login en la comprobación sin sesión. Login y registro encajaron sin scroll
-adicional en `1024x600` y `1366x768`; la evidencia de comandos se conserva en
-`HANDOFF.md`.
+El 2026-09-11 se verificó la versión anterior de login, registro, catálogo, detalle y
+página no encontrada en los viewports indicados, sin desbordamiento horizontal.
+Favoritos y sincronización redirigieron a login en la comprobación sin sesión. Esa
+evidencia es histórica porque después se retiró el registro público.
+
+El 2026-09-13 se validó el login actualizado y, con una sesión administrativa ficticia,
+`/admin/users` en `375x667`, `768x1024`, `1024x600` y `1440x900`. No hubo
+desbordamiento horizontal, los controles midieron al menos 44 px en ambos ejes cuando
+su contenido no exigía más espacio y el scroll vertical fue natural. El formulario se
+mantiene en una columna hasta `62rem` para evitar cortes incómodos en tableta. La
+evidencia de comandos se conserva en `HANDOFF.md`.
 
 La pantalla de sincronización se validó tras incorporar origen, polling y mensajes
 traducidos en `375x667`, `768x1024`, `1024x600` y `1440x900`, sin desbordamiento

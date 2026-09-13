@@ -1,7 +1,7 @@
 package com.quental.rickmorty.auth;
 
+import com.quental.rickmorty.auth.api.CreateUserRequest;
 import com.quental.rickmorty.auth.api.LoginRequest;
-import com.quental.rickmorty.auth.api.RegisterRequest;
 import com.quental.rickmorty.auth.api.TokenResponse;
 import com.quental.rickmorty.auth.api.UserResponse;
 import com.quental.rickmorty.auth.domain.UserEntity;
@@ -28,7 +28,7 @@ public class AuthService {
     }
 
     @Transactional
-    public UserResponse register(RegisterRequest request) {
+    public UserResponse createUser(CreateUserRequest request) {
         String username = normalize(request.getUsername());
         if (userRepository.existsByUsernameIgnoreCase(username)) {
             throw new ConflictException("Username is already registered");

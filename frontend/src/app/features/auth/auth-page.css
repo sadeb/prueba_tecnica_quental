@@ -113,10 +113,6 @@ input:focus {
   margin-top: 1.5rem;
   color: var(--color-muted);
 }
-.auth-switch a {
-  color: var(--color-teal-dark);
-  font-weight: 750;
-}
 @media (min-width: 36rem) {
   .auth-intro,
   .auth-panel {

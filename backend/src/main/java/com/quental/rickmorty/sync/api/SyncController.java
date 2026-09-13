@@ -3,6 +3,7 @@ package com.quental.rickmorty.sync.api;
 import com.quental.rickmorty.shared.PageResponse;
 import com.quental.rickmorty.sync.SyncService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/admin/sync-runs")
+@SecurityRequirement(name = "opaqueBearer")
 public class SyncController {
 
     private final SyncService service;

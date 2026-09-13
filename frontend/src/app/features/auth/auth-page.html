@@ -1,7 +1,7 @@
 <main class="auth-layout">
   <section class="auth-intro" aria-labelledby="auth-title">
     <p class="kicker">TERMINAL DE ACCESO / C-137</p>
-    <h1 id="auth-title">{{ isRegister ? 'Solicita credenciales de archivo.' : 'Identifica tu señal.' }}</h1>
+    <h1 id="auth-title">Accede al archivo interdimensional.</h1>
     <p>
       Explora los registros sincronizados, conserva expedientes favoritos y consulta conexiones reales entre episodios.
     </p>
@@ -9,9 +9,9 @@
   </section>
 
   <section class="auth-panel" [attr.aria-busy]="pending()">
-    <p class="panel-index">{{ isRegister ? 'NUEVO OPERADOR' : 'OPERADOR EXISTENTE' }}</p>
-    <h2>{{ isRegister ? 'Crear cuenta' : 'Iniciar sesión' }}</h2>
-    <form (submit)="submit($event)" novalidate>
+    <p class="panel-index">OPERADOR EXISTENTE</p>
+    <h2>Iniciar sesión</h2>
+    <form (submit)="submitCredentials($event)" novalidate>
       <label for="username">Usuario</label>
       <input id="username" type="text" autocomplete="username" [formField]="credentialsForm.username" />
       @if (credentialsForm.username().touched() && credentialsForm.username().invalid()) {
@@ -22,7 +22,7 @@
       <input
         id="password"
         type="password"
-        [autocomplete]="isRegister ? 'new-password' : 'current-password'"
+        autocomplete="current-password"
         [formField]="credentialsForm.password"
       />
       @if (credentialsForm.password().touched() && credentialsForm.password().invalid()) {
@@ -34,14 +34,9 @@
       }
 
       <button class="primary-action" type="submit" [disabled]="pending()">
-        {{ pending() ? 'Verificando…' : isRegister ? 'Crear y acceder' : 'Acceder al archivo' }}
+        {{ pending() ? 'Verificando…' : 'Acceder al archivo' }}
       </button>
     </form>
-    <p class="auth-switch">
-      {{ isRegister ? '¿Ya tienes credenciales?' : '¿Todavía no tienes cuenta?' }}
-      <a [routerLink]="isRegister ? '/login' : '/register'">
-        {{ isRegister ? 'Inicia sesión' : 'Regístrate' }}
-      </a>
-    </p>
+    <p class="auth-switch">Las cuentas nuevas son creadas por un administrador.</p>
   </section>
 </main>

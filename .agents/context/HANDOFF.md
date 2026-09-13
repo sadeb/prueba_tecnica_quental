@@ -1,6 +1,6 @@
 # Handoff actual
 
-- Actualizado: 2026-09-11
+- Actualizado: 2026-09-13
 - Fase: `8 - VERIFICATION`
 - Estado: `IMPLEMENTACIÓN COMPLETA; CIERRE INTEGRAL PENDIENTE`
 
@@ -102,12 +102,47 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - Tras la corrección, `JAVA_HOME=.../microsoft-11.jdk/Contents/Home ./mvnw -B verify`:
   10 pruebas correctas y JAR generado. Una primera repetición detectó una respuesta
   `404` transitoria en `RickMortyClientTest`; la ejecución completa posterior fue verde.
+- Eliminado el autorregistro público. `POST /api/v1/admin/users` crea cuentas estándar
+  y queda protegido por `ADMIN`; el catálogo y el resto de la API de aplicación exigen
+  autenticación, salvo login, documentación y healthchecks operativos.
+- `/login` es la única pantalla pública de la SPA. Un guard padre protege catálogo,
+  detalle, favoritos, administración y 404; la pérdida o expiración local de la sesión
+  fuerza la navegación al login.
+- Añadida la pantalla responsive `/admin/users`, visible solo para administradores, y
+  pruebas automatizadas de seguridad, guards y cliente HTTP.
+- Tras el cambio de acceso, `JAVA_HOME=.../microsoft-11.jdk/Contents/Home ./mvnw -B
+  verify`: 14 pruebas correctas y JAR generado. `npm test -- --watch=false`: 13 pruebas
+  correctas con Node 24.16.0. `npm run build`: compilación de producción correcta.
+- QA del login en `375x667`, `768x1024`, `1024x600`, `1366x768` y `1440x900`: sin
+  desbordamiento horizontal; el desplazamiento vertical es natural en móvil/tablet y
+  la pantalla encaja completa en los viewports de escritorio comprobados. El enlace de
+  marca se corrigió de 35 px a un objetivo táctil de 44 px y se verificó en `375x667`.
+- QA autenticado de `/admin/users` con administrador ficticio y H2 efímero en
+  `375x667`, `768x1024`, `1024x600` y `1440x900`: sin desbordamiento horizontal;
+  formularios y navegación alcanzables, scroll vertical natural cuando fue necesario.
+  El objetivo táctil de `Salir` se corrigió de 37 px a 44 px y la composición de dos
+  columnas se reservó para el breakpoint compartido de `62rem`, evitando una palabra
+  huérfana en tableta.
+- Tras esos ajustes, `npm run build` volvió a completar correctamente con Node 24.16.0
+  (bundle inicial 561.05 kB). Backend, frontend y navegador temporales quedaron cerrados;
+  no se creó ninguna cuenta adicional desde el formulario durante el QA.
+- El cliente de Rick and Morty limita la frecuencia de solicitudes y aplica reintentos
+  acotados con backoff y jitter ante `429`, `5xx` y fallos de conexión. Respeta
+  `Retry-After` hasta el máximo configurable y dispone de pruebas WireMock para
+  recuperación y agotamiento de intentos; su ejecución queda pendiente de autorización.
 
 ## Siguiente paso recomendado
 
-Seguir `NEXT_FEATURES.md`, comenzando por P0: pruebas HTTP de seguridad y operaciones
-restantes de favoritos, además de DLT, proyección y consulta Neo4j. Después ejecutar el
-escenario completo desde una base vacía con `docker compose up --build`.
+Continuar `NEXT_FEATURES.md` con los casos restantes de tokens, favoritos, DLT,
+proyección y consulta Neo4j.
+
+## Ajustes de interfaz posteriores a la verificación
+
+- Se corrigió el vocabulario visual que presentaba los personajes como «señales»:
+  catálogo, errores, acceso y relaciones usan ahora términos propios del dominio de
+  Rick and Morty. También se tradujeron etiquetas decorativas que permanecían en inglés,
+  sin alterar los valores procedentes de la API externa ni los valores enviados como
+  filtros. La verificación de frontend queda pendiente de autorización de ejecución.
 
 ## Riesgos abiertos
 
@@ -118,5 +153,5 @@ escenario completo desde una base vacía con `docker compose up --build`.
   aún falta repetir el escenario integral desde una base limpia.
 - Seguridad, favoritos, DLT, Neo4j, guards e interceptor están implementados, pero aún
   no cuentan con pruebas automatizadas específicas suficientes para cerrar sus puertas.
-- OpenAPI genera rutas, parámetros y esquemas, pero todavía no declara de forma
-  explícita todos los códigos de error ni aplica el requisito de seguridad a cada operación.
+- OpenAPI declara `opaqueBearer` en las operaciones protegidas, pero todavía no detalla
+  todos los códigos de error por operación.

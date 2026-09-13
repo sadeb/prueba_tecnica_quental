@@ -1,0 +1,57 @@
+<main class="page-shell users-page">
+  <header class="users-header">
+    <p class="kicker">CONTROL DE ACCESO / ADMINISTRACIÓN</p>
+    <h1>Usuarios</h1>
+    <p>Crea las credenciales que otro operador usará para entrar al archivo.</p>
+  </header>
+
+  <div class="users-workspace">
+    <aside class="access-note" aria-labelledby="access-note-title">
+      <p class="note-code">PROTOCOLO U-01</p>
+      <h2 id="access-note-title">Alta controlada</h2>
+      <p>No existe registro público. Solo una sesión administrativa puede crear cuentas nuevas.</p>
+      <dl>
+        <div><dt>Rol asignado</dt><dd>Usuario</dd></div>
+        <div><dt>Acceso</dt><dd>Catálogo y favoritos</dd></div>
+      </dl>
+    </aside>
+
+    <section class="create-panel" aria-labelledby="create-user-title" [attr.aria-busy]="pending()">
+      <h2 id="create-user-title">Crear una cuenta</h2>
+      <form (submit)="createUser($event)" novalidate>
+        <label for="new-username">Usuario</label>
+        <input
+          id="new-username"
+          type="text"
+          autocomplete="off"
+          [formField]="newUserForm.username"
+        />
+        @if (newUserForm.username().touched() && newUserForm.username().invalid()) {
+          <p class="field-error">{{ fieldError('username') }}</p>
+        }
+
+        <label for="new-password">Contraseña inicial</label>
+        <input
+          id="new-password"
+          type="password"
+          autocomplete="new-password"
+          [formField]="newUserForm.password"
+        />
+        @if (newUserForm.password().touched() && newUserForm.password().invalid()) {
+          <p class="field-error">{{ fieldError('password') }}</p>
+        }
+
+        @if (errorMessage()) {
+          <div class="alert-panel" role="alert">{{ errorMessage() }}</div>
+        }
+        @if (successMessage()) {
+          <div class="success-panel" role="status">{{ successMessage() }}</div>
+        }
+
+        <button class="primary-action" type="submit" [disabled]="pending()">
+          {{ pending() ? 'Creando cuenta…' : 'Crear usuario' }}
+        </button>
+      </form>
+    </section>
+  </div>
+</main>

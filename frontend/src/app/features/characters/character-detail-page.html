@@ -33,7 +33,7 @@
         } @else { <p class="empty-copy">No hay episodios asociados.</p> }
       </section>
       <section aria-labelledby="related-heading">
-        <p class="section-index">02 / GRAFO</p><h2 id="related-heading">Señales relacionadas</h2>
+        <p class="section-index">02 / GRAFO</p><h2 id="related-heading">Personajes relacionados</h2>
         @if (relatedError()) { <p class="alert-panel" role="alert">{{ relatedError() }}</p> }
         @else if (related().length) {
           <ol class="related-list">@for (item of related(); track item.id) { <li><a [routerLink]="['/characters', item.id]">{{ item.name }}</a><span>{{ item.sharedEpisodes }} episodios comunes</span></li> }</ol>

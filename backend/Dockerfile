@@ -4,7 +4,8 @@ COPY .mvn .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw -B -DskipTests dependency:go-offline
 COPY src src
-RUN ./mvnw -B -DskipTests package
+# RUN ./mvnw -B -DskipTests package
+RUN ./mvnw -B package
 
 FROM eclipse-temurin:11-jre-jammy
 RUN apt-get update \

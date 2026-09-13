@@ -17,8 +17,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
       if (
         error instanceof HttpErrorResponse &&
         error.status === 401 &&
-        !request.url.includes('/auth/login') &&
-        !request.url.includes('/auth/register')
+        !request.url.includes('/auth/login')
       ) {
         authStore.clear();
         void router.navigate(['/login'], { queryParams: { returnUrl: router.url } });

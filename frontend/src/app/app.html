@@ -1,27 +1,31 @@
 <a class="skip-link" href="#main-content">Saltar al contenido</a>
 <header class="app-header">
-  <a class="brand" routerLink="/characters" aria-label="Archivo interdimensional, inicio">
+  <a
+    class="brand"
+    [routerLink]="authStore.isAuthenticated() ? '/characters' : '/login'"
+    aria-label="Archivo interdimensional, inicio"
+  >
     <span class="brand-orbit" aria-hidden="true"></span>
-    <span><strong>INTERDIMENSIONAL</strong><small>ARCHIVE / QNTL</small></span>
+    <span><strong>INTERDIMENSIONAL</strong><small>ARCHIVO / QNTL</small></span>
   </a>
-  <nav aria-label="Navegación principal">
-    <a routerLink="/characters" routerLinkActive="active">Catálogo</a>
-    @if (authStore.isAuthenticated()) {
+  @if (authStore.isAuthenticated()) {
+    <nav aria-label="Navegación principal">
+      <a routerLink="/characters" routerLinkActive="active">Catálogo</a>
       <a routerLink="/favorites" routerLinkActive="active">Favoritos</a>
-    }
-    @if (authStore.isAdmin()) {
-      <a routerLink="/admin/sync" routerLinkActive="active">Sincronizar</a>
-    }
-  </nav>
+      @if (authStore.isAdmin()) {
+        <a routerLink="/admin/users" routerLinkActive="active">Usuarios</a>
+        <a routerLink="/admin/sync" routerLinkActive="active">Sincronizar</a>
+      }
+    </nav>
+  }
   <div class="session-actions">
     @if (authStore.user(); as user) {
       <span class="user-chip"><i aria-hidden="true"></i>{{ user.username }}</span>
       <button type="button" class="text-action" (click)="logout()">Salir</button>
     } @else {
       <a class="text-action" routerLink="/login">Acceder</a>
-      <a class="header-action" routerLink="/register">Crear cuenta</a>
     }
   </div>
 </header>
 <div id="main-content"><router-outlet /></div>
-<footer class="app-footer"><span>QNTL / TECHNICAL ARCHIVE</span><span>PostgreSQL · Kafka · Neo4j</span></footer>
+<footer class="app-footer"><span>QNTL / ARCHIVO TÉCNICO</span><span>PostgreSQL · Kafka · Neo4j</span></footer>

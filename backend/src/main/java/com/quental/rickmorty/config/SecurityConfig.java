@@ -36,9 +36,8 @@ public class SecurityConfig {
                 .cors().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/swagger-ui/**", "/swagger-ui.html",
+                .antMatchers("/api/v1/auth/login", "/swagger-ui/**", "/swagger-ui.html",
                         "/v3/api-docs/**", "/actuator/health/**").permitAll()
-                .antMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/characters/**").permitAll()
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated().and()
                 .exceptionHandling()

@@ -3,6 +3,7 @@ package com.quental.rickmorty.catalog.api;
 import com.quental.rickmorty.catalog.CharacterQueryService;
 import com.quental.rickmorty.shared.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/characters")
+@SecurityRequirement(name = "opaqueBearer")
 public class CharacterController {
 
     private final CharacterQueryService service;

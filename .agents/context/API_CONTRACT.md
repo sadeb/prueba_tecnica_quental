@@ -13,28 +13,28 @@ Prefijo implementado: `/api/v1`. Springdoc genera la especificación ejecutable 
 - Identificadores expuestos como valores estables propios, manteniendo `externalId` cuando aporte trazabilidad.
 - Token opaco en `Authorization: Bearer <token>`.
 - Errores con una única forma: `timestamp`, `status`, `code`, `message`, `path`, `fieldErrors` opcional y `traceId` cuando exista.
-- La documentación OpenAPI genera rutas, parámetros y esquemas desde los controladores.
-  Pendiente: declarar de forma explícita la seguridad y todos los códigos de error por
-  operación, incluyendo ejemplos representativos.
+- La documentación OpenAPI genera rutas, parámetros y esquemas desde los controladores
+  y declara `opaqueBearer` en las operaciones protegidas. Pendiente: documentar todos
+  los códigos de error por operación, incluyendo ejemplos representativos.
 
 ## Autenticación
 
 | Método y ruta | Acceso | Resultado esperado |
 | --- | --- | --- |
-| `POST /api/v1/auth/register` | Público | Crea un usuario no administrativo con credenciales válidas |
 | `POST /api/v1/auth/login` | Público | Emite token opaco y metadatos de expiración |
 | `POST /api/v1/auth/logout` | Autenticado | Revoca el token actual de forma idempotente |
 | `GET /api/v1/auth/me` | Autenticado | Devuelve identidad y roles de la sesión |
 
-No se expondrá recuperación de contraseña, OAuth ni refresh token salvo decisión posterior explícita.
+No se expondrá autorregistro, recuperación de contraseña, OAuth ni refresh token salvo
+decisión posterior explícita.
 
 ## Catálogo
 
 | Método y ruta | Acceso | Comportamiento |
 | --- | --- | --- |
-| `GET /api/v1/characters` | Público | Lista paginada con filtros por nombre, estado, especie, tipo y género |
-| `GET /api/v1/characters/{characterId}` | Público | Detalle con episodios, origen y ubicación actual |
-| `GET /api/v1/characters/{characterId}/related` | Público | Relacionados calculados en Neo4j, ordenados por episodios comunes |
+| `GET /api/v1/characters` | Autenticado | Lista paginada con filtros por nombre, estado, especie, tipo y género |
+| `GET /api/v1/characters/{characterId}` | Autenticado | Detalle con episodios, origen y ubicación actual |
+| `GET /api/v1/characters/{characterId}/related` | Autenticado | Relacionados calculados en Neo4j, ordenados por episodios comunes |
 
 Un recurso inexistente devuelve `404`; filtros inválidos o paginación fuera de límites devuelven `400`. El tamaño máximo es 100 elementos por página.
 
@@ -48,10 +48,11 @@ Un recurso inexistente devuelve `404`; filtros inválidos o paginación fuera de
 
 La identidad de usuario se obtiene del token y nunca de un identificador enviado por el cliente.
 
-## Administración de sincronización
+## Administración
 
 | Método y ruta | Acceso | Comportamiento |
 | --- | --- | --- |
+| `POST /api/v1/admin/users` | `ADMIN` | Crea una cuenta habilitada con rol `USER`; nunca inicia sesión por ella |
 | `POST /api/v1/admin/sync-runs` | `ADMIN` | Inicia una ejecución y devuelve `202 Accepted` con su identificador |
 | `GET /api/v1/admin/sync-runs/{syncRunId}` | `ADMIN` | Expone estado, contadores y fallos parciales |
 | `GET /api/v1/admin/sync-runs` | `ADMIN` | Historial paginado de ejecuciones |

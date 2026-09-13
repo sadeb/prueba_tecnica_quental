@@ -78,7 +78,7 @@ Puerta de salida: sincronización repetible y prueba de integración sin infraes
 
 Estado: `IMPLEMENTADO; PRUEBAS ESPECÍFICAS DE AUTORIZACIÓN Y CONTRATO PENDIENTES`.
 
-- Implementar registro, login, logout, tokens opacos y roles.
+- Implementar alta de usuarios exclusiva de `ADMIN`, login, logout, tokens opacos y roles.
 - Crear bootstrap `ADMIN` mediante entorno de forma segura e idempotente.
 - Implementar catálogo, filtros, detalle, relacionados, favoritos y endpoints administrativos.
 - Homogeneizar errores y completar OpenAPI.
@@ -89,7 +89,7 @@ Puerta de salida: pruebas de autorización, validación, errores y contrato.
 
 Estado: `IMPLEMENTADO; PRUEBAS ESPECÍFICAS DE GUARDS/INTERCEPTOR Y FLUJOS PENDIENTES`.
 
-- Implementar autenticación, catálogo, detalle, relacionados y favoritos.
+- Implementar autenticación, catálogo, detalle, relacionados, favoritos y alta administrativa de usuarios.
 - Incorporar interceptor, guards, persistencia de sesión y expiración controlada.
 - Cubrir estados carga/vacío/error y separar presentación de acceso a datos.
 - Añadir pruebas de lógica no trivial y cobertura proporcional.

@@ -1,5 +1,5 @@
 <main class="page-shell sync-page">
-  <header class="sync-header"><div><p class="kicker">CONTROL DE INGESTA / ADMIN</p><h1>Sincronización</h1><p>Descarga la fuente externa, conserva el JSON crudo y propaga cambios con outbox transaccional.</p></div><button class="primary-action" type="button" [disabled]="starting()" (click)="start()">{{ starting() ? 'Iniciando…' : 'Iniciar sincronización' }}</button></header>
+  <header class="sync-header"><div><p class="kicker">CONTROL DE INGESTA / ADMINISTRACIÓN</p><h1>Sincronización</h1><p>Descarga la fuente externa, conserva el JSON original y registra los cambios antes de propagarlos.</p></div><button class="primary-action" type="button" [disabled]="starting()" (click)="start()">{{ starting() ? 'Iniciando…' : 'Iniciar sincronización' }}</button></header>
   <div class="system-route" aria-label="Ruta de datos"><span>Rick & Morty API</span><i>→</i><span>PostgreSQL</span><i>→</i><span>Kafka</span><i>→</i><span>Neo4j</span></div>
   @if (errorMessage()) { <div class="alert-panel" role="alert">{{ errorMessage() }}</div> }
   <section class="runs" aria-labelledby="runs-title">

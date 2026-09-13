@@ -77,6 +77,9 @@ Campos mínimos:
 
 - `PDF-OBL`: documentar endpoints, parámetros, filtros, respuestas y códigos mediante OpenAPI.
 - `PDF-OBL`: registro e inicio de sesión.
+- `USR` (2026-09-13, prevalece sobre el autorregistro del PDF): no existe registro
+  público; solo una cuenta `ADMIN` autenticada puede crear cuentas nuevas, siempre con
+  rol `USER`.
 - `PDF-OBL`: añadir, listar y eliminar favoritos para el usuario autenticado.
 - `PDF-OBL`: listado de personajes con filtros y paginación, detalle y relaciones consultadas en Neo4j.
 - `PDF-OBL`: usar códigos HTTP coherentes y un formato homogéneo de errores.
@@ -89,6 +92,9 @@ Campos mínimos:
 - `PDF-OBL`: el navegador nunca llamará directamente a Rick and Morty API.
 - `PDF-OBL`: encapsular acceso HTTP en servicios y centralizar token y errores mediante interceptor.
 - `PDF-OBL`: incluir registro, login, listado filtrable/paginado, detalle con episodios/localizaciones/relacionados y favoritos.
+- `USR` (2026-09-13): `/login` es la única pantalla pública; todas las demás pantallas
+  requieren una sesión válida y el alta de usuarios se traslada a una pantalla
+  administrativa.
 - `PDF-OBL`: proteger rutas con guards, persistir sesión entre recargas y controlar sesiones expiradas/no autorizadas.
 - `PDF-OBL`: representar explícitamente estados de carga, vacío y error.
 - `PDF-OBL`: separar presentación, lógica de negocio y acceso a datos.

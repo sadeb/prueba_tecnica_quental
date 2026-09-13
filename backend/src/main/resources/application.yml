@@ -62,6 +62,10 @@ app:
     base-url: ${RICK_MORTY_API_URL:https://rickandmortyapi.com/api}
     connect-timeout: ${EXTERNAL_CONNECT_TIMEOUT:3s}
     read-timeout: ${EXTERNAL_READ_TIMEOUT:10s}
+    request-interval: ${EXTERNAL_REQUEST_INTERVAL:250ms}
+    max-attempts: ${EXTERNAL_MAX_ATTEMPTS:4}
+    initial-backoff: ${EXTERNAL_INITIAL_BACKOFF:1s}
+    max-backoff: ${EXTERNAL_MAX_BACKOFF:30s}
   auth:
     token-ttl: ${AUTH_TOKEN_TTL:8h}
     admin-username: ${ADMIN_USERNAME:}

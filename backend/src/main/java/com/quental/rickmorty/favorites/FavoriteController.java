@@ -3,6 +3,7 @@ package com.quental.rickmorty.favorites;
 import com.quental.rickmorty.auth.AuthenticatedUser;
 import com.quental.rickmorty.catalog.api.CharacterSummaryResponse;
 import com.quental.rickmorty.shared.PageResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/api/v1/users/me/favorites")
+@SecurityRequirement(name = "opaqueBearer")
 public class FavoriteController {
 
     private final FavoriteService service;

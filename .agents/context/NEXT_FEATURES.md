@@ -10,8 +10,8 @@ de evidencia del alcance ya implementado.
 
 ### P0 — Evidencia backend y contrato HTTP
 
-1. Añadir pruebas `MockMvc` de registro, login, token inválido/expirado/revocado,
-   `401`, `403` y acceso `ADMIN`.
+1. Ampliar las pruebas `MockMvc` de login y alta administrativa ya incorporadas con
+   token inválido/expirado/revocado y los casos restantes de `401` y `403`.
 2. Añadir pruebas de favoritos: alta, baja idempotente y aislamiento entre usuarios.
    El listado paginado y ordenado ya está cubierto por
    `FavoriteServiceIntegrationTest`; faltan pruebas HTTP con `MockMvc` y las demás
@@ -38,7 +38,8 @@ consultar la API externa.
 
 ### P1 — Evidencia frontend
 
-1. Probar `authGuard` y `adminGuard` para sesiones ausentes, `USER` y `ADMIN`.
+1. Conservar las pruebas ejecutadas de `authGuard` y `adminGuard` para sesiones
+   ausentes, `USER` y `ADMIN` al modificar el árbol de rutas.
 2. Probar el interceptor: cabecera Bearer, limpieza de sesión y redirección tras `401`.
 3. Probar servicios HTTP con `HttpTestingController` y una pantalla con estados loading,
    empty y error.
@@ -52,7 +53,8 @@ Evidencia ya incorporada para sincronización:
   una sincronización manual a los 60 segundos y su detención al completarse.
 
 Pendiente: conservar esta cobertura al modificar el contrato `SyncRun` y añadir pruebas
-para los demás servicios HTTP y flujos indicados arriba.
+para los demás servicios HTTP y flujos indicados arriba. El cliente de alta
+administrativa ya cuenta con una prueba HTTP ejecutada correctamente.
 
 Criterio de cierre: las rutas privadas, la expiración y el manejo de errores están
 cubiertos por pruebas reproducibles.
@@ -60,7 +62,8 @@ cubiertos por pruebas reproducibles.
 ### P1 — Entrega e infraestructura
 
 1. Ejecutar desde una base limpia `cp .env.example .env` y `docker compose up --build`.
-2. Verificar salud de los seis servicios, registro del administrador, login, una
+2. Verificar salud de los seis servicios, bootstrap del administrador, login, alta de
+   un usuario desde la cuenta administrativa, una
    sincronización y consulta de relacionados.
 3. Ejecutar una segunda sincronización y comprobar que no se duplican filas, relaciones
    ni favoritos.
