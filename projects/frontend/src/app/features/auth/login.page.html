@@ -1,0 +1,202 @@
+<div class="auth-layout min-vh-100 d-flex flex-column">
+  <header class="container d-flex justify-content-between align-items-center py-3">
+    <div class="d-flex align-items-center gap-2 fw-semibold">
+      <span class="brand-portal" aria-hidden="true"></span>
+      <span>Portal Rick y Morty</span>
+    </div>
+    <app-theme-toggle [dark]="theme.isDark()" (toggle)="theme.toggle()" />
+  </header>
+
+  <main class="container flex-grow-1 d-flex align-items-center justify-content-center py-4">
+    <div class="auth-card card border-0 shadow-lg w-100">
+      <div class="card-body p-4 p-md-5">
+        <h1 class="h3 mb-1">{{ mode() === 'login' ? 'Bienvenido de nuevo' : 'Crea tu cuenta' }}</h1>
+        <p class="text-body-secondary mb-4">
+          {{ mode() === 'login'
+            ? 'Inicia sesión para explorar personajes y guardar tus favoritos.'
+            : 'Solo necesitas un nombre de usuario y una contraseña. Sin correo, sin Jerrys.' }}
+        </p>
+
+        <div class="nav nav-pills nav-fill auth-tabs mb-4" role="tablist" aria-label="Acceso">
+          <button
+            type="button"
+            class="nav-link"
+            role="tab"
+            id="tab-login"
+            [class.active]="mode() === 'login'"
+            [attr.aria-selected]="mode() === 'login'"
+            aria-controls="panel-login"
+            (click)="switchMode('login')"
+          >
+            Iniciar sesión
+          </button>
+          <button
+            type="button"
+            class="nav-link"
+            role="tab"
+            id="tab-register"
+            [class.active]="mode() === 'register'"
+            [attr.aria-selected]="mode() === 'register'"
+            aria-controls="panel-register"
+            (click)="switchMode('register')"
+          >
+            Crear cuenta
+          </button>
+        </div>
+
+        @if (sessionExpired() && mode() === 'login' && !error()) {
+          <div class="alert alert-warning d-flex gap-2 align-items-start" role="status">
+            <span aria-hidden="true">⏳</span>
+            <span>Tu sesión ha caducado. Vuelve a iniciar sesión para continuar donde estabas.</span>
+          </div>
+        }
+        @if (notice(); as text) {
+          <div class="alert alert-success" role="status">{{ text }}</div>
+        }
+        @if (error(); as apiError) {
+          <div class="mb-4">
+            <app-error-alert
+              [error]="apiError"
+              [context]="mode()"
+              [title]="mode() === 'login' ? 'No se ha podido iniciar sesión' : 'No se ha podido crear la cuenta'"
+            />
+          </div>
+        }
+
+        @if (mode() === 'login') {
+          <form id="panel-login" role="tabpanel" aria-labelledby="tab-login" novalidate (submit)="submitLogin($event)">
+            <div class="mb-3">
+              <label for="login-username" class="form-label">Nombre de usuario</label>
+              <input
+                id="login-username"
+                type="text"
+                class="form-control form-control-lg"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                [formField]="loginForm.username"
+                [class.is-invalid]="isInvalid(loginForm.username)"
+                [attr.aria-invalid]="isInvalid(loginForm.username)"
+                aria-describedby="login-username-error"
+              />
+              @if (isInvalid(loginForm.username)) {
+                <div id="login-username-error" class="invalid-feedback">{{ firstError(loginForm.username) }}</div>
+              }
+            </div>
+            <div class="mb-4">
+              <label for="login-password" class="form-label">Contraseña</label>
+              <div class="input-group input-group-lg has-validation">
+                <input
+                  id="login-password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  class="form-control"
+                  autocomplete="current-password"
+                  [formField]="loginForm.password"
+                  [class.is-invalid]="isInvalid(loginForm.password)"
+                  [attr.aria-invalid]="isInvalid(loginForm.password)"
+                  aria-describedby="login-password-error"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="showPassword.set(!showPassword())"
+                  [attr.aria-pressed]="showPassword()"
+                >
+                  {{ showPassword() ? 'Ocultar' : 'Mostrar' }}
+                </button>
+                @if (isInvalid(loginForm.password)) {
+                  <div id="login-password-error" class="invalid-feedback">{{ firstError(loginForm.password) }}</div>
+                }
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="submitting()">
+              @if (submitting()) {
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                Entrando…
+              } @else {
+                Entrar
+              }
+            </button>
+          </form>
+        } @else {
+          <form id="panel-register" role="tabpanel" aria-labelledby="tab-register" novalidate (submit)="submitRegister($event)">
+            <div class="mb-3">
+              <label for="register-username" class="form-label">Nombre de usuario</label>
+              <input
+                id="register-username"
+                type="text"
+                class="form-control form-control-lg"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                [formField]="registerForm.username"
+                [class.is-invalid]="isInvalid(registerForm.username)"
+                [attr.aria-invalid]="isInvalid(registerForm.username)"
+                aria-describedby="register-username-help register-username-error"
+              />
+              <div id="register-username-help" class="form-text">De 3 a 64 caracteres: letras, números, ".", "_" o "-".</div>
+              @if (isInvalid(registerForm.username)) {
+                <div id="register-username-error" class="invalid-feedback">{{ firstError(registerForm.username) }}</div>
+              }
+            </div>
+            <div class="mb-3">
+              <label for="register-password" class="form-label">Contraseña</label>
+              <div class="input-group input-group-lg has-validation">
+                <input
+                  id="register-password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  class="form-control"
+                  autocomplete="new-password"
+                  [formField]="registerForm.password"
+                  [class.is-invalid]="isInvalid(registerForm.password)"
+                  [attr.aria-invalid]="isInvalid(registerForm.password)"
+                  aria-describedby="register-password-help register-password-error"
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="showPassword.set(!showPassword())"
+                  [attr.aria-pressed]="showPassword()"
+                >
+                  {{ showPassword() ? 'Ocultar' : 'Mostrar' }}
+                </button>
+                @if (isInvalid(registerForm.password)) {
+                  <div id="register-password-error" class="invalid-feedback">{{ firstError(registerForm.password) }}</div>
+                }
+              </div>
+              <div id="register-password-help" class="form-text">Mínimo 8 caracteres.</div>
+            </div>
+            <div class="mb-4">
+              <label for="register-confirm" class="form-label">Repite la contraseña</label>
+              <input
+                id="register-confirm"
+                [type]="showPassword() ? 'text' : 'password'"
+                class="form-control form-control-lg"
+                autocomplete="new-password"
+                [formField]="registerForm.confirmPassword"
+                [class.is-invalid]="isInvalid(registerForm.confirmPassword)"
+                [attr.aria-invalid]="isInvalid(registerForm.confirmPassword)"
+                aria-describedby="register-confirm-error"
+              />
+              @if (isInvalid(registerForm.confirmPassword)) {
+                <div id="register-confirm-error" class="invalid-feedback">{{ firstError(registerForm.confirmPassword) }}</div>
+              }
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg w-100" [disabled]="submitting()">
+              @if (submitting()) {
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                Creando cuenta…
+              } @else {
+                Crear cuenta y entrar
+              }
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  </main>
+
+  <footer class="container py-3 text-center text-body-secondary small">
+    Prueba técnica · Datos de <span class="fst-italic">Rick and Morty</span> servidos por la API propia.
+  </footer>
+</div>

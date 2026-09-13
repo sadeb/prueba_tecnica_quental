@@ -1,0 +1,335 @@
+/* ---------------------------------------------------------------------------
+   Portal Rick y Morty · global styles on top of Bootstrap 5.3.
+   Only a brand palette, light/dark tokens and a few component touches:
+   everything else is Bootstrap utilities.
+--------------------------------------------------------------------------- */
+
+:root {
+  --rm-primary: #177a6a;
+  --rm-primary-rgb: 23, 122, 106;
+  --rm-primary-hover: #12604f;
+  --rm-primary-contrast: #ffffff;
+  --rm-accent: #97ce4c;
+  --rm-surface: #ffffff;
+  --rm-surface-2: #f1f5f4;
+  --rm-glow: rgba(151, 206, 76, 0.28);
+
+  --bs-body-bg: #f4f7f9;
+  --bs-body-color: #1d2a33;
+  --bs-primary: var(--rm-primary);
+  --bs-primary-rgb: var(--rm-primary-rgb);
+  --bs-link-color: var(--rm-primary);
+  --bs-link-color-rgb: var(--rm-primary-rgb);
+  --bs-link-hover-color: var(--rm-primary-hover);
+  --bs-link-hover-color-rgb: 18, 96, 79;
+  --bs-focus-ring-color: rgba(var(--rm-primary-rgb), 0.35);
+  --bs-border-radius: 0.75rem;
+  --bs-border-radius-sm: 0.5rem;
+  --bs-border-radius-lg: 1rem;
+}
+
+[data-bs-theme="dark"] {
+  --rm-primary: #4fd1b5;
+  --rm-primary-rgb: 79, 209, 181;
+  --rm-primary-hover: #7de3cd;
+  --rm-primary-contrast: #06201b;
+  --rm-surface: #151d24;
+  --rm-surface-2: #1b252d;
+  --rm-glow: rgba(79, 209, 181, 0.18);
+
+  --bs-body-bg: #0f1419;
+  --bs-body-color: #e6edf3;
+  --bs-secondary-bg: #161d24;
+  --bs-tertiary-bg: #1b252d;
+  --bs-border-color: #2a3640;
+  --bs-primary: var(--rm-primary);
+  --bs-primary-rgb: var(--rm-primary-rgb);
+  --bs-link-color: var(--rm-primary);
+  --bs-link-color-rgb: var(--rm-primary-rgb);
+  --bs-link-hover-color: var(--rm-primary-hover);
+  --bs-link-hover-color-rgb: 125, 227, 205;
+  --bs-focus-ring-color: rgba(var(--rm-primary-rgb), 0.4);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Brand-colored Bootstrap components (CSS-only override of the primary color). */
+.btn-primary {
+  --bs-btn-bg: var(--rm-primary);
+  --bs-btn-border-color: var(--rm-primary);
+  --bs-btn-color: var(--rm-primary-contrast);
+  --bs-btn-hover-bg: var(--rm-primary-hover);
+  --bs-btn-hover-border-color: var(--rm-primary-hover);
+  --bs-btn-hover-color: var(--rm-primary-contrast);
+  --bs-btn-active-bg: var(--rm-primary-hover);
+  --bs-btn-active-border-color: var(--rm-primary-hover);
+  --bs-btn-active-color: var(--rm-primary-contrast);
+  --bs-btn-disabled-bg: var(--rm-primary);
+  --bs-btn-disabled-border-color: var(--rm-primary);
+  --bs-btn-disabled-color: var(--rm-primary-contrast);
+}
+
+.text-bg-primary {
+  background-color: var(--rm-primary) !important;
+  color: var(--rm-primary-contrast) !important;
+}
+
+.text-primary {
+  color: var(--rm-primary) !important;
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--rm-primary);
+  --bs-nav-pills-link-active-color: var(--rm-primary-contrast);
+}
+
+.pagination {
+  --bs-pagination-active-bg: var(--rm-primary);
+  --bs-pagination-active-border-color: var(--rm-primary);
+  --bs-pagination-active-color: var(--rm-primary-contrast);
+  --bs-pagination-color: var(--bs-body-color);
+  --bs-pagination-hover-color: var(--rm-primary);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--rm-primary);
+  box-shadow: 0 0 0 0.25rem var(--bs-focus-ring-color);
+}
+
+.card {
+  --bs-card-bg: var(--rm-surface);
+}
+
+.list-group {
+  --bs-list-group-bg: var(--rm-surface);
+}
+
+/* Layout ------------------------------------------------------------------ */
+.app-navbar {
+  background-color: color-mix(in srgb, var(--rm-surface) 88%, transparent);
+  backdrop-filter: saturate(160%) blur(10px);
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.app-navbar .nav-link.active {
+  color: var(--rm-primary);
+  font-weight: 600;
+}
+
+.app-main {
+  min-height: 60vh;
+}
+
+.skip-link:focus {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  background: var(--rm-primary);
+  color: var(--rm-primary-contrast);
+  border-radius: var(--bs-border-radius);
+}
+
+.brand-portal {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #d9f99d 0%, #65c466 45%, #0f5132 100%);
+  box-shadow: 0 0 0 3px var(--rm-glow);
+}
+
+.user-chip {
+  color: var(--bs-body-color);
+}
+
+.user-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: var(--rm-primary);
+  color: var(--rm-primary-contrast);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.page-header h1 {
+  letter-spacing: -0.01em;
+}
+
+/* Auth --------------------------------------------------------------------- */
+.auth-layout {
+  background:
+    radial-gradient(60rem 30rem at 110% -10%, var(--rm-glow), transparent 60%),
+    radial-gradient(40rem 25rem at -10% 110%, rgba(var(--rm-primary-rgb), 0.16), transparent 60%),
+    var(--bs-body-bg);
+}
+
+.auth-card {
+  max-width: 30rem;
+}
+
+.auth-tabs {
+  background: var(--rm-surface-2);
+  border-radius: var(--bs-border-radius-lg);
+  padding: 0.25rem;
+}
+
+/* Character cards ---------------------------------------------------------- */
+.character-card {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.character-card:hover,
+.character-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12) !important;
+}
+
+.character-card-media {
+  display: block;
+  overflow: hidden;
+  border-top-left-radius: var(--bs-card-border-radius);
+  border-top-right-radius: var(--bs-card-border-radius);
+}
+
+.character-card-action {
+  z-index: 2;
+}
+
+.character-image img {
+  transition: transform 0.35s ease;
+}
+
+.character-card:hover .character-image img {
+  transform: scale(1.04);
+}
+
+.character-image-fallback {
+  background: linear-gradient(135deg, var(--rm-surface-2), rgba(var(--rm-primary-rgb), 0.25));
+  color: var(--rm-primary);
+}
+
+.character-image-initial {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.character-hero .character-image {
+  height: 100%;
+}
+
+.character-hero .character-image img,
+.character-hero .character-image-fallback {
+  border-radius: 0;
+}
+
+.detail-facts dt {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+}
+
+.episode-list {
+  max-height: 24rem;
+  overflow: auto;
+}
+
+/* Favorite toggle ---------------------------------------------------------- */
+.favorite-toggle {
+  --bs-btn-color: var(--bs-secondary-color);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-color: #d63384;
+  --bs-btn-hover-bg: rgba(214, 51, 132, 0.1);
+  --bs-btn-active-bg: rgba(214, 51, 132, 0.16);
+  --bs-btn-active-color: #d63384;
+  --bs-btn-disabled-color: var(--bs-secondary-color);
+  --bs-btn-disabled-border-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+}
+
+.favorite-toggle.is-active {
+  --bs-btn-color: #d63384;
+  --bs-btn-bg: rgba(214, 51, 132, 0.12);
+}
+
+/* Status badge ------------------------------------------------------------- */
+.status-badge {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.status-alive {
+  color: #198754;
+}
+
+.status-dead {
+  color: #dc3545;
+}
+
+.status-unknown {
+  color: var(--bs-secondary-color);
+}
+
+[data-bs-theme="dark"] .status-alive {
+  color: #5dd39e;
+}
+
+[data-bs-theme="dark"] .status-dead {
+  color: #ff6b6b;
+}
+
+/* Empty state -------------------------------------------------------------- */
+.empty-state-icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(var(--rm-primary-rgb), 0.12);
+  color: var(--rm-primary);
+}
+
+.empty-state-text {
+  max-width: 34rem;
+}
+
+/* Motion preferences ------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .character-card,
+  .character-image img,
+  body {
+    transition: none;
+  }
+
+  .character-card:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es" data-bs-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Portal Rick y Morty</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explorador de personajes, episodios y localizaciones de Rick and Morty con favoritos por usuario.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f7f9">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f1419">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <!-- Applies the stored theme before Angular boots to avoid a flash of the wrong theme. -->
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('rm.theme');
+        if (theme !== 'light' && theme !== 'dark') {
+          theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-bs-theme', theme);
+      } catch (e) { /* storage unavailable: keep the default theme */ }
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

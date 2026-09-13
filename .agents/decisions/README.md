@@ -15,5 +15,6 @@ Estados: `Propuesta` (redactada por el agente, pendiente de confirmación humana
 | [ADR-007](ADR-007-best-practices-angular.md) | Adopción de las buenas prácticas oficiales de Angular y reglas por versión | Propuesta |
 | [ADR-008](ADR-008-imagenes-docker.md) | Imágenes Docker multi-arch, healthchecks y límites de recursos | Propuesta |
 | [ADR-009](ADR-009-openapi-toggle.md) | OpenAPI/Swagger activable por entorno (`SWAGGER_ENABLED`) | Propuesta |
+| [ADR-010](ADR-010-frontend-sesion-tema-errores.md) | Frontend: entrada única `/login`, sesión, tema claro/oscuro, idioma y tratamiento de errores | Propuesta |
 
 Plantilla: [TEMPLATE.md](TEMPLATE.md). Numerar consecutivamente. Un ADR nuevo por cada dependencia externa no listada en [references/stack-versiones.md](../references/stack-versiones.md).

@@ -13,3 +13,4 @@ Dockerfile
 **/*.spec.ts
 proxy.conf.json
 .nvmrc
+src/testing/

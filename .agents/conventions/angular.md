@@ -3,15 +3,27 @@
 ## Estructura
 ```
 src/app
-├── core/                # singletons: auth.service, auth.guard, auth.interceptor, error.interceptor, api-error model, token.storage
-├── shared/              # presentacionales reutilizables: loading, empty-state, error-alert, pagination, character-card
+├── core/
+│   ├── auth/            # auth.service, auth.guard (auth/guest), auth.interceptor, token.storage, session.model
+│   ├── errors/          # api-error.model, error-messages (es), error.interceptor, retry.interceptor, global-error.handler
+│   ├── storage/         # browser-storage (único acceso a localStorage)
+│   ├── theme/           # theme.service (data-bs-theme)
+│   ├── notifications/   # toast.service
+│   ├── layout/          # shell.page (layout autenticado), navbar, theme-toggle
+│   └── routing/         # app-title.strategy
+├── shared/
+│   ├── models/          # view-state, page-response, character.model (lo usa character-card)
+│   ├── i18n/            # labels (enumerados en español)
+│   └── ui/              # loading, empty-state, error-alert, pagination, character-card, favorite-toggle, status-badge, toast-container, skeleton
 ├── features/
-│   ├── auth/            # login.page, register.page (+ formularios)
-│   ├── characters/      # character-list.page, character-detail.page, character.service, character.model, filters
-│   └── favorites/       # favorites.page, favorite.service
+│   ├── auth/            # login.page (login + registro en pestañas; Signal Forms)
+│   ├── characters/      # character-list.page, character-detail.page, character.service, character-filters
+│   ├── favorites/       # favorites.page, favorite.service
+│   └── not-found/       # not-found.page
 ├── app.routes.ts
-└── app.config.ts        # provideHttpClient(withInterceptors([...])), provideRouter
+└── app.config.ts        # provideHttpClient(withInterceptors([auth, retry, error])), provideRouter, ErrorHandler, TitleStrategy
 ```
+Estructura real tras [ADR-010](../decisions/ADR-010-frontend-sesion-tema-errores.md).
 - **Página (contenedor)** orquesta servicios y estado; sufijo `.page.ts` o `-page.component.ts`. **Presentacional** solo recibe `input()` y emite `output()`; va en `shared/` si es reutilizable.
 - Un servicio por recurso de la API en `core/` o `features/*/`; es el único lugar con `HttpClient`.
 - Estado por vista con `ViewState<T>` (`loading | empty | error | ready`) en `shared/`; la plantilla cubre los 4 estados siempre ([spec/06](../spec/06-frontend-angular.md) punto 5).

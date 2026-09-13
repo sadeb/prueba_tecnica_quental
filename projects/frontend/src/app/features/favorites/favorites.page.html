@@ -1,0 +1,50 @@
+<header class="page-header mb-4">
+  <h1 class="h2 mb-1">Mis favoritos</h1>
+  <p class="text-body-secondary mb-0">Los personajes que has marcado. Solo tú los ves; se guardan en tu cuenta.</p>
+</header>
+
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <p class="visually-hidden" role="status">Cargando favoritos…</p>
+    <div class="row g-3 g-lg-4">
+      @for (index of skeletons; track index) {
+        <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+          <app-skeleton-card />
+        </div>
+      }
+    </div>
+  }
+  @case ('empty') {
+    <app-empty-state
+      title="Todavía no tienes favoritos"
+      message="Marca el corazón de cualquier personaje y aparecerá aquí. Hasta Jerry merece una oportunidad."
+    >
+      <a routerLink="/characters" class="btn btn-primary">Explorar personajes</a>
+    </app-empty-state>
+  }
+  @case ('error') {
+    <app-error-alert
+      [error]="s.error"
+      context="favorites"
+      title="No se han podido cargar tus favoritos"
+      [alwaysRetry]="true"
+      (retry)="reload()"
+    />
+  }
+  @case ('ready') {
+    <p class="text-body-secondary small mb-3" role="status">{{ countLabel(s.data) }}</p>
+    <div class="row g-3 g-lg-4">
+      @for (character of s.data; track character.id) {
+        <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+          <app-character-card
+            [character]="character"
+            [isFavorite]="true"
+            [favoritePending]="favorites.isPending(character.id)"
+            (favoriteToggle)="remove($event)"
+          />
+        </div>
+      }
+    </div>
+  }
+}

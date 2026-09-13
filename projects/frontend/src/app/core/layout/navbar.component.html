@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-md app-navbar sticky-top" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold" routerLink="/characters" (click)="closeMenu()">
+      <span class="brand-portal" aria-hidden="true"></span>
+      <span>Portal Rick y Morty</span>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="main-menu"
+      aria-label="Mostrar u ocultar el menú"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" [class.show]="menuOpen()" id="main-menu">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/characters" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            Personajes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center gap-2" routerLink="/favorites" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="closeMenu()">
+            Favoritos
+            @if (favorites.count() > 0) {
+              <span class="badge rounded-pill text-bg-primary">
+                {{ favorites.count() }}<span class="visually-hidden"> favoritos</span>
+              </span>
+            }
+          </a>
+        </li>
+      </ul>
+      <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2 gap-md-3">
+        <app-theme-toggle [dark]="theme.isDark()" (toggle)="theme.toggle()" />
+        <span class="navbar-text d-inline-flex align-items-center gap-2 user-chip">
+          <span class="user-avatar" aria-hidden="true">{{ (auth.username() ?? '?').charAt(0).toUpperCase() }}</span>
+          <span><span class="visually-hidden">Sesión iniciada como </span>{{ auth.username() }}</span>
+        </span>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</nav>

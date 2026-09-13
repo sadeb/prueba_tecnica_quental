@@ -1,0 +1,60 @@
+<header class="page-header mb-4">
+  <h1 class="h2 mb-1">Personajes</h1>
+  <p class="text-body-secondary mb-0">
+    Explora los personajes sincronizados desde la API de Rick and Morty. Filtra por nombre, estado, especie o género.
+  </p>
+</header>
+
+<div class="mb-4">
+  <app-character-filters [filters]="query().filters" (filtersChange)="onFiltersChange($event)" />
+</div>
+
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <p class="visually-hidden" role="status">Cargando personajes…</p>
+    <div class="row g-3 g-lg-4">
+      @for (index of skeletons; track index) {
+        <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+          <app-skeleton-card />
+        </div>
+      }
+    </div>
+  }
+  @case ('empty') {
+    <app-empty-state
+      title="Ningún personaje coincide"
+      message="Ni en esta dimensión ni en la C-137. Prueba con otros filtros o vuelve a la primera página."
+    >
+      <button type="button" class="btn btn-primary" (click)="clearFilters()">Quitar filtros</button>
+    </app-empty-state>
+  }
+  @case ('error') {
+    <app-error-alert
+      [error]="s.error"
+      context="characters"
+      title="No se ha podido cargar la lista de personajes"
+      [alwaysRetry]="true"
+      (retry)="reload()"
+    />
+    @if (s.error.isValidation) {
+      <button type="button" class="btn btn-outline-secondary mt-3" (click)="clearFilters()">Restablecer filtros</button>
+    }
+  }
+  @case ('ready') {
+    <p class="text-body-secondary small mb-3" role="status">{{ resultsLabel(s.data) }}</p>
+    <div class="row g-3 g-lg-4 mb-4">
+      @for (character of s.data.content; track character.id) {
+        <div class="col-6 col-md-4 col-lg-3 col-xxl-2">
+          <app-character-card
+            [character]="character"
+            [isFavorite]="favorites.isFavorite(character.id)"
+            [favoritePending]="favorites.isPending(character.id)"
+            (favoriteToggle)="onFavoriteToggle($event)"
+          />
+        </div>
+      }
+    </div>
+    <app-pagination [page]="s.data.page" [totalPages]="s.data.totalPages" (pageChange)="onPageChange($event)" />
+  }
+}
