@@ -1,0 +1,320 @@
+<main class="page-shell users-page">
+  <header class="users-header">
+    <div class="users-heading">
+      <p class="kicker">CONTROL DE ACCESO / ADMINISTRACIÓN</p>
+      <h1>Usuarios</h1>
+      <p>Administra quién puede entrar al archivo y revoca accesos que ya no se necesitan.</p>
+    </div>
+    <button class="primary-action icon-label" type="button" (click)="openCreate()">
+      <app-icon name="user-plus" />
+      <span>Nuevo usuario</span>
+    </button>
+  </header>
+
+  <section class="datatable" aria-labelledby="directory-title" [attr.aria-busy]="loading()">
+    <div class="datatable-toolbar">
+      <div class="toolbar-copy">
+        <h2 id="directory-title">Cuentas registradas</h2>
+        <p>{{ totalElements() }} {{ totalElements() === 1 ? 'cuenta' : 'cuentas' }}</p>
+      </div>
+
+      <form class="search-box" role="search" (submit)="submitSearch($event)">
+        <label class="visually-hidden" for="user-search">Buscar por usuario</label>
+        <app-icon class="search-icon" name="search" [size]="18" />
+        <input
+          id="user-search"
+          type="search"
+          autocomplete="off"
+          placeholder="Buscar por usuario"
+          [value]="search()"
+          (input)="onSearchInput($event)"
+        />
+        @if (search()) {
+          <button class="icon-button clear-search" type="button" aria-label="Limpiar búsqueda" (click)="clearSearch()">
+            <app-icon name="close" [size]="18" />
+          </button>
+        }
+      </form>
+
+      <label class="page-size">
+        <span>Mostrar</span>
+        <select [value]="pageSize()" (change)="changePageSize($event)" aria-label="Filas por página">
+          @for (size of pageSizes; track size) {
+            <option [value]="size" [selected]="size === pageSize()">{{ size }}</option>
+          }
+        </select>
+      </label>
+    </div>
+
+    @if (listError()) {
+      <div class="state-panel error">
+        <h3>No pudimos cargar el directorio</h3>
+        <p>{{ listError() }}</p>
+        <button class="secondary-action icon-label" type="button" (click)="load()">
+          <app-icon name="refresh" [size]="18" />
+          <span>Reintentar</span>
+        </button>
+      </div>
+    } @else if (loading() && !hasUsers()) {
+      <div class="state-panel" aria-live="polite">
+        <span class="scanner" aria-hidden="true"></span>
+        <p>Consultando usuarios…</p>
+      </div>
+    } @else if (!hasUsers()) {
+      <div class="state-panel">
+        <h3>Sin resultados</h3>
+        <p>{{ search() ? 'Prueba con otro nombre de usuario.' : 'Crea la primera cuenta de usuario.' }}</p>
+        @if (!search()) {
+          <button class="secondary-action icon-label" type="button" (click)="openCreate()">
+            <app-icon name="plus" [size]="18" />
+            <span>Crear usuario</span>
+          </button>
+        }
+      </div>
+    } @else {
+      <div class="users-table-wrap" [class.is-refreshing]="loading()">
+        <table class="table table-hover align-middle mb-0 users-table">
+          <caption class="visually-hidden">Usuarios registrados en el sistema</caption>
+          <thead>
+            <tr>
+              <th scope="col" [attr.aria-sort]="ariaSort('username')">
+                <button class="sort-button" type="button" (click)="sortBy('username')">
+                  <span>Usuario</span>
+                  <app-icon [name]="sortIcon('username')" [size]="16" />
+                </button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ariaSort('role')">
+                <button class="sort-button" type="button" (click)="sortBy('role')">
+                  <span>Rol</span>
+                  <app-icon [name]="sortIcon('role')" [size]="16" />
+                </button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ariaSort('enabled')">
+                <button class="sort-button" type="button" (click)="sortBy('enabled')">
+                  <span>Estado</span>
+                  <app-icon [name]="sortIcon('enabled')" [size]="16" />
+                </button>
+              </th>
+              <th scope="col" [attr.aria-sort]="ariaSort('createdAt')">
+                <button class="sort-button" type="button" (click)="sortBy('createdAt')">
+                  <span>Creación</span>
+                  <app-icon [name]="sortIcon('createdAt')" [size]="16" />
+                </button>
+              </th>
+              <th scope="col" class="actions-column">
+                <span class="actions-heading">
+                  <span>Acciones</span>
+                  <button
+                    class="icon-button add"
+                    type="button"
+                    aria-label="Agregar usuario"
+                    title="Agregar usuario"
+                    (click)="openCreate()"
+                  >
+                    <app-icon name="plus" [size]="18" />
+                  </button>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users(); track user.id) {
+              <tr>
+                <td data-label="Usuario">
+                  <span class="user-cell">
+                    <strong>{{ user.username }}</strong>
+                    <small>#{{ user.id }}</small>
+                  </span>
+                </td>
+                <td data-label="Rol">
+                  <span class="role-badge" [class.admin]="user.role === 'ADMIN'">
+                    {{ user.role === 'ADMIN' ? 'Administrador' : 'Usuario' }}
+                  </span>
+                </td>
+                <td data-label="Estado">
+                  <span class="status-badge" [class.inactive]="!user.enabled">
+                    <i aria-hidden="true"></i>{{ user.enabled ? 'Activa' : 'Inactiva' }}
+                  </span>
+                </td>
+                <td data-label="Creación">
+                  <time [attr.datetime]="user.createdAt">{{ user.createdAt | date: 'dd/MM/yyyy' }}</time>
+                </td>
+                <td data-label="Acciones" class="row-actions">
+                  <span class="action-group">
+                    <button
+                      class="icon-button edit"
+                      type="button"
+                      [disabled]="isProtected(user)"
+                      [attr.aria-label]="isProtected(user) ? 'La cuenta administradora no se puede editar' : 'Editar a ' + user.username"
+                      [attr.title]="isProtected(user) ? 'No editable' : 'Editar'"
+                      (click)="openEdit(user)"
+                    >
+                      <app-icon name="pencil" [size]="18" />
+                    </button>
+                    <button
+                      class="icon-button delete"
+                      type="button"
+                      [disabled]="isProtected(user)"
+                      [attr.aria-label]="isProtected(user) ? 'La cuenta administradora no se puede eliminar' : 'Eliminar a ' + user.username"
+                      [attr.title]="isProtected(user) ? 'No eliminable' : 'Eliminar'"
+                      (click)="requestDelete(user)"
+                    >
+                      <app-icon name="trash" [size]="18" />
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="datatable-footer" aria-label="Paginación de usuarios">
+        <p class="range-copy">
+          Mostrando <strong>{{ rangeStart() }}–{{ rangeEnd() }}</strong> de <strong>{{ totalElements() }}</strong>
+        </p>
+        <ul class="pagination-list">
+          <li>
+            <button
+              class="page-button"
+              type="button"
+              aria-label="Página anterior"
+              [disabled]="!canGoBack()"
+              (click)="load(page() - 1)"
+            >
+              <app-icon name="chevron-left" [size]="18" />
+            </button>
+          </li>
+          @for (index of visiblePages(); track index) {
+            <li>
+              <button
+                class="page-button"
+                type="button"
+                [class.is-current]="index === page()"
+                [attr.aria-current]="index === page() ? 'page' : null"
+                [attr.aria-label]="'Página ' + (index + 1)"
+                (click)="load(index)"
+              >
+                {{ index + 1 }}
+              </button>
+            </li>
+          }
+          <li>
+            <button
+              class="page-button"
+              type="button"
+              aria-label="Página siguiente"
+              [disabled]="!canGoForward()"
+              (click)="load(page() + 1)"
+            >
+              <app-icon name="chevron-right" [size]="18" />
+            </button>
+          </li>
+        </ul>
+      </nav>
+    }
+  </section>
+
+  <dialog
+    #userDialog
+    class="app-dialog"
+    aria-labelledby="user-dialog-title"
+    (close)="onUserDialogClosed()"
+    (click)="onBackdropClick($event, 'user')"
+  >
+    <form class="dialog-card" (submit)="saveUser($event)" novalidate [attr.aria-busy]="saving()">
+      <header class="dialog-heading">
+        <div>
+          <p class="kicker">{{ dialogMode() === 'create' ? 'ALTA CONTROLADA' : 'EDITANDO CUENTA #' + selectedUser()?.id }}</p>
+          <h2 id="user-dialog-title">{{ dialogMode() === 'create' ? 'Nuevo usuario' : 'Editar usuario' }}</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Cerrar" [disabled]="saving()" (click)="closeUserDialog()">
+          <app-icon name="close" />
+        </button>
+      </header>
+
+      @if (dialogMode() === 'create') {
+        <p class="dialog-help">La cuenta se crea con rol <strong>Usuario</strong>, activa y con acceso al catálogo y favoritos.</p>
+      }
+
+      @if (dialogError()) {
+        <div class="alert-panel" role="alert">{{ dialogError() }}</div>
+      }
+
+      <div class="field-group">
+        <label for="dialog-username">Usuario</label>
+        <input id="dialog-username" type="text" autocomplete="off" [formField]="userForm.username" />
+        @if (userForm.username().touched() && userForm.username().invalid()) {
+          <p class="field-error">{{ fieldError('username') }}</p>
+        }
+      </div>
+
+      <div class="field-group">
+        <label for="dialog-password">{{ dialogMode() === 'create' ? 'Contraseña inicial' : 'Nueva contraseña' }}</label>
+        <input
+          id="dialog-password"
+          type="password"
+          autocomplete="new-password"
+          [attr.aria-describedby]="dialogMode() === 'edit' ? 'dialog-password-help' : null"
+          [formField]="userForm.password"
+        />
+        @if (dialogMode() === 'edit') {
+          <p id="dialog-password-help" class="field-help">Déjala vacía para conservar la actual.</p>
+        }
+        @if (userForm.password().touched() && userForm.password().invalid()) {
+          <p class="field-error">{{ fieldError('password') }}</p>
+        }
+      </div>
+
+      @if (dialogMode() === 'edit') {
+        <div class="account-status">
+          <label for="dialog-enabled">
+            <input id="dialog-enabled" type="checkbox" [formField]="userForm.enabled" />
+            Cuenta activa
+          </label>
+        </div>
+      }
+
+      <footer class="dialog-actions">
+        <button class="secondary-action" type="button" [disabled]="saving()" (click)="closeUserDialog()">Cancelar</button>
+        <button class="primary-action" type="submit" [disabled]="saving()">
+          @if (saving()) {
+            {{ dialogMode() === 'create' ? 'Creando…' : 'Guardando…' }}
+          } @else {
+            {{ dialogMode() === 'create' ? 'Crear usuario' : 'Guardar cambios' }}
+          }
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog
+    #deleteDialog
+    class="app-dialog danger"
+    aria-labelledby="delete-dialog-title"
+    (close)="onDeleteDialogClosed()"
+    (click)="onBackdropClick($event, 'delete')"
+  >
+    <div class="dialog-card" role="alertdialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-copy">
+      <header class="dialog-heading">
+        <div>
+          <p class="kicker">ACCIÓN IRREVERSIBLE</p>
+          <h2 id="delete-dialog-title">Eliminar a {{ deleteCandidate()?.username }}</h2>
+        </div>
+        <button class="icon-button" type="button" aria-label="Cerrar" [disabled]="deleting()" (click)="closeDeleteDialog()">
+          <app-icon name="close" />
+        </button>
+      </header>
+      <p id="delete-dialog-copy" class="dialog-help">
+        Esta acción revoca sus sesiones y elimina sus favoritos. No se puede deshacer.
+      </p>
+      <footer class="dialog-actions">
+        <button class="secondary-action" type="button" [disabled]="deleting()" (click)="closeDeleteDialog()">Conservar cuenta</button>
+        <button class="danger-action icon-label" type="button" [disabled]="deleting()" (click)="confirmDelete()">
+          <app-icon name="trash" [size]="18" />
+          <span>{{ deleting() ? 'Eliminando…' : 'Eliminar definitivamente' }}</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+</main>

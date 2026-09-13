@@ -1,0 +1,95 @@
+:host {
+  display: contents;
+}
+
+.toast-region {
+  position: fixed;
+  z-index: 1100;
+  inset-block-end: 1rem;
+  inset-inline: 1rem;
+  display: grid;
+  gap: 0.6rem;
+  pointer-events: none;
+}
+
+.toast-item {
+  --toast-accent: var(--color-teal-dark);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: start;
+  border: 1px solid var(--color-line-strong);
+  border-inline-start: 0.35rem solid var(--toast-accent);
+  padding: 0.85rem 0.6rem 0.85rem 0.9rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: 0.35rem 0.35rem 0 rgba(16, 24, 38, 0.12);
+  pointer-events: auto;
+  animation: toast-in 0.2s ease-out;
+}
+
+.toast-item.tone-success {
+  --toast-accent: var(--color-teal-dark);
+}
+
+.toast-item.tone-error {
+  --toast-accent: var(--color-coral-dark);
+}
+
+.toast-item.tone-info {
+  --toast-accent: var(--color-cyan);
+}
+
+.toast-icon {
+  margin-top: 0.1rem;
+  color: var(--toast-accent);
+}
+
+.toast-copy {
+  min-inline-size: 0;
+}
+
+.toast-copy strong {
+  display: block;
+  font: 750 0.92rem / 1.2 var(--font-display);
+}
+
+.toast-copy p {
+  margin: 0.2rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
+}
+
+.toast-close {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  margin: -0.5rem -0.25rem -0.5rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  cursor: pointer;
+}
+
+.toast-close:hover {
+  color: var(--color-ink);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (min-width: 36rem) {
+  .toast-region {
+    inset-inline: auto 1.5rem;
+    inline-size: min(24rem, calc(100% - 3rem));
+  }
+}

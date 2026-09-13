@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-domain-schema.yaml
+  - include:
+      file: db/changelog/changes/002-sync-schema.yaml
+  - include:
+      file: db/changelog/changes/003-sync-run-trigger.yaml

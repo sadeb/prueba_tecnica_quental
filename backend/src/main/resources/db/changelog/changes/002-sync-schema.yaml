@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - property:
+      name: largeTextType
+      value: TEXT
+      dbms: postgresql
+  - property:
+      name: largeTextType
+      value: VARCHAR
+      dbms: h2
+  - changeSet:
+      id: 002-sync-schema
+      author: codex
+      changes:
+        - createTable:
+            tableName: sync_runs
+            columns:
+              - column: { name: id, type: VARCHAR(36), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: status, type: VARCHAR(24), constraints: { nullable: false } }
+              - column: { name: started_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+              - column: { name: completed_at, type: TIMESTAMP WITH TIME ZONE }
+              - column: { name: pages_fetched, type: INT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: messages_queued, type: INT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: processed_count, type: INT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: failed_count, type: INT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: error_message, type: VARCHAR(1000) }
+        - createTable:
+            tableName: raw_payloads
+            columns:
+              - column: { name: id, type: VARCHAR(36), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: sync_run_id, type: VARCHAR(36), constraints: { nullable: false } }
+              - column: { name: resource_type, type: VARCHAR(24), constraints: { nullable: false } }
+              - column: { name: external_id, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: content_hash, type: VARCHAR(64), constraints: { nullable: false } }
+              - column: { name: payload, type: "${largeTextType}", constraints: { nullable: false } }
+              - column: { name: received_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+        - addUniqueConstraint:
+            tableName: raw_payloads
+            columnNames: resource_type, external_id, content_hash
+            constraintName: uk_raw_payload_version
+        - addForeignKeyConstraint:
+            baseTableName: raw_payloads
+            baseColumnNames: sync_run_id
+            referencedTableName: sync_runs
+            referencedColumnNames: id
+            constraintName: fk_raw_payload_sync_run
+        - createTable:
+            tableName: processed_messages
+            columns:
+              - column: { name: message_id, type: VARCHAR(80), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: sync_run_id, type: VARCHAR(36), constraints: { nullable: false } }
+              - column: { name: resource_type, type: VARCHAR(24), constraints: { nullable: false } }
+              - column: { name: external_id, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: processed_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+        - createTable:
+            tableName: outbox_events
+            columns:
+              - column: { name: id, type: VARCHAR(36), constraints: { primaryKey: true, nullable: false } }
+              - column: { name: aggregate_type, type: VARCHAR(40), constraints: { nullable: false } }
+              - column: { name: aggregate_id, type: VARCHAR(80), constraints: { nullable: false } }
+              - column: { name: event_type, type: VARCHAR(64), constraints: { nullable: false } }
+              - column: { name: topic, type: VARCHAR(160), constraints: { nullable: false } }
+              - column: { name: payload, type: "${largeTextType}", constraints: { nullable: false } }
+              - column: { name: status, type: VARCHAR(16), constraints: { nullable: false } }
+              - column: { name: attempts, type: INT, defaultValueNumeric: 0, constraints: { nullable: false } }
+              - column: { name: created_at, type: TIMESTAMP WITH TIME ZONE, constraints: { nullable: false } }
+              - column: { name: published_at, type: TIMESTAMP WITH TIME ZONE }
+              - column: { name: last_error, type: VARCHAR(1000) }
+        - createIndex:
+            tableName: outbox_events
+            indexName: idx_outbox_pending
+            columns:
+              - column: { name: status }
+              - column: { name: created_at }
+      rollback:
+        - dropTable: { tableName: outbox_events }
+        - dropTable: { tableName: processed_messages }
+        - dropTable: { tableName: raw_payloads }
+        - dropTable: { tableName: sync_runs }

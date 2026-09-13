@@ -1,0 +1,88 @@
+server:
+  port: ${SERVER_PORT:8989}
+  shutdown: graceful
+
+spring:
+  application:
+    name: rick-morty-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:4532/rickmorty}
+    username: ${DB_USER:rickmorty}
+    password: ${DB_PASSWORD:rickmorty}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  neo4j:
+    uri: ${NEO4J_URI:bolt://localhost:4787}
+    authentication:
+      username: ${NEO4J_USER:neo4j}
+      password: ${NEO4J_PASSWORD:rickmortygraph}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:4992}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:rickmorty-api-v1}
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+    listener:
+      ack-mode: record
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:4200,http://localhost:4400}
+  external-api:
+    base-url: ${RICK_MORTY_API_URL:https://rickandmortyapi.com/api}
+    connect-timeout: ${EXTERNAL_CONNECT_TIMEOUT:3s}
+    read-timeout: ${EXTERNAL_READ_TIMEOUT:10s}
+    request-interval: ${EXTERNAL_REQUEST_INTERVAL:250ms}
+    max-attempts: ${EXTERNAL_MAX_ATTEMPTS:4}
+    initial-backoff: ${EXTERNAL_INITIAL_BACKOFF:1s}
+    max-backoff: ${EXTERNAL_MAX_BACKOFF:30s}
+  auth:
+    token-ttl: ${AUTH_TOKEN_TTL:8h}
+    admin-username: ${ADMIN_USERNAME:}
+    admin-password: ${ADMIN_PASSWORD:}
+  sync:
+    on-startup: ${SYNC_ON_STARTUP:false}
+  outbox:
+    enabled: ${OUTBOX_ENABLED:true}
+    fixed-delay: ${OUTBOX_FIXED_DELAY:2}
+    batch-size: ${OUTBOX_BATCH_SIZE:100}
+  topics:
+    raw: ${KAFKA_RAW_TOPIC:rickmorty.raw.v1}
+    graph: ${KAFKA_GRAPH_TOPIC:rickmorty.graph.v1}
+    dead-letter-suffix: .DLT
+
+logging:
+  pattern:
+    level: "%5p [traceId=%X{traceId:-}]"

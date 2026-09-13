@@ -1,0 +1,44 @@
+<main class="page-shell detail-page">
+  <a class="back-link" routerLink="/characters">← Volver al catálogo</a>
+  @if (loading()) {
+    <section class="state-panel"><span class="scanner" aria-hidden="true"></span><h1>Abriendo expediente…</h1></section>
+  } @else if (errorMessage()) {
+    <section class="state-panel error" role="alert"><h1>Expediente inaccesible</h1><p>{{ errorMessage() }}</p><button class="secondary-action" type="button" (click)="load()">Reintentar</button></section>
+  } @else if (detail(); as record) {
+    <article class="profile-header">
+      <div class="profile-image">
+        @if (record.character.imageUrl) { <img [src]="record.character.imageUrl" [alt]="record.character.name" /> }
+      </div>
+      <div class="profile-copy">
+        <p class="kicker">EXPEDIENTE {{ record.character.externalId.toString().padStart(4, '0') }}</p>
+        <h1>{{ record.character.name }}</h1>
+        <div class="identity-line"><span>{{ record.character.status }}</span><span>{{ record.character.species }}</span><span>{{ record.character.gender }}</span></div>
+        @if (record.character.type) { <p class="type">Clasificación: {{ record.character.type }}</p> }
+        @if (isAuthenticated()) { <button class="primary-action" type="button" (click)="addFavorite()">Guardar expediente</button> }
+        @if (favoriteNotice()) { <p class="notice" role="status">{{ favoriteNotice() }}</p> }
+      </div>
+    </article>
+
+    <section class="location-grid" aria-labelledby="locations-heading">
+      <h2 id="locations-heading">Coordenadas conocidas</h2>
+      <article><p class="kicker">ORIGEN</p><h3>{{ record.origin?.name ?? 'Desconocido' }}</h3><p>{{ record.origin?.type ?? 'Sin tipo' }} · {{ record.origin?.dimension ?? 'Dimensión desconocida' }}</p></article>
+      <article><p class="kicker">UBICACIÓN ACTUAL</p><h3>{{ record.currentLocation?.name ?? 'Desconocida' }}</h3><p>{{ record.currentLocation?.type ?? 'Sin tipo' }} · {{ record.currentLocation?.dimension ?? 'Dimensión desconocida' }}</p></article>
+    </section>
+
+    <div class="detail-columns">
+      <section aria-labelledby="episodes-heading">
+        <p class="section-index">01 / CRONOLOGÍA</p><h2 id="episodes-heading">Episodios registrados</h2>
+        @if (record.episodes.length) {
+          <ol class="episode-list">@for (episode of record.episodes; track episode.id) { <li><span>{{ episode.episodeCode ?? '—' }}</span><strong>{{ episode.name ?? 'Sin nombre' }}</strong><small>{{ episode.airDate ?? 'Fecha desconocida' }}</small></li> }</ol>
+        } @else { <p class="empty-copy">No hay episodios asociados.</p> }
+      </section>
+      <section aria-labelledby="related-heading">
+        <p class="section-index">02 / GRAFO</p><h2 id="related-heading">Personajes relacionados</h2>
+        @if (relatedError()) { <p class="alert-panel" role="alert">{{ relatedError() }}</p> }
+        @else if (related().length) {
+          <ol class="related-list">@for (item of related(); track item.id) { <li><a [routerLink]="['/characters', item.id]">{{ item.name }}</a><span>{{ item.sharedEpisodes }} episodios comunes</span></li> }</ol>
+        } @else { <p class="empty-copy">No se localizaron conexiones compartidas.</p> }
+      </section>
+    </div>
+  }
+</main>

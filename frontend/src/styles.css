@@ -1,0 +1,372 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --color-ink: #101826;
+  --color-navy: #18263a;
+  --color-paper: #f4f6f0;
+  --color-paper-muted: #d8ded8;
+  --color-surface: #ffffff;
+  --color-cyan: #35c6c8;
+  --color-teal-dark: #087d80;
+  --color-lime: #b7e34a;
+  --color-coral: #ef6a5b;
+  --color-coral-dark: #a72f27;
+  --color-muted: #5f6b75;
+  --color-line: #d5dad6;
+  --color-line-strong: #8b969b;
+  --font-display: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  min-inline-size: 20rem;
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  overflow-wrap: anywhere;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+svg {
+  display: block;
+  max-inline-size: 100%;
+}
+button,
+input,
+select {
+  min-block-size: 2.75rem;
+  font: inherit;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 0.2rem solid var(--color-cyan);
+  outline-offset: 0.2rem;
+}
+.page-shell {
+  inline-size: min(calc(100% - 2rem), 88rem);
+  margin-inline: auto;
+}
+#main-content > router-outlet + * {
+  display: block;
+  min-inline-size: 0;
+  min-block-size: 0;
+  flex: 1;
+}
+.kicker {
+  margin: 0;
+  color: var(--color-teal-dark);
+  font: 750 0.72rem/1 var(--font-mono);
+  letter-spacing: 0.14em;
+}
+.primary-action,
+.secondary-action {
+  min-inline-size: 2.75rem;
+  border-radius: 0;
+  padding: 0.78rem 1rem;
+  font-weight: 780;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+.primary-action {
+  border: 1px solid var(--color-ink);
+  background: var(--color-lime);
+  color: var(--color-ink);
+  box-shadow: 0.3rem 0.3rem 0 var(--color-cyan);
+}
+.primary-action:hover:not(:disabled) {
+  transform: translate(-0.1rem, -0.1rem);
+  box-shadow: 0.45rem 0.45rem 0 var(--color-cyan);
+}
+.primary-action:disabled,
+.secondary-action:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.secondary-action {
+  border: 1px solid var(--color-line-strong);
+  background: transparent;
+  color: var(--color-ink);
+}
+.text-action {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  border: 0;
+  padding: 0.5rem 0;
+  background: transparent;
+  color: var(--color-teal-dark);
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+.alert-panel {
+  margin: 1rem 0;
+  border-left: 0.35rem solid var(--color-coral);
+  padding: 1rem;
+  background: color-mix(in srgb, var(--color-coral) 10%, white);
+  color: var(--color-coral-dark);
+}
+.state-panel {
+  min-height: 22rem;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+.state-panel h1,
+.state-panel h2 {
+  margin: 0.8rem 0 0.3rem;
+  font: 750 2rem/1 var(--font-display);
+}
+.state-panel p {
+  color: var(--color-muted);
+}
+.state-panel.error {
+  color: var(--color-coral-dark);
+}
+.scanner {
+  width: 2.5rem;
+  aspect-ratio: 1;
+  border: 0.25rem solid var(--color-line);
+  border-top-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: scan 1s linear infinite;
+}
+@keyframes scan {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Controles compartidos: botones con icono, paginación, acción destructiva y diálogos */
+.icon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+.icon-button:hover:not(:disabled) {
+  border-color: var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-cyan) 12%, white);
+}
+.icon-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.icon-button.edit {
+  color: var(--color-teal-dark);
+}
+.icon-button.delete {
+  color: var(--color-coral-dark);
+}
+.icon-button.delete:hover:not(:disabled) {
+  border-color: var(--color-coral-dark);
+  background: color-mix(in srgb, var(--color-coral) 12%, white);
+}
+.icon-button.add {
+  border-color: var(--color-ink);
+  background: var(--color-lime);
+}
+.icon-button.add:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-lime) 80%, white);
+}
+.page-button {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0;
+  padding: 0 0.6rem;
+  background: white;
+  color: var(--color-ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.page-button:hover:not(:disabled):not(.is-current) {
+  border-color: var(--color-line-strong);
+  background: color-mix(in srgb, var(--color-cyan) 10%, white);
+}
+.page-button.is-current {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.page-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.danger-action {
+  min-block-size: 2.75rem;
+  border: 1px solid var(--color-coral-dark);
+  border-radius: 0;
+  padding: 0.78rem 1rem;
+  background: var(--color-coral-dark);
+  color: white;
+  font-weight: 780;
+}
+.danger-action:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+.app-dialog {
+  inline-size: min(100% - 2rem, 34rem);
+  max-inline-size: none;
+  max-block-size: min(100% - 2rem, 90dvh);
+  margin: auto;
+  border: 1px solid var(--color-ink);
+  border-radius: 0;
+  padding: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  box-shadow: 0.6rem 0.6rem 0 var(--color-cyan);
+}
+.app-dialog.danger {
+  box-shadow: 0.6rem 0.6rem 0 var(--color-coral);
+}
+.app-dialog::backdrop {
+  background: rgba(16, 24, 38, 0.55);
+  backdrop-filter: blur(2px);
+}
+.dialog-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+.dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dialog-heading > div {
+  min-inline-size: 0;
+}
+.dialog-heading h2 {
+  margin: 0.4rem 0 0;
+  font: 760 clamp(1.5rem, 5vw, 2rem) / 1 var(--font-display);
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.dialog-heading .icon-button {
+  margin: -0.5rem -0.5rem 0 0;
+  color: var(--color-muted);
+}
+.dialog-help {
+  margin: 0;
+  color: var(--color-muted);
+}
+.dialog-card .alert-panel {
+  margin: 0;
+}
+.app-dialog .field-group {
+  display: grid;
+  gap: 0.5rem;
+}
+.app-dialog .field-group label,
+.app-dialog .account-status label {
+  font-weight: 750;
+}
+.app-dialog .field-group input {
+  inline-size: 100%;
+  min-inline-size: 0;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 0;
+  padding: 0.75rem 0.9rem;
+  background: white;
+  color: var(--color-ink);
+}
+.app-dialog .field-group input:focus {
+  border-color: var(--color-teal-dark);
+  outline: 0.2rem solid color-mix(in srgb, var(--color-cyan) 42%, transparent);
+}
+.app-dialog .field-error,
+.app-dialog .field-help {
+  margin: 0;
+  font-size: 0.875rem;
+}
+.app-dialog .field-error {
+  color: var(--color-coral-dark);
+}
+.app-dialog .field-help {
+  color: var(--color-muted);
+}
+.app-dialog .account-status label {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-block-size: 2.75rem;
+  margin: 0;
+}
+.app-dialog .account-status input[type='checkbox'] {
+  inline-size: 1.25rem;
+  min-block-size: 1.25rem;
+  accent-color: var(--color-teal-dark);
+}
+.dialog-actions {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+.dialog-actions > button {
+  inline-size: 100%;
+  justify-content: center;
+}
+@media (min-width: 36rem) {
+  .dialog-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  .dialog-actions > button {
+    inline-size: auto;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (min-width: 48rem) {
+  .page-shell {
+    inline-size: min(calc(100% - 3rem), 88rem);
+  }
+}

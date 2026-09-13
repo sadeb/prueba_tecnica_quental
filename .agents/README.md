@@ -1,20 +1,24 @@
-# .agents/ — Índice del contexto para agentes de IA
+# Contexto compartido para agentes
 
-Entrada principal: [`../AGENTS.md`](../AGENTS.md). Cada carpeta responde a una pregunta distinta. Carga solo lo que necesites.
+Este directorio reúne información neutral respecto al proveedor del agente. `AGENTS.md` contiene las reglas operativas canónicas; aquí se conserva el detalle del producto y la continuidad entre sesiones.
 
-| Carpeta | Pregunta que responde | Índice |
-|---|---|---|
-| `spec/` | ¿Qué hay que construir? (requisitos del PDF, segmentados) | [spec/README.md](spec/README.md) |
-| `references/` | ¿Cómo funciona cada tecnología en las versiones fijadas? | [references/README.md](references/README.md) |
-| `conventions/` | ¿Cómo se escribe y organiza el código y el repositorio? | [conventions/README.md](conventions/README.md) |
-| `decisions/` | ¿Qué decisiones de diseño se han tomado y por qué? (ADRs) | [decisions/README.md](decisions/README.md) |
-| `agents/` | ¿Qué rol asume el agente y con qué límites? | [agents/README.md](agents/README.md) |
-| `skills/` | ¿Qué procedimientos y restricciones aplica el agente? | [skills/README.md](skills/README.md) |
-| `workflows/` | ¿En qué orden y con qué pasos se construye cada pieza? | [workflows/README.md](workflows/README.md) |
-| `glossary.md` | ¿Qué significa cada término del dominio? | [glossary.md](glossary.md) |
+## Navegación
 
-## Principios de estos ficheros
-- Un fichero = un concepto o tarea. Minimalista. Sin repetir contenido: se enlaza.
-- Los enlaces son relativos y siempre a ficheros existentes.
-- Si un fichero supera ~80 líneas, se divide.
-- Cuando cambie el código, se actualiza el fichero afectado (spec no cambia; decisions y references sí).
+- `context/REQUIREMENTS.md`: requisitos y trazabilidad.
+- `context/ARCHITECTURE.md`: arquitectura implementada y flujos.
+- `context/STACK.md`: tecnologías, versiones efectivas y compatibilidad.
+- `context/API_CONTRACT.md`: superficie HTTP implementada y sus huecos documentales.
+- `context/ROADMAP.md`: fases, entregables y puertas de aprobación.
+- `context/HANDOFF.md`: fotografía breve del estado actual.
+- `context/NEXT_FEATURES.md`: trabajo priorizado y criterios de cierre para las próximas funcionalidades.
+- `context/SKILLS_CANDIDATES.md`: skills que el usuario podrá evaluar manualmente.
+- `decisions/`: ADR aceptados, con su estado de implementación explícito.
+- `templates/`: formatos para nuevos ADR y futuros handoffs.
+
+## Mantenimiento
+
+- Evitar duplicar reglas de `AGENTS.md`.
+- Marcar siempre si algo está `PLANIFICADO`, `EN CURSO` o `IMPLEMENTADO`.
+- Distinguir requisitos del PDF, decisiones del usuario e inferencias de diseño.
+- No crear `.agents/skills/` ni archivos `SKILL.md` durante `CONTEXT_BOOTSTRAP`.
+- Para commits, usar tipo y alcance en inglés, con descripción y cuerpo en español.

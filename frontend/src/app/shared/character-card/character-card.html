@@ -1,0 +1,35 @@
+<article class="character-card" [class]="statusClass(character().status)">
+  <button
+    type="button"
+    class="favorite-button"
+    [class.is-favorite]="favorite()"
+    [disabled]="pending()"
+    [attr.aria-pressed]="favorite()"
+    [attr.aria-label]="favorite() ? 'Retirar a ' + character().name + ' de favoritos' : 'Guardar a ' + character().name + ' en favoritos'"
+    [attr.title]="favorite() ? 'Retirar de favoritos' : 'Guardar en favoritos'"
+    (click)="favoriteToggled.emit(character())"
+  >
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+      <path d="M12 20.3 10.55 19C5.4 14.36 2 11.28 2 7.5 2 4.42 4.42 2 7.5 2c1.74 0 3.41.81 4.5 2.09A6.02 6.02 0 0 1 16.5 2C19.58 2 22 4.42 22 7.5c0 3.78-3.4 6.86-8.55 11.51L12 20.3Z" />
+    </svg>
+  </button>
+  <a class="portrait" [routerLink]="['/characters', character().id]" [attr.aria-label]="'Ver a ' + character().name">
+    @if (character().imageUrl) {
+      <img [src]="character().imageUrl" [alt]="character().name" width="300" height="300" loading="lazy" />
+    } @else {
+      <span aria-hidden="true">?</span>
+    }
+  </a>
+  <div class="card-copy">
+    <p class="eyebrow">EXP. {{ character().externalId.toString().padStart(4, '0') }}</p>
+    <h2><a [routerLink]="['/characters', character().id]">{{ character().name }}</a></h2>
+    <div class="facts">
+      <span><i class="status-dot" aria-hidden="true"></i>{{ character().status }}</span>
+      <span>{{ character().species }}</span>
+      <span>{{ character().gender }}</span>
+    </div>
+    @if (character().type) {
+      <p class="type">{{ character().type }}</p>
+    }
+  </div>
+</article>

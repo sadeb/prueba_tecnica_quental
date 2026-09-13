@@ -1,0 +1,20 @@
+<main class="page-shell sync-page">
+  <header class="sync-header"><div><p class="kicker">CONTROL DE INGESTA / ADMINISTRACIÓN</p><h1>Sincronización</h1><p>Descarga la fuente externa, conserva el JSON original y registra los cambios antes de propagarlos.</p></div><button class="primary-action" type="button" [disabled]="starting()" (click)="start()">{{ starting() ? 'Iniciando…' : 'Iniciar sincronización' }}</button></header>
+  <div class="system-route" aria-label="Ruta de datos"><span>Rick & Morty API</span><i>→</i><span>PostgreSQL</span><i>→</i><span>Kafka</span><i>→</i><span>Neo4j</span></div>
+  @if (errorMessage()) { <div class="alert-panel" role="alert">{{ errorMessage() }}</div> }
+  <section class="runs" aria-labelledby="runs-title">
+    <div class="section-heading"><div><h2 id="runs-title">Ejecuciones recientes</h2>@if (polling()) { <p class="polling-note" aria-live="polite">Actualización automática cada minuto</p> }</div><button class="text-action" type="button" (click)="load()">Actualizar</button></div>
+    @if (loading()) { <div class="state-panel"><span class="scanner" aria-hidden="true"></span><p>Consultando bitácora…</p></div> }
+    @else if (!hasRuns()) { <div class="state-panel"><h3>Sin ejecuciones</h3><p>Inicia la primera sincronización para llenar el archivo.</p></div> }
+    @else {
+      <div class="run-list">@for (run of runs(); track run.id) {
+        <article class="run-item">
+          <div><p class="run-id">{{ run.id }}</p><div class="run-heading"><h3>{{ statusLabel(run.status) }}</h3><span class="trigger-badge">{{ triggerLabel(run.trigger) }}</span></div><time [attr.datetime]="run.startedAt">{{ run.startedAt | date:'medium' }}</time></div>
+          <div class="metrics"><span><strong>{{ run.pagesFetched }}</strong> páginas descargadas</span><span><strong>{{ run.processedCount }}</strong> mensajes procesados</span><span><strong>{{ run.failedCount }}</strong> mensajes fallidos</span></div>
+          <div class="progress-copy"><span>Procesamiento de mensajes: {{ progress(run) }}%</span><div class="progress-track" role="progressbar" aria-label="Procesamiento de mensajes" [attr.aria-valuenow]="progress(run)" aria-valuemin="0" aria-valuemax="100"><i [style.width.%]="progress(run)"></i></div></div>
+          @if (runErrorMessage(run.errorMessage); as message) { <p class="run-error"><strong>Error de descarga:</strong> {{ message }}</p> }
+        </article>
+      }</div>
+    }
+  </section>
+</main>

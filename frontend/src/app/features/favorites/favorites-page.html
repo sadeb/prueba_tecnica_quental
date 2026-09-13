@@ -1,0 +1,19 @@
+<main class="page-shell">
+  <header class="page-heading"><p class="kicker">COLECCIÓN PERSONAL</p><h1>Expedientes guardados</h1><p>Tu selección vive en PostgreSQL y permanece vinculada a tu identidad.</p></header>
+  @if (loading()) { <section class="state-panel"><span class="scanner" aria-hidden="true"></span><h2>Recuperando colección…</h2></section> }
+  @else if (errorMessage()) { <section class="state-panel error" role="alert"><h2>No se pudo abrir la colección</h2><p>{{ errorMessage() }}</p><button class="secondary-action" type="button" (click)="load(result()?.page ?? 0)">Reintentar</button></section> }
+  @else if (!result()?.content?.length) { <section class="state-panel"><h2>Aún no hay expedientes</h2><p>Guarda personajes desde el catálogo o su ficha detallada.</p></section> }
+  @else {
+    <section class="favorites-grid" aria-label="Personajes favoritos">
+      @for (character of result()!.content; track character.id) {
+        <app-character-card
+          [character]="character"
+          [favorite]="true"
+          [pending]="pendingFavoriteIds().has(character.id)"
+          (favoriteToggled)="remove($event)"
+        />
+      }
+    </section>
+    <nav class="pagination" aria-label="Paginación"><button class="secondary-action" type="button" [disabled]="result()!.page === 0" (click)="load(result()!.page - 1)">← Anterior</button><span>{{ result()!.page + 1 }} / {{ result()!.totalPages || 1 }}</span><button class="secondary-action" type="button" [disabled]="result()!.page + 1 >= result()!.totalPages" (click)="load(result()!.page + 1)">Siguiente →</button></nav>
+  }
+</main>

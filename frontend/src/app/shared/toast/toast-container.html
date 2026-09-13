@@ -1,0 +1,14 @@
+<div class="toast-region" aria-live="polite" aria-atomic="false">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div class="toast-item" [class]="'toast-item tone-' + toast.tone" [attr.role]="toast.tone === 'error' ? 'alert' : 'status'">
+      <app-icon class="toast-icon" [name]="iconFor(toast.tone)" [size]="22" />
+      <div class="toast-copy">
+        <strong>{{ toast.title }}</strong>
+        <p>{{ toast.message }}</p>
+      </div>
+      <button type="button" class="toast-close" aria-label="Cerrar aviso" (click)="toastService.dismiss(toast.id)">
+        <app-icon name="close" [size]="18" />
+      </button>
+    </div>
+  }
+</div>
