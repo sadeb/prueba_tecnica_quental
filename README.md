@@ -12,16 +12,23 @@ cp .env.example .env
 docker compose up --build
 ```
 
+Compose carga `.env`, no `.env.example`. Si `.env` no existe, se aplican los valores
+por defecto declarados en `docker-compose.yml`.
+
 Servicios:
 
-- SPA: <http://localhost:4200>
-- API: <http://localhost:8989/api/v1>
-- Swagger UI: <http://localhost:8989/swagger-ui.html>
-- Health: <http://localhost:8989/actuator/health>
-- Neo4j Browser: <http://localhost:7474>
+- SPA: <http://localhost:4400>
+- API: <http://localhost:4889/api/v1>
+- Swagger UI: <http://localhost:4889/swagger-ui.html>
+- Health: <http://localhost:4889/actuator/health>
+- PostgreSQL: `localhost:4532`
+- Neo4j Browser: <http://localhost:4774>
+- Neo4j Bolt: `localhost:4787`
+- Kafka: `localhost:4992`
 
-El usuario definido por `ADMIN_USERNAME` y `ADMIN_PASSWORD` se crea o actualiza de forma
-idempotente al arrancar. Inicia sesión como administrador y lanza la primera sincronización
+El usuario definido por `ADMIN_USERNAME` y `ADMIN_PASSWORD` se crea de forma idempotente
+al arrancar si todavía no existe; el bootstrap no cambia la clave de una cuenta existente.
+Inicia sesión como administrador y lanza la primera sincronización
 desde la sección **Sincronizar**. También puede activarse `SYNC_ON_STARTUP=true`; estas
 ejecuciones aparecen como automáticas en el mismo historial. Tras iniciar una ejecución
 manual, la SPA actualiza su estado cada minuto hasta que finaliza.
@@ -50,7 +57,7 @@ cd backend
 ./mvnw spring-boot:run
 ```
 
-Variables y valores locales están documentados en [`backend/src/main/resources/application.yml`](backend/src/main/resources/application.yml). Liquibase es el único propietario del esquema; Hibernate usa `ddl-auto: validate`.
+Variables y valores locales están documentados en [`backend/src/main/resources/application.yml`](backend/src/main/resources/application.yml). Sus valores por defecto conectan con los puertos publicados por Compose: PostgreSQL `4532`, Neo4j Bolt `4787` y Kafka `4992`. El backend local escucha en `8989`. Liquibase es el único propietario del esquema; Hibernate usa `ddl-auto: validate`.
 
 ### Frontend
 
@@ -62,7 +69,7 @@ npm ci
 npm start
 ```
 
-Durante desarrollo, la SPA consume `/api/v1`; el proxy o servidor local debe dirigir esa ruta al backend. En Docker, Nginx realiza el proxy de forma interna.
+Durante desarrollo, la SPA escucha en `4200` y consume `/api/v1`; el proxy incluido dirige esa ruta al backend local en `8989`. En Docker, Nginx escucha en el puerto interno `80`, publicado como `4400`, y dirige la API al backend por la red interna de Compose.
 
 ## Arquitectura
 

@@ -27,6 +27,10 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
 - Compose, Dockerfiles, Nginx y configuración de entorno creados.
 - Puerto HTTP del backend unificado en `8989` para ejecución local, Compose, healthcheck
   y proxies del frontend.
+- Puertos publicados por Compose documentados y alineados con la configuración local:
+  frontend `4400`, backend `4889`, PostgreSQL `4532`, Neo4j HTTP/Bolt `4774`/`4787` y
+  Kafka `4992`. Kafka conserva listeners internos en `29092` y `9092`, y anuncia el
+  puerto publicado `4992` exclusivamente a clientes del host.
 
 ## Decisiones vigentes
 
@@ -130,6 +134,13 @@ las evidencias pendientes están en `NEXT_FEATURES.md`.
   acotados con backoff y jitter ante `429`, `5xx` y fallos de conexión. Respeta
   `Retry-After` hasta el máximo configurable y dispone de pruebas WireMock para
   recuperación y agotamiento de intentos; su ejecución queda pendiente de autorización.
+- Auditoría estática de puertos completada: documentación, valores locales del backend
+  y listener externo de Kafka coinciden con los puertos publicados por Compose.
+  `git diff --check` fue correcto; la validación de Compose y el arranque no se
+  repitieron porque requieren autorización explícita de ejecución.
+- El origen CORS del frontend publicado por Compose (`http://localhost:4400`) se añadió
+  junto al origen de desarrollo `4200` mediante configuración externa tipada. La prueba
+  de login comprueba el origen de Compose; su ejecución queda pendiente de autorización.
 
 ## Siguiente paso recomendado
 
